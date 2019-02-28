@@ -1,4 +1,9 @@
 package platformer.world.entity;
 
-public class Entity {
+import platformer.world.WorldObj;
+
+public class Entity extends WorldObj {
+    public Entity() {
+        super(location);
+    }
 }

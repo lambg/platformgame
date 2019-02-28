@@ -1,4 +1,4 @@
 package platformer.world.entity;
 
-public class PlayerEntity {
+public class PlayerEntity extends LivingEntity {
 }
