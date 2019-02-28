@@ -14,16 +14,21 @@ Deliverables:
 Week 1:
  - Begin work on World (with flat terrain generation, no entity spawning)
  - getNearbyEntities, other world features
+ 
 Week 2:
  - Create entities, basic collision detection between entities
  - Create Player entity
+ 
 Week 3:
  - Networking -- allow players to connect using NetworkAI bridge
+ 
 Week 4:
  - Display player health, score, etc.
  - Generate actual terrain, spawn entities
+ 
 Week 5:
  - Add platforms, generate platforms in world
+ 
 Week 6:
  - Polishing/Bug fixing
  
