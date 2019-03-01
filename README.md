@@ -1,6 +1,6 @@
 Program Description:
 Our project is a simple 2D platformer. It will support multiple players using a server. The game has hostile entities, and an infinite world. The world will be generate simple terrain and hostile entities as players move to the right. The hostile entities will follow nearby players.
-oifiowefef
+
 Deliverables:
  - Infinite World
  - Entity types:
