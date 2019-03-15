@@ -4,16 +4,15 @@
 
 ### What did your team do last week?
 * Set up repository
-* Identify deliverables
-* Make plan
+* Made a plan for the next four weeks
+* Began writing World class, starting desiging program structure.
 
 ### What will you do this week?
-* Investigate different solutions
-* Prototype plugin server
+* Finish (initial) world implementation (without terrain generation).
+* Begin work on WorldObj class
 
 ### Any blocking issues/challenges need to be addressed?
-* Get server to work on Linux machines, but not Windows
-* Client-server communication is flaky
+* Some concerns about how to keep the client and host synchronized (though that's an issue we do not have to deal with until week 3).
 
 
 ## Week 2 (Nov 5 - Nov 12)
