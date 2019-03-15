@@ -1,6 +1,6 @@
-# Progress Updates (Oct 29 - Nov 30)
+# Progress Updates (Mar 10 - Apr 19)
 
-## Week 1 (Oct 29 - Nov 5)
+## Week 1 (Mar 10 - Mar 15)
 
 ### What did your team do last week?
 * Set up repository
@@ -15,7 +15,7 @@
 * Some concerns about how to keep the client and host synchronized (though that's an issue we do not have to deal with until week 3).
 
 
-## Week 2 (Nov 5 - Nov 12)
+## Week 2 ()
 
 ### What did your team do last week?
 ...
