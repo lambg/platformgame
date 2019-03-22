@@ -1,5 +1,7 @@
 package platformer.connection;
 
+import platformer.connection.packets.PlayerConnectPacket;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,6 +11,8 @@ public class NetworkServer extends Communicator implements AutoCloseable {
 
     public NetworkServer(int port) throws IOException {
         socket = new ServerSocket(port);
+
+        Packet.allowPacketDecoding(7, PlayerConnectPacket.class); // dummy packet to allow decoding
 
         new Thread(() -> {
             while (true) {
@@ -33,6 +37,7 @@ public class NetworkServer extends Communicator implements AutoCloseable {
 
     public void acceptConnection(Socket connection) {
         listenTo(connection);
+        System.out.println(connection.getInetAddress() + " connected.");
         // todo - send confirmation packet
     }
 

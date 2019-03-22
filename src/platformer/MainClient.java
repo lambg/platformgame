@@ -1,6 +1,7 @@
 package platformer;
 
 import platformer.connection.NetworkClient;
+import platformer.connection.packets.PlayerConnectPacket;
 import platformer.world.Location;
 import platformer.world.World;
 import platformer.world.entity.PlayerEntity;
@@ -18,6 +19,7 @@ public class MainClient {
         NetworkClient client = new NetworkClient(new Scanner(System.in).nextLine());
         // todo - receive PLAYER packet
         // todo - receive WORLD packet
+        client.sendPacket(client.getSocket(), new PlayerConnectPacket("Kevin"));
         while(!client.isClosed())
             client.update();
     }

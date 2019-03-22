@@ -10,13 +10,13 @@ import java.util.Map;
 public abstract class Packet {
     private static final Map<Integer, Class<? extends Packet>> idToPacketMap = new HashMap<>();
 
-    public void allowPacketDecoding() {
-        idToPacketMap.put(getId(), getClass());
+    public static void allowPacketDecoding(int id, Class<? extends Packet> cl) { // todo - call this method
+        idToPacketMap.put(id, cl);
     }
 
-    protected abstract void breakdown(OutputStream out);
+    protected abstract void breakdown(OutputStream out) throws IOException;
 
-    protected abstract void buildPacket(InputStream in);
+    protected abstract void buildPacket(InputStream in) throws IOException;
 
     protected abstract int getId(); // PlayerDisconnect - 6
 
@@ -37,6 +37,8 @@ public abstract class Packet {
             throw new IOException("Expected 4 byte id, not received");
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
         Class<? extends Packet> packetCl = getFromId(buffer.getInt());
+        if (packetCl == null)
+            throw new IOException("Packet cannot be rebuilt; id not recognized");
 
         try {
             Packet packet = packetCl.newInstance();

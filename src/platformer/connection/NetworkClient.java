@@ -21,6 +21,10 @@ public class NetworkClient extends Communicator implements AutoCloseable{
         // todo - update objects in world
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+
     public boolean isClosed() {
         return socket == null;
     }

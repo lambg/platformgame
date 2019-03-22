@@ -1,16 +1,16 @@
 package platformer.world;
 
-import platformer.MainClient;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class World {
-    public void update() {
-        for (WorldSegment segment : MainClient.SERVER.getSegmentsToUpdate(this)) {
-            segment.update();
-        }
+    public void updateAround(WorldObj obj) {
+        // todo - get segments around obj and update
+        // todo - make sure multiple updates do not happen for single entity
+//        for (WorldSegment segment : MainClient.SERVER.getSegmentsToUpdate(this)) {
+//            segment.update();
+//        }
     }
 
     // todo - keep track of world segments
@@ -30,6 +30,7 @@ public class World {
 
     public Collection<WorldSegment> getSegmentsFrom(int lw, int ux) {
         // todo
+        return null;
     }
 
     // todo - shortcuts for world segment (i.e. getTerrainHeight)
