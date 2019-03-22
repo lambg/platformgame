@@ -3,7 +3,6 @@ package platformer.connection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ public abstract class Packet {
 
     protected abstract void buildPacket(InputStream in) throws IOException;
 
-    protected abstract int getId(); // PlayerDisconnect - 6
+    protected abstract byte getId(); // PlayerDisconnect - 6
 
     public abstract void applyPacket(Communicator communicator);
 
@@ -32,13 +31,10 @@ public abstract class Packet {
     }
 
     public static Packet build(InputStream in) throws IOException {
-        byte[] bytes = new byte[4];
-        if (in.read(bytes) != 4)
-            throw new IOException("Expected 4 byte id, not received");
-        ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        Class<? extends Packet> packetCl = getFromId(buffer.getInt());
+        int id = in.read();
+        Class<? extends Packet> packetCl = getFromId(id);
         if (packetCl == null)
-            throw new IOException("Packet cannot be rebuilt; id not recognized");
+            throw new IOException("Packet cannot be rebuilt; id \""+id+"\" not recognized");
 
         try {
             Packet packet = packetCl.newInstance();

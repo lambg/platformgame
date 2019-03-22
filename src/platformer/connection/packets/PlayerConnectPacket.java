@@ -16,6 +16,10 @@ public class PlayerConnectPacket extends Packet {
         this.name = name;
     }
 
+    // called reflectively
+    public PlayerConnectPacket() {
+    }
+
     @Override
     protected void breakdown(OutputStream out) throws IOException {
         out.write(name.length());
@@ -32,7 +36,7 @@ public class PlayerConnectPacket extends Packet {
     }
 
     @Override
-    protected int getId() {
+    protected byte getId() {
         return 7;
     }
 

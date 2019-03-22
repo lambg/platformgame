@@ -18,7 +18,7 @@ public class ObjectSpawnPacket extends Packet {
     }
 
     @Override
-    protected int getId() {
+    protected byte getId() {
         return 4;
     }
 

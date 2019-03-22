@@ -15,11 +15,13 @@ public class MainClient {
     private static int screenWidth, screenHeight;
 
     public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter IP: ");
-        NetworkClient client = new NetworkClient(new Scanner(System.in).nextLine());
-        // todo - receive PLAYER packet
-        // todo - receive WORLD packet
-        client.sendPacket(client.getSocket(), new PlayerConnectPacket("Kevin"));
+        NetworkClient client = new NetworkClient(scanner.nextLine());
+
+        System.out.println("Enter username: ");
+        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
+        // should receive confirmation
         while(!client.isClosed())
             client.update();
     }
