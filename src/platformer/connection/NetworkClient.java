@@ -15,6 +15,12 @@ public class NetworkClient extends Communicator implements AutoCloseable{
         this(ip, Connection.PORT);
     }
 
+    @Override
+    public void update() {
+        super.update();
+        // todo - update objects in world
+    }
+
     public boolean isClosed() {
         return socket == null;
     }

@@ -1,30 +1,25 @@
 package platformer;
 
+import platformer.connection.NetworkClient;
 import platformer.world.Location;
 import platformer.world.World;
 import platformer.world.entity.PlayerEntity;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class MainClient {
-    public static final int PORT = 12345;
-    public static final PlayerEntity PLAYER = new PlayerEntity();
-    public static GameServer SERVER;
     public static World WORLD;
-    public static AtomicBoolean keepGoing = new AtomicBoolean(true);
+    public static PlayerEntity PLAYER;
     private static int screenWidth, screenHeight;
 
-    public static void main(String[] args) {
-        // todo - create server, prompt for user for IP
-
-        // todo - set screen width, set screen height
-
-        new Thread(() -> {
-            WORLD = SERVER.createNewWorld(SERVER.seed());
-            while (keepGoing.get()) {
-                WORLD.update();
-            }
-        }).start();
+    public static void main(String[] args) throws IOException {
+        System.out.println("Enter IP: ");
+        NetworkClient client = new NetworkClient(new Scanner(System.in).nextLine());
+        // todo - receive PLAYER packet
+        // todo - receive WORLD packet
+        while(!client.isClosed())
+            client.update();
     }
 
     public static Location getScreenLocation() {

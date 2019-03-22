@@ -25,6 +25,12 @@ public class NetworkServer extends Communicator implements AutoCloseable {
         this(Connection.PORT);
     }
 
+    @Override
+    public void update() {
+        super.update();
+        // todo - update objects in world
+    }
+
     public void acceptConnection(Socket connection) {
         listenTo(connection);
         // todo - send confirmation packet
