@@ -13,15 +13,16 @@ Deliverables:
  - Server & Player clients
 
 Week 1:
- - Begin work on World (with flat terrain generation, no entity spawning)
+ - Client/Server classes
  - getNearbyEntities, other world features
  
 Week 2:
- - Create entities, basic collision detection between entities
- - Create Player entity
+ - Send data between client and server
+ - Begin work on World (with flat terrain generation, no entity spawning)
  
 Week 3:
- - Networking -- allow players to connect using NetworkAI bridge
+ - Create entities, basic collision detection between entities
+ - Create Player entity
  
 Week 4:
  - Display player health, score, etc.
