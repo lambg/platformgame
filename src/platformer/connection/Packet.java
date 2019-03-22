@@ -1,6 +1,4 @@
-package platformer.connection.packet;
-
-import platformer.connection.Communicator;
+package platformer.connection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +18,7 @@ public abstract class Packet {
 
     protected abstract void buildPacket(InputStream in);
 
-    protected abstract int getId();
+    protected abstract int getId(); // PlayerDisconnect - 6
 
     public abstract void applyPacket(Communicator communicator);
 

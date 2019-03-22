@@ -1,6 +1,6 @@
 package platformer;
 
-import platformer.connection.server.NetworkServer;
+import platformer.connection.NetworkServer;
 
 public class MainServer {
     public static void main(String[] args) {

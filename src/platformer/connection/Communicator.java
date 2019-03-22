@@ -1,7 +1,5 @@
 package platformer.connection;
 
-import platformer.connection.packet.Packet;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -22,7 +20,11 @@ public class Communicator {
         updaters.add(socket);
     }
 
-    public void update() {
+    public void stopListeningTo(Socket socket) {
+        updaters.remove(socket);
+    }
+
+    public void update() { // todo - make sure update is called after Server/Client is created
         for (Socket updater : updaters) {
             try {
                 while (updater.getInputStream().available() != 0) {
