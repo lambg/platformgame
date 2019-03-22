@@ -1,7 +1,7 @@
 package platformer.world;
 
 public class Location {
-    private double x,y;
+    private double x, y;
 
     public Location(double x, double y) {
         this.x = x;
@@ -22,5 +22,10 @@ public class Location {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public boolean inside(double lx, double ux, double ly, double uy) {
+        return ux >= x && x >= lx && // x
+                uy >= y && y >= ly; // y
     }
 }

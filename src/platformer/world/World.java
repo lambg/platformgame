@@ -2,7 +2,9 @@ package platformer.world;
 
 import platformer.MainClient;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class World {
     public void update() {
@@ -15,10 +17,18 @@ public class World {
     // todo - when players advance, create new world segments
 
     public <T extends WorldObj> Collection<T> getNearbyObjects(Class<T> cl, int lx, int ux, int ly, int uy) {
-        // todo
+        List<T> objects = new ArrayList<>();
+        for (WorldSegment segment : getSegmentsFrom(lx, ux)) {
+            for (WorldObj obj : segment.getObjects()) {
+                if (obj.getLocation().inside(lx, ux, ly, uy) && cl.isAssignableFrom(obj.getClass()))
+                    //noinspection unchecked
+                    objects.add((T) obj);
+            }
+        }
+        return objects;
     }
 
-    public WorldSegment getNearbySegments(int lw, int ux, int ly, int uy) {
+    public Collection<WorldSegment> getSegmentsFrom(int lw, int ux) {
         // todo
     }
 

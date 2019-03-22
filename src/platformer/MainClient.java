@@ -1,6 +1,5 @@
 package platformer;
 
-import platformer.server.GameServer;
 import platformer.world.Location;
 import platformer.world.World;
 import platformer.world.entity.PlayerEntity;
