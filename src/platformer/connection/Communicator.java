@@ -8,8 +8,8 @@ import java.util.List;
 public class Communicator {
     private List<Socket> updaters = new ArrayList<>();
 
-    public void applyUpdatePacket(Packet packet) {
-        packet.applyPacket(this);
+    public void applyUpdatePacket(Packet packet, Socket socket) {
+        packet.applyPacket(this, socket);
     }
 
     public void sendPacket(Socket socket, Packet packet) throws IOException {
@@ -25,10 +25,11 @@ public class Communicator {
     }
 
     public void update() { // todo - make sure update is called after Server/Client is created
-        for (Socket updater : updaters) {
+        for (int i = updaters.size() - 1; i >= 0; i--) {
             try {
+                Socket updater = updaters.get(i);
                 while (updater.getInputStream().available() != 0) {
-                    applyUpdatePacket(Packet.build(updater.getInputStream()));
+                    applyUpdatePacket(Packet.build(updater.getInputStream()), updater);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();

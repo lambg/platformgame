@@ -30,7 +30,7 @@ public class NetworkClient extends Communicator implements AutoCloseable{
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() throws IOException {
         // todo - send disconnect packet
         socket.close();
 

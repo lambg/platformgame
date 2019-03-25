@@ -3,38 +3,37 @@ package platformer.connection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.Socket;
 
 public abstract class Packet {
-    private static final Map<Integer, Class<? extends Packet>> idToPacketMap = new HashMap<>();
-
-    public static void allowPacketDecoding(int id, Class<? extends Packet> cl) { // todo - call this method
-        idToPacketMap.put(id, cl);
-    }
-
     protected abstract void breakdown(OutputStream out) throws IOException;
 
     protected abstract void buildPacket(InputStream in) throws IOException;
 
-    protected abstract byte getId(); // PlayerDisconnect - 6
+    public String getIdentifier() {
+        return getClass().getSimpleName();
+    }
 
-    public abstract void applyPacket(Communicator communicator);
+    public abstract void applyPacket(Communicator communicator, Socket socket);
 
     public void send(OutputStream out) throws IOException {
-        out.write(getId());
+        out.write(getIdentifier().length());
+        out.write(getIdentifier().getBytes());
         breakdown(out);
     }
 
-    public static Class<? extends Packet> getFromId(int id) {
-        return idToPacketMap.get(id);
-    }
-
     public static Packet build(InputStream in) throws IOException {
-        int id = in.read();
-        Class<? extends Packet> packetCl = getFromId(id);
-        if (packetCl == null)
-            throw new IOException("Packet cannot be rebuilt; id \""+id+"\" not recognized");
+        int idLen = in.read();
+        byte[] bytes = new byte[idLen];
+        if (in.read(bytes) != idLen)
+            throw new IOException("Expected " + idLen + " bytes for packet name; not received");
+        Class<? extends Packet> packetCl;
+        try {
+            //noinspection unchecked
+            packetCl = (Class<? extends Packet>) Class.forName("platformer.connection.packets." + new String(bytes));
+        } catch (ClassNotFoundException ex) {
+            throw new IOException("Packet not found", ex);
+        }
 
         try {
             Packet packet = packetCl.newInstance();

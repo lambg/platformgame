@@ -1,6 +1,8 @@
 package platformer.world;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
     private double x, y;
 
     public Location(double x, double y) {

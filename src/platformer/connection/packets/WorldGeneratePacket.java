@@ -5,6 +5,7 @@ import platformer.connection.Packet;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 
 public class WorldGeneratePacket extends Packet {
     @Override
@@ -18,12 +19,7 @@ public class WorldGeneratePacket extends Packet {
     }
 
     @Override
-    protected byte getId() {
-        return 3;
-    }
-
-    @Override
-    public void applyPacket(Communicator communicator) {
+    public void applyPacket(Communicator communicator, Socket socket) {
 
     }
 }

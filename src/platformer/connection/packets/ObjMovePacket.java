@@ -2,11 +2,16 @@ package platformer.connection.packets;
 
 import platformer.connection.Communicator;
 import platformer.connection.Packet;
+import platformer.world.Location;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 
 public class ObjMovePacket extends Packet {
+    private int objectId;
+    private Location toLocation;
+
     @Override
     protected void breakdown(OutputStream out) {
 
@@ -18,12 +23,7 @@ public class ObjMovePacket extends Packet {
     }
 
     @Override
-    protected byte getId() {
-        return 1;
-    }
-
-    @Override
-    public void applyPacket(Communicator communicator) {
+    public void applyPacket(Communicator communicator, Socket socket) {
 
     }
 }

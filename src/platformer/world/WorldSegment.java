@@ -3,8 +3,7 @@ package platformer.world;
 import javafx.scene.shape.Rectangle;
 import platformer.MainClient;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class WorldSegment {
     // amount of segments per block
@@ -13,10 +12,11 @@ public class WorldSegment {
     public static final int TERRAIN_BLOCK_SIZE = 50;
     // size of each segment
     public static final int WORLD_SEGMENT_SIZE = BLOCKS_PER_SEGMENT * TERRAIN_BLOCK_SIZE;
+    private static final List<Tuple> transferredObject = new ArrayList<>();
     private final World owner;
-    private List<WorldObj> objects = new ArrayList<>();
     private Block[] terrainBlocks = new Block[BLOCKS_PER_SEGMENT];
     private int terrainSegmentIndex;
+    Set<WorldObj> objects = new HashSet<>();
 
     public WorldSegment(World owner, int terrainSegmentIndex) {
         this.owner = owner;
@@ -26,8 +26,6 @@ public class WorldSegment {
             terrainBlocks[i] = new Block(i);
         }
     }
-
-    private static final List<Tuple> transferredObject = new ArrayList<>();
 
     static void transferObjects() { // not the most efficient implementation, but application is basic
         for (Tuple transferObj : transferredObject) {
@@ -51,7 +49,7 @@ public class WorldSegment {
         }
     }
 
-    public List<WorldObj> getObjects() {
+    public Collection<WorldObj> getObjects() {
         return objects;
     }
 

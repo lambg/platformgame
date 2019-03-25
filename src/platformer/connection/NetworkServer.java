@@ -1,18 +1,22 @@
 package platformer.connection;
 
 import platformer.connection.packets.PlayerConnectPacket;
+import platformer.world.World;
+import platformer.world.entity.PlayerEntity;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NetworkServer extends Communicator implements AutoCloseable {
     private ServerSocket socket;
+    private List<PlayerEntity> connectedPlayers = new ArrayList<>();
+    private World world = new World();
 
     public NetworkServer(int port) throws IOException {
         socket = new ServerSocket(port);
-
-        Packet.allowPacketDecoding(7, PlayerConnectPacket.class); // dummy packet to allow decoding
 
         new Thread(() -> {
             while (true) {
@@ -32,7 +36,9 @@ public class NetworkServer extends Communicator implements AutoCloseable {
     @Override
     public void update() {
         super.update();
-        // todo - update objects in world
+
+        // update segments around connected players
+        world.updateAround(connectedPlayers);
     }
 
     public void acceptConnection(Socket connection) {

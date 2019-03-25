@@ -6,6 +6,7 @@ import platformer.connection.Packet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 
 public class PlayerConnectPacket extends Packet {
     private String name;
@@ -36,12 +37,8 @@ public class PlayerConnectPacket extends Packet {
     }
 
     @Override
-    protected byte getId() {
-        return 7;
-    }
-
-    @Override
-    public void applyPacket(Communicator communicator) {
+    public void applyPacket(Communicator communicator, Socket socket) {
         System.out.println("(TEST) Player " + name + " connected.");
+        // todo
     }
 }

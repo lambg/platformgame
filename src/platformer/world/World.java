@@ -10,14 +10,17 @@ public class World {
     private List<WorldSegment> positiveSegments = new ArrayList<>();
     private List<WorldSegment> negativeSegments = new ArrayList<>();
 
-    public void updateAround(List<? extends WorldObj> objCol) {
+    public Collection<WorldSegment> getSegmentsAround(List<? extends WorldObj> objCol) {
         Set<WorldSegment> segments = new HashSet<>();
         for (WorldObj object : objCol) {
             WorldSegment here = getSegmentAt(object.getLocation());
             segments.addAll(getSegmentsFrom(here.getLeftPosX() - UPDATE_SEGMENT_SIZE, here.getRightPosX() + UPDATE_SEGMENT_SIZE));
         }
+        return segments;
+    }
 
-        for (WorldSegment segment : segments)
+    public void updateAround(List<? extends WorldObj> objects) {
+        for (WorldSegment segment : getSegmentsAround(objects))
             segment.update();
         WorldSegment.transferObjects(); // move objects that switched segments over the course of this update
     }
@@ -71,7 +74,11 @@ public class World {
         return segment.getTerrainHeightAtLocalPos(x - segment.getLeftPosX());
     }
 
-    // todo - shortcuts for world segment (i.e. getTerrainHeight)
-    // todo - add entity to world, remove entity to world
+    public void addObjectToWorld(WorldObj obj) {
+        getSegmentAt(obj.getLocation()).objects.remove(obj);
+    }
 
+    public void removeObjectToWorld(WorldObj obj) {
+        getSegmentAt(obj.getLocation()).objects.remove(obj);
+    }
 }

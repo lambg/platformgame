@@ -4,6 +4,6 @@ import platformer.world.WorldObj;
 
 public class Structure extends WorldObj {
     public Structure() {
-        super(null); // todo - use actual location
+        super(null, 0); // todo - use actual location
     }
 }
