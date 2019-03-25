@@ -21,7 +21,7 @@ public class PlayerDisconnectPacket extends Packet {
 
     @Override
     public void applyPacket(Communicator communicator, Socket socket) {
-        System.out.println("(TEST) Player disconnected");
+        System.out.println("(TEST) Player disconnected.");
         ((NetworkServer) communicator).removeConnection(socket);
     }
 }

@@ -1,19 +1,22 @@
 package platformer.connection;
 
-import platformer.connection.packets.PlayerConnectPacket;
 import platformer.world.World;
 import platformer.world.entity.PlayerEntity;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NetworkServer extends Communicator implements AutoCloseable {
+    private Map<Socket, PlayerEntity> connectedPlayers = new HashMap<>();
     private ServerSocket socket;
-    private List<PlayerEntity> connectedPlayers = new ArrayList<>();
     private World world = new World();
+
+    // todo - send update packets to client
+    // todo - cannot handle directly in world/worldobj classes (otherwise client will try and send update
+    // todo - packets to server when packets received
 
     public NetworkServer(int port) throws IOException {
         socket = new ServerSocket(port);
@@ -38,22 +41,29 @@ public class NetworkServer extends Communicator implements AutoCloseable {
         super.update();
 
         // update segments around connected players
-        world.updateAround(connectedPlayers);
+        world.updateAround(connectedPlayers.values());
     }
 
     public void acceptConnection(Socket connection) {
         listenTo(connection);
-        System.out.println(connection.getInetAddress() + " connected.");
-        // todo - send confirmation packet
+        System.out.println(connection.getInetAddress() + " established connection.");
     }
 
     public void removeConnection(Socket connection) {
         stopListeningTo(connection);
-        // todo - send disconnect packet
+        connectedPlayers.remove(connection);
     }
 
     public boolean isClosed() {
         return socket == null;
+    }
+
+    public PlayerEntity getPlayerOf(Socket socket) {
+        return connectedPlayers.get(socket);
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     @Override

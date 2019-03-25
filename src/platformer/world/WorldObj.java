@@ -13,8 +13,15 @@ public class WorldObj implements Serializable {
         this.location = location;
         this.objectId = objectId;
 
-        if(objectIdMap.put(objectId, this) != null)
+        if (objectIdMap.put(objectId, this) != null)
             throw new RuntimeException("Error: given id has already been assigned to another object.");
+    }
+
+    public static WorldObj getObject(int id) {
+        WorldObj obj = objectIdMap.get(id);
+        if (obj == null)
+            throw new IllegalArgumentException("Entity with id " + id + " not found.");
+        return obj;
     }
 
     public int getObjectId() {

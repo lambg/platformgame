@@ -14,7 +14,7 @@ public abstract class Packet {
         return getClass().getSimpleName();
     }
 
-    public abstract void applyPacket(Communicator communicator, Socket socket);
+    public abstract void applyPacket(Communicator communicator, Socket socket) throws Exception;
 
     public void send(OutputStream out) throws IOException {
         out.write(getIdentifier().length());
@@ -27,21 +27,18 @@ public abstract class Packet {
         byte[] bytes = new byte[idLen];
         if (in.read(bytes) != idLen)
             throw new IOException("Expected " + idLen + " bytes for packet name; not received");
-        Class<? extends Packet> packetCl;
-        try {
-            //noinspection unchecked
-            packetCl = (Class<? extends Packet>) Class.forName("platformer.connection.packets." + new String(bytes));
-        } catch (ClassNotFoundException ex) {
-            throw new IOException("Packet not found", ex);
-        }
 
         try {
+            //noinspection unchecked
+            Class<? extends Packet> packetCl = (Class<? extends Packet>) Class.forName("platformer.connection.packets." + new String(bytes));
             Packet packet = packetCl.newInstance();
             packet.buildPacket(in);
             return packet;
         } catch (InstantiationException | IllegalAccessException ex) {
             // packet constructor threw exception or packet does not have default constructor
             throw new RuntimeException(ex);
+        } catch (ClassNotFoundException ex) {
+            throw new IOException("Packet not found", ex);
         }
     }
 }

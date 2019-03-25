@@ -1,7 +1,9 @@
 package platformer.connection.packets;
 
 import platformer.connection.Communicator;
+import platformer.connection.NetworkServer;
 import platformer.connection.Packet;
+import platformer.world.entity.PlayerEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,8 +39,9 @@ public class PlayerConnectPacket extends Packet {
     }
 
     @Override
-    public void applyPacket(Communicator communicator, Socket socket) {
+    public void applyPacket(Communicator communicator, Socket socket) throws IOException {
         System.out.println("(TEST) Player " + name + " connected.");
-        // todo
+//        PlayerEntity playerEntity = new PlayerEntity(name);
+//        communicator.sendPacket(socket, new PlayerConfirmConnectPacket(playerEntity.getObjectId()));
     }
 }

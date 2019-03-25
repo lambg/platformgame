@@ -10,7 +10,7 @@ public class World {
     private List<WorldSegment> positiveSegments = new ArrayList<>();
     private List<WorldSegment> negativeSegments = new ArrayList<>();
 
-    public Collection<WorldSegment> getSegmentsAround(List<? extends WorldObj> objCol) {
+    public Collection<WorldSegment> getSegmentsAround(Collection<? extends WorldObj> objCol) {
         Set<WorldSegment> segments = new HashSet<>();
         for (WorldObj object : objCol) {
             WorldSegment here = getSegmentAt(object.getLocation());
@@ -19,14 +19,11 @@ public class World {
         return segments;
     }
 
-    public void updateAround(List<? extends WorldObj> objects) {
+    public void updateAround(Collection<? extends WorldObj> objects) {
         for (WorldSegment segment : getSegmentsAround(objects))
             segment.update();
         WorldSegment.transferObjects(); // move objects that switched segments over the course of this update
     }
-
-    // todo - keep track of world segments
-    // todo - when players advance, create new world segments
 
     public <T extends WorldObj> Collection<T> getNearbyObjects(Class<T> cl, double lx, double ux, double ly, double uy) {
         List<T> objects = new ArrayList<>();

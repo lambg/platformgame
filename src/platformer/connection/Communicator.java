@@ -8,7 +8,7 @@ import java.util.List;
 public class Communicator {
     private List<Socket> updaters = new ArrayList<>();
 
-    public void applyUpdatePacket(Packet packet, Socket socket) {
+    public void applyUpdatePacket(Packet packet, Socket socket) throws Exception {
         packet.applyPacket(this, socket);
     }
 
@@ -31,7 +31,7 @@ public class Communicator {
                 while (updater.getInputStream().available() != 0) {
                     applyUpdatePacket(Packet.build(updater.getInputStream()), updater);
                 }
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
