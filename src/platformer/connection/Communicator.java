@@ -24,7 +24,7 @@ public class Communicator {
         updaters.remove(socket);
     }
 
-    public void update() { // todo - make sure update is called after Server/Client is created
+    public void update() {
         for (int i = updaters.size() - 1; i >= 0; i--) {
             try {
                 Socket updater = updaters.get(i);
