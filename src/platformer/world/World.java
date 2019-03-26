@@ -75,7 +75,7 @@ public class World {
         getSegmentAt(obj.getLocation()).objects.remove(obj);
     }
 
-    public void removeObjectToWorld(WorldObj obj) {
+    public void removeObjectFromWorld(WorldObj obj) {
         getSegmentAt(obj.getLocation()).objects.remove(obj);
     }
 }
