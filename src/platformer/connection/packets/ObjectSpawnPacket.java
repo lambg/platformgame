@@ -1,9 +1,12 @@
 package platformer.connection.packets;
 
+import platformer.GameUtil;
+import platformer.MainClient;
 import platformer.connection.Communicator;
 import platformer.connection.Packet;
 import platformer.world.WorldObj;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -20,17 +23,17 @@ public class ObjectSpawnPacket extends Packet {
     }
 
     @Override
-    protected void breakdown(OutputStream out) {
-
+    protected void breakdown(OutputStream out) throws IOException {
+        GameUtil.write(out, obj);
     }
 
     @Override
-    protected void buildPacket(InputStream in) {
-
+    protected void buildPacket(InputStream in) throws IOException, ClassNotFoundException {
+        obj = GameUtil.read(in);
     }
 
     @Override
     public void applyPacket(Communicator communicator, Socket socket) {
-
+        MainClient.WORLD.addObjectToWorld(obj);
     }
 }
