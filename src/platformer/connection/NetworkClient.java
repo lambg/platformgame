@@ -18,7 +18,6 @@ public class NetworkClient extends Communicator implements AutoCloseable{
     @Override
     public void update() {
         super.update();
-        // todo - update objects in world
     }
 
     public Socket getSocket() {
@@ -31,7 +30,6 @@ public class NetworkClient extends Communicator implements AutoCloseable{
 
     @Override
     public void close() throws IOException {
-        // todo - send disconnect packet
         socket.close();
 
         socket = null;
