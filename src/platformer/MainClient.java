@@ -59,6 +59,10 @@ public class MainClient extends Application {
         timer.cancel();
     }
 
+    public static NetworkClient getClient() {
+        return client;
+    }
+
     public static Location getScreenLocation() {
         return PLAYER.getLocation();
     }
