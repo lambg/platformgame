@@ -14,6 +14,14 @@ public class GameUtil {
         return in.read() | in.read() >> 8 | in.read() >> 16 | in.read() >> 24;
     }
 
+    public static void write(OutputStream out, float val) throws IOException {
+        write(out, Float.floatToIntBits(val));
+    }
+
+    public static float readFloat(InputStream in) throws IOException {
+        return Float.intBitsToFloat(readInt(in));
+    }
+
     public static <T> T read(InputStream in) throws IOException, ClassNotFoundException {
         //noinspection unchecked
         return (T) new ObjectInputStream(in).readObject();
