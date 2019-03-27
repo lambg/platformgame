@@ -14,9 +14,11 @@ import java.net.Socket;
 
 public class PlayerConfirmConnectPacket extends Packet {
     private int playerId;
+    private int worldSeed;
 
-    public PlayerConfirmConnectPacket(int playerId) {
+    public PlayerConfirmConnectPacket(int playerId, int worldSeed) {
         this.playerId = playerId;
+        this.worldSeed = worldSeed;
     }
 
     // called reflectively

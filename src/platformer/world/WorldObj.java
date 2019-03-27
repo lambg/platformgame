@@ -1,5 +1,8 @@
 package platformer.world;
 
+import platformer.MainClient;
+import platformer.MainServer;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,12 +12,17 @@ public class WorldObj implements Serializable {
     private Location location;
     private int objectId;
 
-    public WorldObj(Location location, int objectId) {
+    public WorldObj(Location location) {
         this.location = location;
-        this.objectId = objectId;
+        this.objectId = MainServer.getServer().getNextObjectId();
 
         if (objectIdMap.put(objectId, this) != null)
             throw new RuntimeException("Error: given id has already been assigned to another object.");
+    }
+
+    // used by ObjectInputStream
+    public WorldObj() {
+        // this should only ever be called client side
     }
 
     public static WorldObj getObject(int id) {

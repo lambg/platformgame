@@ -3,12 +3,14 @@ package platformer;
 import platformer.connection.NetworkServer;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 public class MainServer {
     private static final long UPDATE_PERIOD = 50;
+    private static NetworkServer server;
 
     public static void main(String[] args) throws IOException {
-        NetworkServer server = new NetworkServer();
+        server = new NetworkServer();
         while (!server.isClosed()) {
             long current = System.currentTimeMillis();
             server.update();
@@ -20,5 +22,14 @@ public class MainServer {
                 // ignore
             }
         }
+    }
+
+    public static NetworkServer getServer() {
+        return server;
+    }
+
+    public static void serverUpdate(Consumer<NetworkServer> update) {
+        if (server != null)
+            update.accept(server);
     }
 }

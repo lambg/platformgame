@@ -44,8 +44,13 @@ public class WorldSegment {
                 transferredObject.add(new Tuple(obj, this, currentSeg));
         }
 
-        for (Block block : terrainBlocks) {
-            block.rectangle.setX(getLocalOffset(block.id)); // todo - x should be set to offset relative to screen
+        if (MainClient.PLAYER != null) {
+            // update rectangles
+            Location screenLocation = MainClient.PLAYER.getLocation();
+            for (Block block : terrainBlocks) {
+                block.rectangle.setX(screenLocation.getX() + getLocalOffset(block.id));
+                // todo - when a rectangle gets too far off screen, remove rectangle (and re-add it afterwards)
+            }
         }
     }
 

@@ -1,5 +1,9 @@
 package platformer.world;
 
+import platformer.MainServer;
+import platformer.connection.packets.ObjectDeSpawnPacket;
+import platformer.connection.packets.ObjectSpawnPacket;
+
 import java.util.*;
 
 public class World {
@@ -73,9 +77,13 @@ public class World {
 
     public void addObjectToWorld(WorldObj obj) {
         getSegmentAt(obj.getLocation()).objects.remove(obj);
+
+        MainServer.serverUpdate(server -> server.sendPacketToAll(new ObjectSpawnPacket(obj)));
     }
 
     public void removeObjectFromWorld(WorldObj obj) {
         getSegmentAt(obj.getLocation()).objects.remove(obj);
+
+        MainServer.serverUpdate(server -> server.sendPacketToAll(new ObjectDeSpawnPacket(obj.getObjectId())));
     }
 }

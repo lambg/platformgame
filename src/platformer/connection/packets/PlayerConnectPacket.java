@@ -41,6 +41,6 @@ public class PlayerConnectPacket extends Packet {
     public void applyPacket(Communicator communicator, Socket socket) throws IOException {
         System.out.println("(TEST) Player " + name + " connected.");
         PlayerEntity playerEntity = new PlayerEntity(name);
-        communicator.sendPacket(socket, new PlayerConfirmConnectPacket(playerEntity.getObjectId()));
+        communicator.sendPacket(socket, new PlayerConfirmConnectPacket(playerEntity.getObjectId(), worldSeed));
     }
 }

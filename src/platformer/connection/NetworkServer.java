@@ -6,17 +6,20 @@ import platformer.world.entity.PlayerEntity;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NetworkServer extends Communicator implements AutoCloseable {
     private Map<Socket, PlayerEntity> connectedPlayers = new HashMap<>();
     private ServerSocket socket;
     private World world = new World();
+    private int nextObjectId = 1;
 
     // todo - send update packets to client
     // todo - cannot handle directly in world/worldobj classes (otherwise client will try and send update
-    // todo - packets to server when packets received
+    // todo - packets to server when packets received).
 
     public NetworkServer(int port) throws IOException {
         socket = new ServerSocket(port);
@@ -36,12 +39,29 @@ public class NetworkServer extends Communicator implements AutoCloseable {
         this(Connection.PORT);
     }
 
+    public int getNextObjectId() {
+        return nextObjectId++;
+    }
+
     @Override
     public void update() {
         super.update();
 
         // update segments around connected players
         world.updateAround(connectedPlayers.values());
+    }
+
+    public void sendPacketToAll(Packet packet, Socket... exclude) {
+        List<Socket> excludeL = Arrays.asList(exclude);
+        for (Socket socket : connectedPlayers.keySet()) {
+            if (!excludeL.contains(socket)) {
+                try {
+                    sendPacket(socket, packet);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     public void acceptConnection(Socket connection) {
