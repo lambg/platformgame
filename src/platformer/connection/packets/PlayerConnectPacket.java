@@ -1,5 +1,6 @@
 package platformer.connection.packets;
 
+import platformer.MainServer;
 import platformer.connection.Communicator;
 import platformer.connection.Packet;
 import platformer.world.entity.PlayerEntity;
@@ -41,6 +42,6 @@ public class PlayerConnectPacket extends Packet {
     public void applyPacket(Communicator communicator, Socket socket) throws IOException {
         System.out.println("(TEST) Player " + name + " connected.");
         PlayerEntity playerEntity = new PlayerEntity(name);
-        communicator.sendPacket(socket, new PlayerConfirmConnectPacket(playerEntity.getObjectId(), worldSeed));
+        communicator.sendPacket(socket, new PlayerConfirmConnectPacket(playerEntity.getObjectId(), MainServer.getServer().getWorld().getSeed()));
     }
 }

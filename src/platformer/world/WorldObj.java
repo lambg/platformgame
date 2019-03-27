@@ -1,6 +1,5 @@
 package platformer.world;
 
-import platformer.MainClient;
 import platformer.MainServer;
 
 import java.io.Serializable;

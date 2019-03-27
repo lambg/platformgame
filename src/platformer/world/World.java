@@ -13,6 +13,22 @@ public class World {
     private static final double UPDATE_SEGMENT_SIZE = WorldSegment.WORLD_SEGMENT_SIZE * UPDATE_SEGMENTS;
     private List<WorldSegment> positiveSegments = new ArrayList<>();
     private List<WorldSegment> negativeSegments = new ArrayList<>();
+    private final Random random;
+    private final int seed;
+
+    public World(int seed) {
+        random = new Random(seed);
+        this.seed = seed;
+    }
+
+    public int getSeed() {
+        return seed;
+    }
+
+    public Random getRandom() {
+        // used for generation
+        return random;
+    }
 
     public Collection<WorldSegment> getSegmentsAround(Collection<? extends WorldObj> objCol) {
         Set<WorldSegment> segments = new HashSet<>();

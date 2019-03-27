@@ -14,7 +14,7 @@ import java.util.Map;
 public class NetworkServer extends Communicator implements AutoCloseable {
     private Map<Socket, PlayerEntity> connectedPlayers = new HashMap<>();
     private ServerSocket socket;
-    private World world = new World();
+    private World world = new World((int) (Math.random() * Integer.MAX_VALUE));
     private int nextObjectId = 1;
 
     // todo - send update packets to client
