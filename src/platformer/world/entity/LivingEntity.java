@@ -5,13 +5,23 @@ import platformer.connection.packets.EntityHealthModifyPacket;
 
 public class LivingEntity extends Entity {
 
+    public boolean alive;
+    private int DEFAULT_HEALTH = 3;
     private int maxHealth;
     private int currentHealth;
+
+    public LivingEntity() {
+        super();
+        this.maxHealth = DEFAULT_HEALTH;
+        this.currentHealth = DEFAULT_HEALTH;
+        this.alive = true;
+    }
 
     public LivingEntity(int health) {
         super();
         this.maxHealth = health;
-        currentHealth = maxHealth;
+        this.currentHealth = health;
+        this.alive = true;
     }
 
     public int getHealth() {
@@ -24,8 +34,11 @@ public class LivingEntity extends Entity {
     }
 
     public void increaseHealth() {
-        currentHealth++;
-        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
+
+        if (currentHealth < maxHealth) {
+            currentHealth++;
+            MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
+        }
     }
 
     public void decreaseHealth(int value) {
@@ -36,6 +49,18 @@ public class LivingEntity extends Entity {
     public void decreaseHealth() {
         currentHealth--;
         MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void update() {
+        if (getHealth() == 0) {
+            alive = false;
+        }
+
+        //TODO: create packet living entity die
     }
 
 
