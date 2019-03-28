@@ -2,6 +2,7 @@ package platformer.world.entity;
 
 import platformer.MainServer;
 import platformer.connection.packets.EntityHealthModifyPacket;
+import platformer.connection.packets.ObjectDeSpawnPacket;
 
 public class LivingEntity extends Entity {
 
@@ -60,7 +61,7 @@ public class LivingEntity extends Entity {
             alive = false;
         }
 
-        //TODO: create packet living entity die
+        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjectDeSpawnPacket(getObjectId())));
     }
 
 

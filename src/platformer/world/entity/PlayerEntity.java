@@ -1,5 +1,8 @@
 package platformer.world.entity;
 
+import platformer.MainServer;
+import platformer.connection.packets.ObjMovePacket;
+
 public class PlayerEntity extends LivingEntity {
     private final String name;
 
@@ -20,9 +23,6 @@ public class PlayerEntity extends LivingEntity {
 
         //TODO - player movement, not sure weather timer with client will be used for keyEvents
 
-        //TODO - send updated ObjMovePacket
-
-
-
+        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjMovePacket(getObjectId(), getLocation())));
     }
 }
