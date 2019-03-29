@@ -167,7 +167,12 @@ public class MainClient extends Application {
 
         updateKeyEvents(r);
 
-        // updateGravity(r); //TODO - Not sure if we want this to just be a constant increment down if collision on bottom is false
+        /*
+        updateGravity(r); //TODO -
+        /*Not sure if we want this to just be a constant increment affecting all objects down if there is
+        no collision on bottom of said object, or if we want acceleration to affect objects, or if we want
+        an animation to take place for each object when jump is called (faux acceleration)
+        */
 
         updateLocation(); //TODO
 
