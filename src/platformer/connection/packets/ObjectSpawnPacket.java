@@ -18,6 +18,9 @@ public class ObjectSpawnPacket extends Packet {
         this.obj = obj;
     }
 
+    public ObjectSpawnPacket() {
+    }
+
     public WorldObj getObj() {
         return obj;
     }

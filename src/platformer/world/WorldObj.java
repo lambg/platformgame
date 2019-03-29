@@ -1,7 +1,7 @@
 package platformer.world;
 
+import platformer.MainClient;
 import platformer.MainServer;
-import platformer.connection.packets.ObjectSpawnPacket;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -27,6 +27,8 @@ public class WorldObj implements Serializable {
 
     // used by ObjectInputStream
     public WorldObj() {
+        throw new RuntimeException();
+        // todo - add object to objectIdMap
         // this should only ever be called client side
     }
 
@@ -53,7 +55,7 @@ public class WorldObj implements Serializable {
         this.location = location;
     }
 
-    public boolean spawned(){
+    public boolean spawned() {
         return spawned;
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class NetworkServer extends Communicator implements AutoCloseable {
-    private Map<Socket, PlayerEntity> connectedPlayers = new HashMap<>();
+    public final Map<Socket, PlayerEntity> connectedPlayers = new HashMap<>(); // should not be public, but this is easier
     private ServerSocket socket;
     private World world = new World((int) (Math.random() * Integer.MAX_VALUE));
     private int nextObjectId = 1;

@@ -3,26 +3,26 @@ package platformer.world.entity;
 import platformer.MainServer;
 import platformer.connection.packets.EntityHealthModifyPacket;
 import platformer.connection.packets.ObjectDeSpawnPacket;
+import platformer.world.Location;
+import platformer.world.World;
 
 public class LivingEntity extends Entity {
+    private static final int DEFAULT_HEALTH = 3;
 
     public boolean alive;
-    private int DEFAULT_HEALTH = 3;
     private int maxHealth;
     private int currentHealth;
 
-    public LivingEntity() {
-        super();
-        this.maxHealth = DEFAULT_HEALTH;
-        this.currentHealth = DEFAULT_HEALTH;
-        this.alive = true;
+
+    public LivingEntity(Location location, World world, int maxHealth) {
+        super(location, world);
+        this.maxHealth = maxHealth;
+        this.currentHealth = maxHealth;
+        alive = true;
     }
 
-    public LivingEntity(int health) {
-        super();
-        this.maxHealth = health;
-        this.currentHealth = health;
-        this.alive = true;
+    public LivingEntity(Location location, World world) {
+        this(location, world, DEFAULT_HEALTH);
     }
 
     public int getHealth() {

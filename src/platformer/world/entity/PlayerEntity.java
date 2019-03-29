@@ -2,11 +2,19 @@ package platformer.world.entity;
 
 import platformer.MainServer;
 import platformer.connection.packets.ObjMovePacket;
+import platformer.world.Location;
+import platformer.world.World;
 
 public class PlayerEntity extends LivingEntity {
     private final String name;
 
-    public PlayerEntity(String name) {
+    public PlayerEntity(Location location, World world, int maxHealth, String name) {
+        super(location, world, maxHealth);
+        this.name = name;
+    }
+
+    public PlayerEntity(Location location, World world, String name) {
+        super(location, world);
         this.name = name;
     }
 

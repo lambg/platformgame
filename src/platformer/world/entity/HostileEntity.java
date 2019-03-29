@@ -1,16 +1,19 @@
 package platformer.world.entity;
 
+import platformer.world.Location;
+import platformer.world.World;
+
 public class HostileEntity extends LivingEntity {
 
     private boolean targetAcquired;
     private Entity target;
 
-    public HostileEntity() {
-        super();
+    public HostileEntity(Location location, World world, int maxHealth) {
+        super(location, world, maxHealth);
     }
 
-    public HostileEntity(int health) {
-        super(health);
+    public HostileEntity(Location location, World world) {
+        super(location, world);
     }
 
     @Override
