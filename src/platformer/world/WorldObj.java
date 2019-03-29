@@ -1,6 +1,7 @@
 package platformer.world;
 
 import platformer.MainServer;
+import platformer.connection.packets.ObjectSpawnPacket;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class WorldObj implements Serializable {
 
         if (objectIdMap.put(objectId, this) != null)
             throw new RuntimeException("Error: given id has already been assigned to another object.");
+        world.addObjectToWorld(this);
     }
 
     // used by ObjectInputStream
