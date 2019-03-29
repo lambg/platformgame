@@ -29,9 +29,13 @@ public class MainClient extends Application {
     private static NetworkClient client;
     private static Timer timer;
 
+    //Window for application
     public Pane root;
+
+    //First Scene
     Scene scene;
-    public Stage stage = new Stage(StageStyle.DECORATED);
+    //First stage
+    // public Stage stage = new Stage(StageStyle.DECORATED);
 
     //TODO - Optimize these variables below:
 
@@ -47,16 +51,24 @@ public class MainClient extends Application {
     double yMoveIncrement = 2;
     double xMoveIncrement = 2;
 
+    //total arraylist of shapes spawned
     ArrayList<Shape> shapes;
 
+    //player and floor shapes
     Rectangle player;
     Rectangle floor;
 
+    /*
+    verticalDistance is the rectangle height, should be able to change to (shape.getBoundsInLocal().getMinY + shape.getBoundsInLocal().getMaxY)/2
+    Right now it has nothing to do with the location of shape, it just tells it where to spawn according to the pane
+    variable name can change to playerStartingY or something, same for leftDistance. its just the leftmost X value for the shapes spawned in pane. can/should be changed in the future
+    */
+
     public double leftDistance = 0;
     public double rightDistance = 720;
-
     public double verticalDistance = 0;
 
+    //player's x and y value, redundant if leftDistance and verticalDistance are used.
     public double playerX;
     public double playerY;
 
@@ -75,7 +87,7 @@ public class MainClient extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.show();
+        // primaryStage.show();
 
         //TODO -Optimize initTest()
         initTest();
@@ -92,6 +104,7 @@ public class MainClient extends Application {
         }, 0, 16L); // every 16 ms is ~60 fps
 
         //TODO - Optimize runTest()
+        runTest(primaryStage);
 
         primaryStage.setOnCloseRequest(event -> Platform.exit());
     }
@@ -123,7 +136,7 @@ public class MainClient extends Application {
 
     }
 
-    public void runTest() {
+    public void runTest(Stage primaryStage) {
         playerY = 200 + verticalDistance;
         playerX = 360 + leftDistance - player.getWidth();
 
@@ -138,16 +151,14 @@ public class MainClient extends Application {
         shapes.add(player);
         shapes.add(floor);
 
-        stage.setHeight(480);
-        stage.setWidth(720);
+        primaryStage.setHeight(480);
+        primaryStage.setWidth(720);
 
         root.getChildren().add(floor);
         root.getChildren().add(player);
 
-        stage.setScene(scene);
-
-        System.out.println("test");
-        stage.show();
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public void update(Scene scene, Shape r) {
@@ -158,8 +169,7 @@ public class MainClient extends Application {
 
         // updateGravity(r); //TODO - Not sure if we want this to just be a constant increment down if collision on bottom is false
 
-        // updateLocation(); //TODO
-
+        updateLocation(); //TODO
 
     }
 
@@ -301,4 +311,13 @@ public class MainClient extends Application {
         return false;
     }
 
+
+    public void updateLocation() {
+
+        playerY = 200 + verticalDistance;
+        playerX = 360 + leftDistance - player.getWidth();
+        player.setX(playerX);
+        player.setY(playerY);
+
+    }
 }
