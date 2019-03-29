@@ -4,9 +4,14 @@ import platformer.MainServer;
 import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.connection.packets.ObjectSpawnPacket;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.*;
 
-public class World {
+public class World implements Serializable {
+    private static final long serialVersionUID = -5044978860575837034L;
     // how many segments to update on either side of each player
     private static final int UPDATE_SEGMENTS = 5;
     // the size of UPDATE_SEGMENT segments
@@ -14,11 +19,19 @@ public class World {
     private List<WorldSegment> positiveSegments = new ArrayList<>();
     private List<WorldSegment> negativeSegments = new ArrayList<>();
     private final Random random;
-    private final int seed;
+    private int seed;
 
     public World(int seed) {
         random = new Random(seed);
         this.seed = seed;
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException {
+        seed = in.readInt();
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.write(seed);
     }
 
     public int getSeed() {

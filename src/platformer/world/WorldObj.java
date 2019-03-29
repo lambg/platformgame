@@ -1,7 +1,6 @@
 package platformer.world;
 
 import platformer.MainServer;
-import platformer.connection.packets.ObjectDeSpawnPacket;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -12,9 +11,11 @@ public class WorldObj implements Serializable {
     private Location location;
     private int objectId;
     private boolean spawned;
+    private World world;
 
-    public WorldObj(Location location) {
+    public WorldObj(Location location, World world) {
         this.location = location;
+        this.world = world;
         this.objectId = MainServer.getServer().getNextObjectId();
         spawned = true;
 
@@ -56,6 +57,7 @@ public class WorldObj implements Serializable {
 
     public void kill() {
         spawned = false;
-        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjectDeSpawnPacket(getObjectId())));
+
+        world.removeObjectFromWorld(this);
     }
 }
