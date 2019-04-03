@@ -134,6 +134,9 @@ public class PlayerEntity extends LivingEntity {
 
         if (jump) {
 
+            if (!playerColDetTop()) {
+                canJump = true;
+            }
             System.out.println("Jump");
 
         }
