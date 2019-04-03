@@ -66,7 +66,6 @@ public class MainClient extends Application {
     */
 
     public double leftDistance = 0;
-    public double rightDistance = 720;
     public double verticalDistance = 0;
 
     //player's x and y value, redundant if leftDistance and verticalDistance are used.

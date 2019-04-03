@@ -1,5 +1,6 @@
 package platformer.world.entity;
 
+import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.packets.ObjMovePacket;
 import platformer.world.Location;
@@ -26,6 +27,10 @@ public class PlayerEntity extends LivingEntity {
 
     @Override
     public void update() {
+
+        if(MainClient.PLAYER == this) {
+
+        }
 
         if (getHealth() == 0) {
             alive = false;
