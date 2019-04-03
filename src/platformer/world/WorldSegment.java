@@ -12,14 +12,14 @@ public class WorldSegment {
     public static final int TERRAIN_BLOCK_SIZE = 50;
     // size of each segment
     public static final int WORLD_SEGMENT_SIZE = BLOCKS_PER_SEGMENT * TERRAIN_BLOCK_SIZE;
-    private static final List<Tuple> transferredObject = new ArrayList<>();
-    private final World owner;
+    private final World world;
     private Block[] terrainBlocks = new Block[BLOCKS_PER_SEGMENT];
     private int terrainSegmentIndex;
+    private boolean hidden = true;
     Set<WorldObj> objects = new HashSet<>();
 
-    public WorldSegment(World owner, int terrainSegmentIndex) {
-        this.owner = owner;
+    public WorldSegment(World world, int terrainSegmentIndex) {
+        this.world = world;
         this.terrainSegmentIndex = terrainSegmentIndex;
 
         for (int i = 0; i < terrainBlocks.length; i++) {
@@ -27,30 +27,21 @@ public class WorldSegment {
         }
     }
 
-    static void transferObjects() { // not the most efficient implementation, but application is basic
-        for (Tuple transferObj : transferredObject) {
-            transferObj.from.objects.remove(transferObj.obj);
-            transferObj.to.objects.add(transferObj.obj);
+    public void updateObjects() {
+        for (WorldObj obj : objects) {
+            obj.update(); // todo - obj update method should update shape to be relative to screen location
+
+            WorldSegment currentSeg = world.getSegmentAt(obj.getLocation());
+            if (currentSeg != this)
+                world.transferredObject.add(new World.Tuple(obj, this, currentSeg));
         }
-        transferredObject.clear();
     }
 
-    public void update() {
-        for (WorldObj obj : objects) {
-            obj.update();
-
-            WorldSegment currentSeg = owner.getSegmentAt(obj.getLocation());
-            if (currentSeg != this)
-                transferredObject.add(new Tuple(obj, this, currentSeg));
-        }
-
-        if (MainClient.PLAYER != null) {
-            // update rectangles
-            Location screenLocation = MainClient.PLAYER.getLocation();
-            for (Block block : terrainBlocks) {
-                block.rectangle.setX(screenLocation.getX() + getLocalOffset(block.id));
-                // todo - when a rectangle gets too far off screen, remove rectangle (and re-add it afterwards)
-            }
+    public void updateShapes() {
+        showSegment();
+        Location screenLocation = MainClient.PLAYER.getLocation();
+        for (Block block : terrainBlocks) {
+            block.rectangle.setX(screenLocation.getX() + getLocalOffset(block.id));
         }
     }
 
@@ -76,6 +67,36 @@ public class WorldSegment {
         if (blockIndex >= terrainBlocks.length)
             throw new IllegalArgumentException("Block index \"" + blockIndex + "\" is out of bounds; localPosX should be relative to left corner of segment");
         return terrainBlocks[blockIndex];
+    }
+
+    public void hideSegment() {
+        if (hidden)
+            return;
+
+        for (Block block : terrainBlocks) {
+            // todo - hide block
+        }
+
+        for (WorldObj obj : getObjects()) {
+            // todo - hide obj
+        }
+
+        hidden = true;
+    }
+
+    public void showSegment() {
+        if (!hidden)
+            return;
+
+        for (Block block : terrainBlocks) {
+            // todo - show block
+        }
+
+        for (WorldObj obj : getObjects()) {
+            // todo - show obj
+        }
+
+        hidden = false;
     }
 
     public static int getSegmentAt(double x) {
@@ -123,20 +144,4 @@ public class WorldSegment {
             return terrainBlocks[id + 1];
         }
     }
-
-    private static class Tuple {
-        final WorldObj obj;
-        final WorldSegment from, to;
-
-        public Tuple(WorldObj obj, WorldSegment from, WorldSegment to) {
-            this.obj = obj;
-            this.from = from;
-            this.to = to;
-        }
-    }
-
-    // todo - create multiple rectangles (representing blocks of ground)
-    // todo - update the location of the block depending on the camera location
-    // todo - keep track of entities; if entity passes out of range, move the entity into the corresponding segment
-    // todo - get ground height (based off rectangle)
 }

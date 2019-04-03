@@ -1,10 +1,12 @@
 package platformer.connection.packets;
 
 import platformer.GameUtil;
+import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.Communicator;
 import platformer.connection.Packet;
 import platformer.world.Location;
+import platformer.world.World;
 import platformer.world.WorldObj;
 
 import java.io.IOException;
@@ -39,7 +41,11 @@ public class ObjMovePacket extends Packet {
 
     @Override
     public void applyPacket(Communicator communicator, Socket socket) {
-        WorldObj.getObject(objectId).setLocation(toLocation);
+        WorldObj obj = WorldObj.getObject(objectId);
+        World world = MainClient.WORLD != null ? MainClient.WORLD : MainServer.getServer().getWorld();
+
+        // if this location update moves the world to another segment, make sure that segment change is reflected appropriately
+        world.checkTransfer(obj, () -> obj.setLocation(toLocation));
 
         // if the packet is from a client, forward this packet to all clients (excluding the original client)
         MainServer.serverUpdate(s -> s.sendPacketToAll(this, socket));

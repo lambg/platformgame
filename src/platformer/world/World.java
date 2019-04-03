@@ -20,6 +20,7 @@ public class World implements Serializable {
     private List<WorldSegment> negativeSegments = new ArrayList<>();
     private final Random random;
     private int seed;
+    final List<Tuple> transferredObject = new ArrayList<>();
 
     public World(int seed) {
         random = new Random(seed);
@@ -53,9 +54,10 @@ public class World implements Serializable {
     }
 
     public void updateAround(Collection<? extends WorldObj> objects) {
-        for (WorldSegment segment : getSegmentsAround(objects))
-            segment.update();
-        WorldSegment.transferObjects(); // move objects that switched segments over the course of this update
+        for (WorldSegment segment : getSegmentsAround(objects)) {
+            segment.updateObjects();
+        }
+        transferObjects();
     }
 
     public <T extends WorldObj> Collection<T> getNearbyObjects(Class<T> cl, double lx, double ux, double ly, double uy) {
@@ -70,6 +72,23 @@ public class World implements Serializable {
         return objects;
     }
 
+    public void checkTransfer(WorldObj obj, Runnable runnable) {
+        WorldSegment segment = getSegmentAt(obj.getLocation());
+        runnable.run();
+        WorldSegment updated = getSegmentAt(obj.getLocation());
+        if (segment != updated) {
+            transferredObject.add(new Tuple(obj, segment, updated));
+        }
+    }
+
+    public void transferObjects() { // not the most efficient implementation, but application is basic
+        for (Tuple transferObj : transferredObject) {
+            transferObj.from.objects.remove(transferObj.obj);
+            transferObj.to.objects.add(transferObj.obj);
+        }
+        transferredObject.clear();
+    }
+
     public Collection<WorldSegment> getSegmentsFrom(double lx, double ux) {
         List<WorldSegment> segmentList = new ArrayList<>();
         for (double x = lx; x <= ux; x += WorldSegment.WORLD_SEGMENT_SIZE) {
@@ -81,15 +100,17 @@ public class World implements Serializable {
     public WorldSegment getSegmentAt(double x) {
         // get segment list
         List<WorldSegment> segments;
+        boolean negative = false;
         if (x < 0) {
             x = -x;
             segments = negativeSegments;
+            negative = true;
         } else segments = positiveSegments;
 
         // generate missing segments
         int segmentIndex = (int) (x % WorldSegment.WORLD_SEGMENT_SIZE);
         while (segmentIndex >= segments.size()) {
-            segments.add(new WorldSegment(this, segments.size()));
+            segments.add(new WorldSegment(this, negative ? -segments.size() : segments.size()));
         }
 
         return segments.get(segmentIndex);
@@ -114,5 +135,16 @@ public class World implements Serializable {
         getSegmentAt(obj.getLocation()).objects.remove(obj);
 
         MainServer.serverUpdate(server -> server.sendPacketToAll(new ObjectDeSpawnPacket(obj.getObjectId())));
+    }
+
+    static class Tuple {
+        final WorldObj obj;
+        final WorldSegment from, to;
+
+        public Tuple(WorldObj obj, WorldSegment from, WorldSegment to) {
+            this.obj = obj;
+            this.from = from;
+            this.to = to;
+        }
     }
 }
