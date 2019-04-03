@@ -30,6 +30,10 @@ public class PlayerEntity extends LivingEntity {
         super(location, world);
         this.name = name;
         this.actualId = actualId;
+        this.setLocation(location);
+
+        playerX = this.getLocation().getX();
+        playerY = this.getLocation().getY();
     }
 
     @Override
@@ -49,9 +53,8 @@ public class PlayerEntity extends LivingEntity {
         if (MainClient.PLAYER == this) {
 
             getKeyEvents(getScene());
-            updateKeyEvents(getShape());
-            updateLocation(); //TODO
-
+            updateKeyEvents();
+            updateLocation();
 
         }
 
@@ -105,27 +108,27 @@ public class PlayerEntity extends LivingEntity {
 
     }
 
-    public void updateKeyEvents(Shape r) {
+    public void updateKeyEvents() {
 
         if (right) {
 
-            if (!playerColDetRight(r))
+            if (!playerColDetRight())
                 leftDistance += horizontalSpeed();
         }
 
         if (left) {
 
-            if (!playerColDetLeft(r))
+            if (!playerColDetLeft())
                 leftDistance -= horizontalSpeed();
         }
 
         if (up) {
-            if (!playerColDetTop(r))
+            if (!playerColDetTop())
                 verticalDistance -= verticalSpeed();
         }
 
         if (down) {
-            if (!playerColDetBottom(r))
+            if (!playerColDetBottom())
                 verticalDistance += verticalSpeed();
         }
 
@@ -139,8 +142,9 @@ public class PlayerEntity extends LivingEntity {
 
     public void updateLocation() {
 
-        playerY = 200 + verticalSpeed();
-        playerX = 360 + leftDistance - getHeight();
+        playerX = +horizontalSpeed(); //- getHeight();
+        playerY = +verticalSpeed();
+
 
         MainClient.PLAYER.setLocation(new Location(playerX, playerY));
 

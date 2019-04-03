@@ -40,7 +40,6 @@ public class MainClient extends Application {
     //TODO - Optimize these variables below:
 
 
-
     //Each time key is inputted per tick from timer, the increment the shape/object/entity will be moved by
     double yMoveIncrement = 2;
     double xMoveIncrement = 2;
@@ -64,7 +63,6 @@ public class MainClient extends Application {
     //player's x and y value, redundant if leftDistance and verticalDistance are used.
 
 
-
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter IP: ");
@@ -79,7 +77,6 @@ public class MainClient extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // primaryStage.show();
 
         //TODO -Optimize initTest()
         initTest();
@@ -120,8 +117,6 @@ public class MainClient extends Application {
 
     public void initTest() {
 
-        shapes = new ArrayList<>();
-
         root = new Pane();
         scene = new Scene(root);
         player = new Rectangle(50, 50);
@@ -129,11 +124,8 @@ public class MainClient extends Application {
     }
 
     public void runTest(Stage primaryStage) {
-//        playerY = 200 + verticalDistance;
-//        playerX = 360 + leftDistance - player.getWidth();
-//
-//        player.setY(playerY);
-//        player.setX(playerX);
+
+
 
         floor = new Rectangle(720, 200);
         floor.setX(leftDistance + 300);
@@ -155,25 +147,7 @@ public class MainClient extends Application {
 
     public void update(Scene scene, Shape r) {
 
-//        getKeyEvents(scene);
-//
-//        updateKeyEvents(r);
-
-        /*
-        updateGravity(r); //TODO -
-        /*Not sure if we want this to just be a constant increment affecting all objects down if there is
-        no collision on bottom of said object, or if we want acceleration to affect objects, or if we want
-        an animation to take place for each object when jump is called (faux acceleration)
-        */
-
-      //  updateLocation(); //TODO
-
     }
-
-
-
-
-
 
 
 }
