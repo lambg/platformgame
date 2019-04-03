@@ -3,6 +3,7 @@ package platformer.world;
 import platformer.MainServer;
 import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.connection.packets.ObjectSpawnPacket;
+import platformer.world.entity.HostileEntity;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -110,7 +111,15 @@ public class World implements Serializable {
         // generate missing segments
         int segmentIndex = (int) (x % WorldSegment.WORLD_SEGMENT_SIZE);
         while (segmentIndex >= segments.size()) {
-            segments.add(new WorldSegment(this, negative ? -segments.size() : segments.size()));
+            WorldSegment segment = new WorldSegment(this, negative ? -segments.size() : segments.size());
+            segments.add(segment);
+
+            // generate entities in this segment
+            MainServer.serverUpdate(s -> {
+                for (int i = 0; i < 10; i++) {
+                    new HostileEntity(new Location(segment.getLeftPosX(), 30), this);
+                }
+            });
         }
 
         return segments.get(segmentIndex);

@@ -66,7 +66,8 @@ public class MainClient extends Application {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter IP: ");
-        client = new NetworkClient(scanner.nextLine());
+//        client = new NetworkClient(scanner.nextLine());
+        client = new NetworkClient("10.200.74.82"); // todo - use scanner instead of inline
 
         System.out.println("Enter username: ");
         client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
@@ -77,9 +78,15 @@ public class MainClient extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         root = new Pane();
         scene = new Scene(root);
+        player = new Rectangle(50, 50);
+
+        primaryStage.setHeight(480);
+        primaryStage.setWidth(720);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -88,13 +95,8 @@ public class MainClient extends Application {
                 if (client.isClosed())
                     Platform.exit();
                 client.update();
-
-                //TODO - Update world from here
             }
         }, 0, 16L); // every 16 ms is ~60 fps
-
-
-        runTest(primaryStage);
 
         primaryStage.setOnCloseRequest(event -> Platform.exit());
     }
@@ -115,32 +117,4 @@ public class MainClient extends Application {
     public static Location getScreenLocation() {
         return PLAYER.getLocation();
     }
-
-    public void initTest() {
-
-
-        player = new Rectangle(50, 50);
-
-    }
-
-    public void runTest(Stage primaryStage) {
-        floor = new Rectangle(720, 200);
-        floor.setX(leftDistance + 300);
-        floor.setY(250);
-        floor.setFill(Color.GREEN);
-
-        shapes.add(player);
-        shapes.add(floor);
-
-        primaryStage.setHeight(480);
-        primaryStage.setWidth(720);
-
-        root.getChildren().add(floor);
-        root.getChildren().add(player);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-
 }

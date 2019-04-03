@@ -1,10 +1,13 @@
 package platformer.world;
 
-import javafx.scene.Scene;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import platformer.MainClient;
 import platformer.MainServer;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,34 +18,38 @@ public class WorldObj implements Serializable {
     private int objectId;
     private boolean spawned;
     private World world;
-    private Shape shape;
-    private Scene scene;
+    private Rectangle shape;
 
-    private double width;
-    private double height;
-
-    public WorldObj(Location location, World world) {
+    public WorldObj(Location location, World world, int objId) {
         this.location = location;
         this.world = world;
-        this.objectId = createObjectId();
+        this.objectId = objId;
         spawned = true;
+        shape = new Rectangle(getWidth(), getHeight());
 
         if (objectIdMap.put(objectId, this) != null)
             throw new RuntimeException("Error: given id has already been assigned to another object.");
         world.addObjectToWorld(this);
     }
 
-    // used by ObjectInputStream
-    public WorldObj() {
-        throw new RuntimeException();
-        // todo - add object to objectIdMap
-        // this should only ever be called client side
-
-
+    public WorldObj(Location location, World world) {
+        this(location,world,MainServer.getServer().getNextObjectId());
     }
 
-    protected int createObjectId() {
-        return MainServer.getServer().getNextObjectId();
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeDouble(getWidth());
+        out.writeDouble(getHeight());
+        out.writeObject(location);
+        out.writeInt(objectId);
+        out.writeBoolean(spawned);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        shape = new Rectangle(in.readDouble(), in.readDouble());
+        location = (Location) in.readObject();
+        objectId = in.readInt();
+        spawned = in.readBoolean();
+        world = MainClient.WORLD;
     }
 
     public static WorldObj getObject(int id) {
@@ -56,12 +63,8 @@ public class WorldObj implements Serializable {
         return objectId;
     }
 
-    public Scene getScene() { //initializes
-        return scene;
-    }
-
     public void update() {
-        // todo
+        // do nothing by default
     }
 
     public Location getLocation() {
@@ -84,16 +87,16 @@ public class WorldObj implements Serializable {
         return 2.0;
     }
 
-    public Shape getShape() {
+    public Rectangle getShape() {
         return shape;
     }
 
     public double getHeight() {
-        return height;
+        return 20;
     }
 
     public double getWidth() {
-        return width;
+        return 8;
     }
 
     public void kill() {

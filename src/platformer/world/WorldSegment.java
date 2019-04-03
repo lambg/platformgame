@@ -1,5 +1,6 @@
 package platformer.world;
 
+import javafx.application.Platform;
 import javafx.scene.shape.Rectangle;
 import platformer.GameUtil;
 import platformer.MainClient;
@@ -19,14 +20,14 @@ public class WorldSegment {
     private final World world;
     private Block[] terrainBlocks = new Block[BLOCKS_PER_SEGMENT];
     private int terrainSegmentIndex;
-    private boolean hidden = false;
+    private boolean hidden;
     Set<WorldObj> objects = new HashSet<>();
 
     public WorldSegment(World world, int terrainSegmentIndex) {
         this.world = world;
         this.terrainSegmentIndex = terrainSegmentIndex;
 
-        terrainBlocks[0] = new Block(0, 0);
+        terrainBlocks[0] = new Block(0, 0); // todo - set previous height relative to previous segment's height
 
         for (int i = 1; i < terrainBlocks.length; i++) {
             int relativeHeight;
@@ -44,12 +45,12 @@ public class WorldSegment {
             terrainBlocks[i] = new Block(i, terrainBlocks[i - 1].height + relativeHeight);
         }
 
-        hideSegment(); // blocks should be invisible by default
+        hidden = true; // blocks should be invisible by default
     }
 
     public void updateObjects() {
         for (WorldObj obj : objects) {
-            obj.update(); // todo - obj update method should update shape to be relative to screen location
+            obj.update();
 
             WorldSegment currentSeg = world.getSegmentAt(obj.getLocation());
             if (currentSeg != this)
@@ -58,11 +59,18 @@ public class WorldSegment {
     }
 
     public void updateShapes() {
-        showSegment();
-        Location screenLocation = MainClient.PLAYER.getLocation();
-        for (Block block : terrainBlocks) {
-            GameUtil.setRelativeTo(block.rectangle, screenLocation, getLocalOffset(block.id), block.height - 10);
-        }
+        Platform.runLater(() -> {
+            showSegment();
+            Location screenLocation = MainClient.PLAYER.getLocation();
+            for (Block block : terrainBlocks) {
+                GameUtil.setRelativeTo(block.rectangle, screenLocation, getLocalOffset(block.id), block.height - 10);
+            }
+
+            for (WorldObj obj : objects) {
+                Location location = obj.getLocation();
+                GameUtil.setRelativeTo(obj.getShape(), MainClient.PLAYER.getLocation(), location.getX(), location.getY());
+            }
+        });
     }
 
     public Collection<WorldObj> getObjects() {

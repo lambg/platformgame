@@ -25,22 +25,26 @@ public class NetworkClient extends Communicator implements AutoCloseable {
     @Override
     public void update() {
         super.update();
-        MainClient.WORLD.transferObjects();
 
-        Collection<WorldSegment> localSegments = MainClient.WORLD.getSegmentsAround(Collections.singleton(MainClient.PLAYER));
+        if(MainClient.PLAYER != null) { // otherwise world has not been loaded yet
+            MainClient.WORLD.transferObjects();
 
-        for(WorldSegment currentSegment : localSegments) {
-            // segments to be shown this update
-            currentSegment.updateShapes();
+            Collection<WorldSegment> localSegments = MainClient.WORLD.getSegmentsAround(Collections.singleton(MainClient.PLAYER));
+
+            for(WorldSegment currentSegment : localSegments) {
+                // segments to be shown this update
+                currentSegment.updateShapes();
+            }
+
+            // todo - re-add this
+//            lastLoadedSegments.removeAll(localSegments);
+//
+//            for (WorldSegment previousSegment : lastLoadedSegments) {
+//                // segments that were shown in the last update, but not in this update
+//                previousSegment.hideSegment();
+//            }
+            lastLoadedSegments = localSegments;
         }
-
-        lastLoadedSegments.removeAll(localSegments);
-
-        for (WorldSegment previousSegment : lastLoadedSegments) {
-            // segments that were shown in the last update, but not in this update
-            previousSegment.hideSegment();
-        }
-        lastLoadedSegments = localSegments;
     }
 
     public Socket getSocket() {

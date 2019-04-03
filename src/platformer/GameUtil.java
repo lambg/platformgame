@@ -34,7 +34,7 @@ public class GameUtil {
         new ObjectOutputStream(out).writeObject(val);
     }
 
-    public static void setRelativeTo(Rectangle rectangle, Location location, int x, int y) {
+    public static void setRelativeTo(Rectangle rectangle, Location location, double x, double y) {
         rectangle.setX(location.getX() - x);
         rectangle.setY(location.getY() - y);
     }

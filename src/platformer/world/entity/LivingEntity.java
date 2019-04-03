@@ -13,15 +13,18 @@ public class LivingEntity extends Entity {
     private int maxHealth;
     private int currentHealth;
 
-    public LivingEntity(Location location, World world, int maxHealth) {
-        super(location, world);
-        this.maxHealth = maxHealth;
+    public LivingEntity(Location location, World world, int objId) {
+        super(location, world, objId);
+        this.maxHealth = DEFAULT_HEALTH;
         this.currentHealth = maxHealth;
         alive = true;
     }
 
     public LivingEntity(Location location, World world) {
-        this(location, world, DEFAULT_HEALTH);
+        super(location, world);
+        this.maxHealth = DEFAULT_HEALTH;
+        this.currentHealth = maxHealth;
+        alive = true;
     }
 
     public int getHealth() {

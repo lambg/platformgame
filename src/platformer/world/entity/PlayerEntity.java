@@ -1,7 +1,6 @@
 package platformer.world.entity;
 
 import javafx.scene.Scene;
-import javafx.scene.shape.Shape;
 import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.packets.ObjMovePacket;
@@ -10,7 +9,6 @@ import platformer.world.World;
 
 public class PlayerEntity extends LivingEntity {
     private final String name;
-    private final int actualId;
 
     //Each key press
     boolean up = false;
@@ -26,19 +24,13 @@ public class PlayerEntity extends LivingEntity {
     public double playerX;
     public double playerY;
 
-    public PlayerEntity(Location location, World world, String name, int actualId) {
-        super(location, world);
+    public PlayerEntity(Location location, World world, String name, int objId) {
+        super(location, world, objId);
         this.name = name;
-        this.actualId = actualId;
         this.setLocation(location);
 
         playerX = this.getLocation().getX();
         playerY = this.getLocation().getY();
-    }
-
-    @Override
-    protected int createObjectId() {
-        return actualId;
     }
 
     public String getName() {
@@ -52,7 +44,7 @@ public class PlayerEntity extends LivingEntity {
 
         if (MainClient.PLAYER == this) {
 
-            getKeyEvents(getScene());
+            getKeyEvents(MainClient.scene);
             updateKeyEvents();
             updateLocation();
 

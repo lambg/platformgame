@@ -9,9 +9,11 @@ public class Entity extends WorldObj {
     private boolean stationary;
     private boolean damage;
 
+    public Entity(Location location, World world, int objId) {
+        super(location, world, objId);
+    }
+
     public Entity(Location location, World world) {
         super(location, world);
     }
-
-
 }
