@@ -25,6 +25,7 @@ import java.util.TimerTask;
 public class MainClient extends Application {
     public static World WORLD;
     public static PlayerEntity PLAYER;
+    public static int PLAYER_ID;
     private static int screenWidth, screenHeight;
     private static NetworkClient client;
     private static Timer timer;

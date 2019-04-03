@@ -5,8 +5,6 @@ import platformer.MainClient;
 import platformer.connection.Communicator;
 import platformer.connection.Packet;
 import platformer.world.World;
-import platformer.world.WorldObj;
-import platformer.world.entity.PlayerEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +37,6 @@ public class PlayerConfirmConnectPacket extends Packet {
     @Override
     public void applyPacket(Communicator communicator, Socket socket) {
         MainClient.WORLD = new World(worldSeed);
-        MainClient.PLAYER = (PlayerEntity) WorldObj.getObject(playerId);
+        MainClient.PLAYER_ID = playerId;
     }
 }

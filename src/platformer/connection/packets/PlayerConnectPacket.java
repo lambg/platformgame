@@ -9,6 +9,7 @@ import platformer.world.entity.PlayerEntity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 
 public class PlayerConnectPacket extends Packet {
@@ -42,9 +43,10 @@ public class PlayerConnectPacket extends Packet {
     @Override
     public void applyPacket(Communicator communicator, Socket socket) throws IOException {
         System.out.println("(TEST) Player " + name + " connected.");
-        MainServer.getServer().connectedPlayers.put(socket, null); // connected players must have this player registered before the player is created
-        PlayerEntity playerEntity = new PlayerEntity(new Location(0, 0), MainServer.getServer().getWorld(), name);
+        MainServer.getServer().connectedPlayers.put(socket, null); // connected players must have this socket registered before the packet is sent
+        int objId = MainServer.getServer().getNextObjectId();
+        communicator.sendPacket(socket, new PlayerConfirmConnectPacket(objId, MainServer.getServer().getWorld().getSeed()));
+        PlayerEntity playerEntity = new PlayerEntity(new Location(0, 0), MainServer.getServer().getWorld(), name, objId);
         MainServer.getServer().connectedPlayers.put(socket, playerEntity); // put actual value of player into map
-        communicator.sendPacket(socket, new PlayerConfirmConnectPacket(playerEntity.getObjectId(), MainServer.getServer().getWorld().getSeed()));
     }
 }

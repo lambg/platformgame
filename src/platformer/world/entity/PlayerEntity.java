@@ -7,15 +7,17 @@ import platformer.world.World;
 
 public class PlayerEntity extends LivingEntity {
     private final String name;
+    private final int actualId;
 
-    public PlayerEntity(Location location, World world, int maxHealth, String name) {
-        super(location, world, maxHealth);
-        this.name = name;
-    }
-
-    public PlayerEntity(Location location, World world, String name) {
+    public PlayerEntity(Location location, World world, String name, int actualId) {
         super(location, world);
         this.name = name;
+        this.actualId = actualId;
+    }
+
+    @Override
+    protected int createObjectId() {
+        return actualId;
     }
 
     public String getName() {

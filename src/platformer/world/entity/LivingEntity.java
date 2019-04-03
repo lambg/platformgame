@@ -13,7 +13,6 @@ public class LivingEntity extends Entity {
     private int maxHealth;
     private int currentHealth;
 
-
     public LivingEntity(Location location, World world, int maxHealth) {
         super(location, world);
         this.maxHealth = maxHealth;

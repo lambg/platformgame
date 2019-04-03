@@ -31,7 +31,7 @@ public class World implements Serializable {
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
-        out.write(seed);
+        out.writeInt(seed);
     }
 
     public int getSeed() {

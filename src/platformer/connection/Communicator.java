@@ -32,7 +32,7 @@ public class Communicator {
                     applyUpdatePacket(Packet.build(updater.getInputStream()), updater);
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                throw new RuntimeException(ex); // don't try and handle; packets have varying size, no way to correct
             }
         }
     }

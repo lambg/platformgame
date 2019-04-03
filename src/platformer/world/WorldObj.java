@@ -1,6 +1,5 @@
 package platformer.world;
 
-import platformer.MainClient;
 import platformer.MainServer;
 
 import java.io.Serializable;
@@ -17,7 +16,7 @@ public class WorldObj implements Serializable {
     public WorldObj(Location location, World world) {
         this.location = location;
         this.world = world;
-        this.objectId = MainServer.getServer().getNextObjectId();
+        this.objectId = createObjectId();
         spawned = true;
 
         if (objectIdMap.put(objectId, this) != null)
@@ -30,6 +29,10 @@ public class WorldObj implements Serializable {
         throw new RuntimeException();
         // todo - add object to objectIdMap
         // this should only ever be called client side
+    }
+
+    protected int createObjectId() {
+        return MainServer.getServer().getNextObjectId();
     }
 
     public static WorldObj getObject(int id) {
