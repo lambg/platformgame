@@ -1,5 +1,8 @@
 package platformer;
 
+import javafx.scene.shape.Rectangle;
+import platformer.world.Location;
+
 import java.io.*;
 
 public class GameUtil {
@@ -31,9 +34,12 @@ public class GameUtil {
         new ObjectOutputStream(out).writeObject(val);
     }
 
+    public static void setRelativeTo(Rectangle rectangle, Location location, int x, int y) {
+        rectangle.setX(location.getX() - x);
+        rectangle.setY(location.getY() - y);
+    }
+
     private GameUtil() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
-
-
 }

@@ -1,9 +1,12 @@
 package platformer.world;
 
 import javafx.scene.shape.Rectangle;
+import platformer.GameUtil;
 import platformer.MainClient;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class WorldSegment {
     // amount of segments per block
@@ -12,6 +15,7 @@ public class WorldSegment {
     public static final int TERRAIN_BLOCK_SIZE = 50;
     // size of each segment
     public static final int WORLD_SEGMENT_SIZE = BLOCKS_PER_SEGMENT * TERRAIN_BLOCK_SIZE;
+    public static final int HEIGHT_STEP = 20;
     private final World world;
     private Block[] terrainBlocks = new Block[BLOCKS_PER_SEGMENT];
     private int terrainSegmentIndex;
@@ -22,8 +26,22 @@ public class WorldSegment {
         this.world = world;
         this.terrainSegmentIndex = terrainSegmentIndex;
 
-        for (int i = 0; i < terrainBlocks.length; i++) {
-            terrainBlocks[i] = new Block(i);
+        terrainBlocks[0] = new Block(0, 0);
+
+        for (int i = 1; i < terrainBlocks.length; i++) {
+            int relativeHeight;
+            // next is random number from 0 to 15
+            int next = (int) world.getRandom().nextDouble() * 15;
+
+            // 50% chance of staying at the same elevation; 25% of going up, 25% of going down (by HEIGHT_STEP).
+            if (next > 11) { // 12,13,14,15 (4 values)
+                relativeHeight = HEIGHT_STEP;
+            } else if (next < 4) { // 0,1,2,3 (4 values)
+                relativeHeight = 0;
+            } else { // 4,5,6,7,8,9,10,11 (8 values)
+                relativeHeight = -HEIGHT_STEP;
+            }
+            terrainBlocks[i] = new Block(i, terrainBlocks[i - 1].height + relativeHeight);
         }
 
         hideSegment(); // blocks should be invisible by default
@@ -43,7 +61,7 @@ public class WorldSegment {
         showSegment();
         Location screenLocation = MainClient.PLAYER.getLocation();
         for (Block block : terrainBlocks) {
-            block.rectangle.setX(screenLocation.getX() + getLocalOffset(block.id));
+            GameUtil.setRelativeTo(block.rectangle, screenLocation, getLocalOffset(block.id), block.height - 10);
         }
     }
 
@@ -122,11 +140,9 @@ public class WorldSegment {
         private int height;
         private int id;
 
-        public Block(int id) {
+        public Block(int id, int height) {
             this.id = id;
-
-            // todo - generate proper height
-            this.height = id == 0 ? 0 : getLeftBlock().height + 1;
+            this.height = height;
             this.rectangle = new Rectangle(getLeftBlockPosX(), 0, TERRAIN_BLOCK_SIZE, height);
         }
 
