@@ -39,13 +39,7 @@ public class MainClient extends Application {
 
     //TODO - Optimize these variables below:
 
-    //Each key press
-    boolean up = false;
-    boolean down = false;
-    boolean left = false;
-    boolean right = false;
-    boolean jump = false;
-    boolean canJump = true;
+
 
     //Each time key is inputted per tick from timer, the increment the shape/object/entity will be moved by
     double yMoveIncrement = 2;
@@ -68,8 +62,7 @@ public class MainClient extends Application {
     public double verticalDistance = 0;
 
     //player's x and y value, redundant if leftDistance and verticalDistance are used.
-    public double playerX;
-    public double playerY;
+
 
 
     public static void main(String[] args) throws IOException {
@@ -162,9 +155,9 @@ public class MainClient extends Application {
 
     public void update(Scene scene, Shape r) {
 
-        getKeyEvents(scene);
-
-        updateKeyEvents(r);
+//        getKeyEvents(scene);
+//
+//        updateKeyEvents(r);
 
         /*
         updateGravity(r); //TODO -
@@ -173,155 +166,14 @@ public class MainClient extends Application {
         an animation to take place for each object when jump is called (faux acceleration)
         */
 
-        updateLocation(); //TODO
+      //  updateLocation(); //TODO
 
     }
 
-    public void getKeyEvents(Scene scene) {
-
-        scene.setOnKeyPressed(e -> {
-            switch (e.getCode()) {
-                case W:
-                    up = true;
-                    break;
-                case A:
-                    left = true;
-                    break;
-                case S:
-                    down = true;
-                    break;
-                case D:
-                    right = true;
-                    break;
-                case SPACE:
-                    if (canJump) {
-                        jump = true;
-                        canJump = false;
-                    }
-                    break;
-            }
-        });
-
-        scene.setOnKeyReleased(e -> {
-            switch (e.getCode()) {
-                case W:
-                    up = false;
-                    break;
-                case A:
-                    left = false;
-                    break;
-                case S:
-                    down = false;
-                    break;
-                case D:
-                    right = false;
-                    break;
-                case SPACE:
-                    jump = false;
-                    break;
-            }
-        });
-
-    }
-
-    public void updateKeyEvents(Shape r) {
-
-        if (right) {
-
-            if (!playerColDetRight(r))
-                leftDistance += xMoveIncrement;
-        }
-
-        if (left) {
-
-            if (!playerColDetLeft(r))
-                leftDistance -= xMoveIncrement;
-        }
-
-        if (up) {
-            if (!playerColDetTop(r))
-                verticalDistance -= yMoveIncrement;
-        }
-
-        if (down) {
-            if (!playerColDetBottom(r))
-                verticalDistance += yMoveIncrement;
-        }
-
-        if (jump) {
-
-            System.out.println("Jump");
-
-        }
-        jump = false;
-    }
-
-    public boolean playerColDetTop(Shape r) {
-
-        for (Shape shape : shapes) {
-            if (shape != r) {
-
-                if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
-                    if (r.getBoundsInLocal().getMinY() - yMoveIncrement < shape.getBoundsInLocal().getMaxY() && r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean playerColDetBottom(Shape r) {
-
-        for (Shape shape : shapes) {
-            if (shape != r) {
-
-                if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
-                    if ((r.getBoundsInLocal().getMaxY()) + yMoveIncrement > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean playerColDetRight(Shape r) {
-
-        for (Shape shape : shapes) {
-            if (shape != r) {
-                if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
-                    if (r.getBoundsInLocal().getMaxX() + xMoveIncrement > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean playerColDetLeft(Shape r) {
-
-        for (Shape shape : shapes) {
-            if (shape != r) {
-                if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
-
-                    if (r.getBoundsInLocal().getMinX() - xMoveIncrement < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
 
-    public void updateLocation() {
 
-        playerY = 200 + verticalDistance;
-        playerX = 360 + leftDistance - player.getWidth();
-        player.setX(playerX);
-        player.setY(playerY);
 
-    }
+
+
 }

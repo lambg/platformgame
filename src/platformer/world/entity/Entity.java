@@ -9,7 +9,12 @@ public class Entity extends WorldObj {
     private boolean stationary;
     private boolean damage;
 
+    public double playerX;
+    public double playerY;
+
     public Entity(Location location, World world) {
         super(location, world);
     }
+
+
 }

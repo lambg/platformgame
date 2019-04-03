@@ -19,9 +19,7 @@ public class HostileEntity extends LivingEntity {
     @Override
     public void update() {
 
-        if (getHealth() == 0) {
-            alive = false;
-        }
+        super.update();
 
         //TODO - lock onto closest target
 
