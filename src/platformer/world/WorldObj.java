@@ -1,6 +1,8 @@
 package platformer.world;
 
+import javafx.scene.Scene;
 import javafx.scene.shape.Shape;
+import platformer.MainClient;
 import platformer.MainServer;
 
 import java.io.Serializable;
@@ -14,6 +16,7 @@ public class WorldObj implements Serializable {
     private boolean spawned;
     private World world;
     private Shape shape;
+    private Scene scene;
 
     private double width;
     private double height;
@@ -51,6 +54,10 @@ public class WorldObj implements Serializable {
 
     public int getObjectId() {
         return objectId;
+    }
+
+    public Scene getScene() { //initializes
+        return scene;
     }
 
     public void update() {
@@ -101,10 +108,16 @@ public class WorldObj implements Serializable {
 
     }
 
-    public boolean playerColDetTop(Shape r) {
+    public boolean playerColDetTop() {
 
-        for (Object object : World.getNearbyObjects()) {
+        Shape r = getShape();
+
+        for (WorldObj object : MainClient.WORLD.getNearbyObjects(WorldObj.class, 0, 720, 0, 480)) {
+
+            Shape shape = object.getShape();
+
             if (shape != r) {
+
 
                 if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
                     if (r.getBoundsInLocal().getMinY() - verticalSpeed() < shape.getBoundsInLocal().getMaxY() && r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY()) {
@@ -116,47 +129,55 @@ public class WorldObj implements Serializable {
         return false;
     }
 
-    public boolean playerColDetBottom(Shape r) {
+    public boolean playerColDetBottom() {
 
-        for (Shape shape : shapes) {
-            if (shape != r) {
+        Shape r = getShape();
 
-                if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
-                    if ((r.getBoundsInLocal().getMaxY()) + verticalSpeed() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY()) {
-                        return true;
-                    }
+        for (WorldObj object : MainClient.WORLD.getNearbyObjects(WorldObj.class, 0, 720, 0, 480)) {
+
+            Shape shape = object.getShape();
+            if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
+                if ((r.getBoundsInLocal().getMaxY()) + verticalSpeed() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY()) {
+                    return true;
                 }
             }
+        }
+
+        return false;
+    }
+
+    public boolean playerColDetRight() {
+
+        Shape r = getShape();
+
+        for (WorldObj object : MainClient.WORLD.getNearbyObjects(WorldObj.class, 0, 720, 0, 480)) {
+
+            Shape shape = object.getShape();
+            if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
+                if (r.getBoundsInLocal().getMaxX() + horizontalSpeed() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX()) {
+                    return true;
+                }
+            }
+
         }
         return false;
     }
 
-    public boolean playerColDetRight(Shape r) {
+    public boolean playerColDetLeft() {
 
-        for (Shape shape : shapes) {
-            if (shape != r) {
-                if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
-                    if (r.getBoundsInLocal().getMaxX() + horizontalSpeed() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX()) {
-                        return true;
-                    }
+        Shape r = getShape();
+
+        for (WorldObj object : MainClient.WORLD.getNearbyObjects(WorldObj.class, 0, 720, 0, 480)) {
+
+            Shape shape = object.getShape();
+            if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
+
+                if (r.getBoundsInLocal().getMinX() - horizontalSpeed() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX()) {
+                    return true;
                 }
             }
         }
-        return false;
-    }
 
-    public boolean playerColDetLeft(Shape r) {
-
-        for (Shape shape : shapes) {
-            if (shape != r) {
-                if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
-
-                    if (r.getBoundsInLocal().getMinX() - horizontalSpeed() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX()) {
-                        return true;
-                    }
-                }
-            }
-        }
         return false;
     }
 

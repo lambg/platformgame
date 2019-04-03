@@ -129,11 +129,11 @@ public class MainClient extends Application {
     }
 
     public void runTest(Stage primaryStage) {
-        playerY = 200 + verticalDistance;
-        playerX = 360 + leftDistance - player.getWidth();
-
-        player.setY(playerY);
-        player.setX(playerX);
+//        playerY = 200 + verticalDistance;
+//        playerX = 360 + leftDistance - player.getWidth();
+//
+//        player.setY(playerY);
+//        player.setX(playerX);
 
         floor = new Rectangle(720, 200);
         floor.setX(leftDistance + 300);

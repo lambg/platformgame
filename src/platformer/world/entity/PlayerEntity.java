@@ -23,6 +23,9 @@ public class PlayerEntity extends LivingEntity {
     public double leftDistance = 0;
     public double verticalDistance = 0;
 
+    public double playerX;
+    public double playerY;
+
     public PlayerEntity(Location location, World world, String name, int actualId) {
         super(location, world);
         this.name = name;
@@ -45,11 +48,12 @@ public class PlayerEntity extends LivingEntity {
 
         if (MainClient.PLAYER == this) {
 
+            getKeyEvents(getScene());
+            updateKeyEvents(getShape());
+            updateLocation(); //TODO
+
 
         }
-
-
-        //TODO - player movement, not sure weather timer with client will be used for keyEvents
 
         MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjMovePacket(getObjectId(), getLocation())));
     }
@@ -137,8 +141,8 @@ public class PlayerEntity extends LivingEntity {
 
         playerY = 200 + verticalSpeed();
         playerX = 360 + leftDistance - getHeight();
-        MainClient.PLAYER.setX(playerX);
-        MainClient.PLAYER.setY(playerY);
+
+        MainClient.PLAYER.setLocation(new Location(playerX, playerY));
 
     }
 }
