@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import platformer.connection.NetworkClient;
 import platformer.connection.packets.PlayerConnectPacket;
 import platformer.connection.packets.PlayerDisconnectPacket;
@@ -195,7 +194,7 @@ public class MainClient extends Application {
                     right = true;
                     break;
                 case SPACE:
-                    if (canJump == true) {
+                    if (canJump) {
                         jump = true;
                         canJump = false;
                     }

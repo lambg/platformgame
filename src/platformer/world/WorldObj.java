@@ -1,5 +1,6 @@
 package platformer.world;
 
+import javafx.scene.shape.Shape;
 import platformer.MainServer;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ public class WorldObj implements Serializable {
     private int objectId;
     private boolean spawned;
     private World world;
+    private Shape shape;
 
     public WorldObj(Location location, World world) {
         this.location = location;
@@ -60,6 +62,18 @@ public class WorldObj implements Serializable {
 
     public boolean spawned() {
         return spawned;
+    }
+
+    public double horizontalSpeed() {
+        return 2.0;
+    }
+
+    public double verticalJump() {
+        return 2.0;
+    }
+
+    public Shape getShape() {
+        return shape;
     }
 
     public void kill() {
