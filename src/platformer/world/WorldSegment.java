@@ -15,7 +15,7 @@ public class WorldSegment {
     private final World world;
     private Block[] terrainBlocks = new Block[BLOCKS_PER_SEGMENT];
     private int terrainSegmentIndex;
-    private boolean hidden = true;
+    private boolean hidden = false;
     Set<WorldObj> objects = new HashSet<>();
 
     public WorldSegment(World world, int terrainSegmentIndex) {
@@ -25,6 +25,8 @@ public class WorldSegment {
         for (int i = 0; i < terrainBlocks.length; i++) {
             terrainBlocks[i] = new Block(i);
         }
+
+        hideSegment(); // blocks should be invisible by default
     }
 
     public void updateObjects() {
@@ -74,11 +76,11 @@ public class WorldSegment {
             return;
 
         for (Block block : terrainBlocks) {
-            // todo - hide block
+            MainClient.root.getChildren().remove(block.rectangle);
         }
 
         for (WorldObj obj : getObjects()) {
-            // todo - hide obj
+            MainClient.root.getChildren().remove(obj.getShape());
         }
 
         hidden = true;
@@ -89,11 +91,11 @@ public class WorldSegment {
             return;
 
         for (Block block : terrainBlocks) {
-            // todo - show block
+            MainClient.root.getChildren().add(block.rectangle);
         }
 
         for (WorldObj obj : getObjects()) {
-            // todo - show obj
+            MainClient.root.getChildren().add(obj.getShape());
         }
 
         hidden = false;

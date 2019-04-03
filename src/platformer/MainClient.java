@@ -30,10 +30,10 @@ public class MainClient extends Application {
     private static Timer timer;
 
     //Window for application
-    public Pane root;
+    public static Pane root;
 
     //First Scene
-    Scene scene;
+    public static Scene scene;
     //First stage
     // public Stage stage = new Stage(StageStyle.DECORATED);
 
