@@ -78,8 +78,8 @@ public class MainClient extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        //TODO -Optimize initTest()
-        initTest();
+        root = new Pane();
+        scene = new Scene(root);
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -88,11 +88,12 @@ public class MainClient extends Application {
                 if (client.isClosed())
                     Platform.exit();
                 client.update();
-                update(scene, player);
+
+                //TODO - Update world from here
             }
         }, 0, 16L); // every 16 ms is ~60 fps
 
-        //TODO - Optimize runTest()
+
         runTest(primaryStage);
 
         primaryStage.setOnCloseRequest(event -> Platform.exit());
@@ -117,16 +118,12 @@ public class MainClient extends Application {
 
     public void initTest() {
 
-        root = new Pane();
-        scene = new Scene(root);
+
         player = new Rectangle(50, 50);
 
     }
 
     public void runTest(Stage primaryStage) {
-
-
-
         floor = new Rectangle(720, 200);
         floor.setX(leftDistance + 300);
         floor.setY(250);
@@ -143,10 +140,6 @@ public class MainClient extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    public void update(Scene scene, Shape r) {
-
     }
 
 
