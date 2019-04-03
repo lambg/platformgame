@@ -1,6 +1,7 @@
 package platformer.connection.packets;
 
 import platformer.GameUtil;
+import platformer.MainServer;
 import platformer.connection.Communicator;
 import platformer.connection.Packet;
 import platformer.world.Location;
@@ -39,5 +40,8 @@ public class ObjMovePacket extends Packet {
     @Override
     public void applyPacket(Communicator communicator, Socket socket) {
         WorldObj.getObject(objectId).setLocation(toLocation);
+
+        // if the packet is from a client, forward this packet to all clients (excluding the original client)
+        MainServer.serverUpdate(s -> s.sendPacketToAll(this, socket));
     }
 }
