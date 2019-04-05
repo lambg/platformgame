@@ -35,7 +35,7 @@ public class GameUtil {
     }
 
     public static void setRelativeTo(Rectangle rectangle, Location location, double x, double y) {
-        rectangle.setX(location.getX() + x);
+        rectangle.setX(location.getX() - x);
         rectangle.setY(location.getY() + y);
     }
 
