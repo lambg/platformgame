@@ -48,7 +48,6 @@ public class WorldObj implements Serializable {
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         shape = new Rectangle(in.readDouble(), in.readDouble());
-//        System.out.println(shape); // todo - remove trace
         location = (Location) in.readObject();
         objectId = in.readInt();
         spawned = in.readBoolean();

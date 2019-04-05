@@ -13,7 +13,7 @@ import java.util.Set;
 public class WorldSegment {
     public static final int BLOCK_DRAW_HEIGHT = 100;
     // amount of segments per block
-    public static final int BLOCKS_PER_SEGMENT = 30;
+    public static final int BLOCKS_PER_SEGMENT = 40;
     // size of each block in segment
     public static final int TERRAIN_BLOCK_SIZE = 50;
     // size of each segment
@@ -29,12 +29,18 @@ public class WorldSegment {
         this.world = world;
         this.terrainSegmentIndex = terrainSegmentIndex;
 
-        terrainBlocks[0] = new Block(0, 0); // todo - set previous height relative to previous segment's height
+        terrainBlocks[0] = new Block(0,
+                terrainSegmentIndex > 0 ?
+                    world.getSegmentAt(terrainSegmentIndex - 1).terrainBlocks[0].height :
+                terrainSegmentIndex < 0 ?
+                        world.getSegmentAt(terrainSegmentIndex + 1).terrainBlocks[terrainBlocks.length - 1].height :
+                0 // initial block segment
+        );
 
         for (int i = 1; i < terrainBlocks.length; i++) {
             int relativeHeight;
             // next is random number from 0 to 15
-            int next = (int) world.getRandom().nextDouble() * 15;
+            int next = (int) (world.getRandom().nextDouble() * 15);
 
             // 50% chance of staying at the same elevation; 25% of going up, 25% of going down (by HEIGHT_STEP).
             if (next > 11) { // 12,13,14,15 (4 values)
@@ -65,7 +71,7 @@ public class WorldSegment {
             showSegment();
             Location screenLocation = MainClient.PLAYER.getLocation();
             for (Block block : terrainBlocks) {
-                GameUtil.setRelativeTo(block.rectangle, screenLocation, getLocalOffset(block.id), block.height + MainClient.screenHeight - BLOCK_DRAW_HEIGHT);
+                GameUtil.setRelativeTo(block.rectangle, screenLocation, getLocalOffset(block.id), block.height - 400);
             }
 
             for (WorldObj obj : objects) {

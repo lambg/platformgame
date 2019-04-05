@@ -107,17 +107,21 @@ public class World implements Serializable {
     }
 
     public WorldSegment getSegmentAt(double x) {
+        return getSegmentIndex((int) (x / WorldSegment.WORLD_SEGMENT_SIZE));
+    }
+
+    public WorldSegment getSegmentIndex(int segmentIndex) {
         // get segment list
         List<WorldSegment> segments;
         boolean negative = false;
-        if (x < 0) {
-            x = -x;
+        if (segmentIndex < 0) {
+            segmentIndex = -segmentIndex;
             segments = negativeSegments;
             negative = true;
         } else segments = positiveSegments;
 
         // generate missing segments
-        int segmentIndex = (int) (x / WorldSegment.WORLD_SEGMENT_SIZE);
+
         while (segmentIndex >= segments.size()) {
             WorldSegment segment = new WorldSegment(this, negative ? -segments.size() : segments.size());
             segments.add(segment);
