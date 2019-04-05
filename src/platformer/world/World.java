@@ -109,7 +109,7 @@ public class World implements Serializable {
         } else segments = positiveSegments;
 
         // generate missing segments
-        int segmentIndex = (int) (x % WorldSegment.WORLD_SEGMENT_SIZE);
+        int segmentIndex = (int) (x / WorldSegment.WORLD_SEGMENT_SIZE);
         while (segmentIndex >= segments.size()) {
             WorldSegment segment = new WorldSegment(this, negative ? -segments.size() : segments.size());
             segments.add(segment);
@@ -135,7 +135,7 @@ public class World implements Serializable {
     }
 
     public void addObjectToWorld(WorldObj obj) {
-        getSegmentAt(obj.getLocation()).objects.remove(obj);
+        getSegmentAt(obj.getLocation()).objects.add(obj);
 
         MainServer.serverUpdate(server -> server.sendPacketToAll(new ObjectSpawnPacket(obj)));
     }

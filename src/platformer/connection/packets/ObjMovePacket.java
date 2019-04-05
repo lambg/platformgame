@@ -36,7 +36,7 @@ public class ObjMovePacket extends Packet {
     @Override
     protected void buildPacket(InputStream in) throws IOException, ClassNotFoundException {
         objectId = GameUtil.readInt(in);
-        objectId = GameUtil.read(in);
+        toLocation = GameUtil.read(in);
     }
 
     @Override

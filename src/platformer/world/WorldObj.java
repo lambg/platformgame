@@ -4,6 +4,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import platformer.MainClient;
 import platformer.MainServer;
+import platformer.connection.packets.ObjMovePacket;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,7 +26,7 @@ public class WorldObj implements Serializable {
         this.world = world;
         this.objectId = objId;
         spawned = true;
-        shape = new Rectangle(getWidth(), getHeight());
+        shape = null;
 
         if (objectIdMap.put(objectId, this) != null)
             throw new RuntimeException("Error: given id has already been assigned to another object.");
@@ -50,6 +51,7 @@ public class WorldObj implements Serializable {
         objectId = in.readInt();
         spawned = in.readBoolean();
         world = MainClient.WORLD;
+        objectIdMap.put(objectId, this);
     }
 
     public static WorldObj getObject(int id) {
@@ -73,6 +75,11 @@ public class WorldObj implements Serializable {
 
     public void setLocation(Location location) {
         this.location = location;
+        sendLocationPacket();
+    }
+
+    protected void sendLocationPacket() {
+        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjMovePacket(getObjectId(), getLocation())));
     }
 
     public boolean spawned() {

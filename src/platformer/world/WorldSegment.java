@@ -1,6 +1,7 @@
 package platformer.world;
 
 import javafx.application.Platform;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import platformer.GameUtil;
 import platformer.MainClient;
@@ -68,7 +69,7 @@ public class WorldSegment {
 
             for (WorldObj obj : objects) {
                 Location location = obj.getLocation();
-                GameUtil.setRelativeTo(obj.getShape(), MainClient.PLAYER.getLocation(), location.getX(), location.getY());
+                GameUtil.setRelativeTo(obj.getShape(), MainClient.getScreenLocation(), location.getX(), location.getY());
             }
         });
     }
@@ -148,10 +149,12 @@ public class WorldSegment {
         private int height;
         private int id;
 
+        // todo - work with negative segments
         public Block(int id, int height) {
             this.id = id;
             this.height = height;
-            this.rectangle = new Rectangle(getLeftBlockPosX(), 0, TERRAIN_BLOCK_SIZE, height);
+            this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, 100 + height, Color.RED);
+//            System.out.println(rectangle); // todo - remove trace
         }
 
         double getLeftBlockPosX() {

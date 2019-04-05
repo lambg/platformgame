@@ -2,10 +2,11 @@ package platformer.world.entity;
 
 import javafx.scene.Scene;
 import platformer.MainClient;
-import platformer.MainServer;
 import platformer.connection.packets.ObjMovePacket;
 import platformer.world.Location;
 import platformer.world.World;
+
+import java.io.IOException;
 
 public class PlayerEntity extends LivingEntity {
     private final String name;
@@ -39,18 +40,22 @@ public class PlayerEntity extends LivingEntity {
 
     @Override
     public void update() {
-
         super.update();
 
         if (MainClient.PLAYER == this) {
-
+            Location current = new Location(getLocation().getX(), getLocation().getY());
             getKeyEvents(MainClient.scene);
             updateKeyEvents();
             updateLocation();
 
+            if (!current.equals(getLocation())) {
+                try {
+                    MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new ObjMovePacket(getObjectId(), getLocation()));
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         }
-
-        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjMovePacket(getObjectId(), getLocation())));
     }
 
     public void getKeyEvents(Scene scene) {
@@ -143,5 +148,10 @@ public class PlayerEntity extends LivingEntity {
 
         MainClient.PLAYER.setLocation(new Location(playerX, playerY));
 
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerEntity{" + name + "}";
     }
 }
