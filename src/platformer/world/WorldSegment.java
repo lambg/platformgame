@@ -11,8 +11,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WorldSegment {
+    public static final int BLOCK_DRAW_HEIGHT = 100;
     // amount of segments per block
-    public static final int BLOCKS_PER_SEGMENT = 10;
+    public static final int BLOCKS_PER_SEGMENT = 30;
     // size of each block in segment
     public static final int TERRAIN_BLOCK_SIZE = 50;
     // size of each segment
@@ -64,12 +65,11 @@ public class WorldSegment {
             showSegment();
             Location screenLocation = MainClient.PLAYER.getLocation();
             for (Block block : terrainBlocks) {
-                GameUtil.setRelativeTo(block.rectangle, screenLocation, getLocalOffset(block.id), block.height - 10);
+                GameUtil.setRelativeTo(block.rectangle, screenLocation, getLocalOffset(block.id), block.height + MainClient.screenHeight - BLOCK_DRAW_HEIGHT);
             }
 
             for (WorldObj obj : objects) {
-                Location location = obj.getLocation();
-                GameUtil.setRelativeTo(obj.getShape(), MainClient.getScreenLocation(), location.getX(), location.getY());
+                obj.updateDraw();
             }
         });
     }
@@ -153,7 +153,7 @@ public class WorldSegment {
         public Block(int id, int height) {
             this.id = id;
             this.height = height;
-            this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, 100 + height, Color.RED);
+            this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, height + BLOCK_DRAW_HEIGHT, Color.RED);
 //            System.out.println(rectangle); // todo - remove trace
         }
 

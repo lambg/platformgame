@@ -61,6 +61,14 @@ public class World implements Serializable {
         transferObjects();
     }
 
+    public Collection<WorldSegment> getPositiveLoadedSegments() {
+        return positiveSegments;
+    }
+
+    public List<WorldSegment> getNegativeLoadedSegments() {
+        return negativeSegments;
+    }
+
     public <T extends WorldObj> Collection<T> getNearbyObjects(Class<T> cl, double lx, double ux, double ly, double uy) {
         List<T> objects = new ArrayList<>();
         for (WorldSegment segment : getSegmentsFrom(lx, ux)) {

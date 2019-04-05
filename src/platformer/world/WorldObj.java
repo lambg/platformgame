@@ -2,6 +2,7 @@ package platformer.world;
 
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import platformer.GameUtil;
 import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.packets.ObjMovePacket;
@@ -47,6 +48,7 @@ public class WorldObj implements Serializable {
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         shape = new Rectangle(in.readDouble(), in.readDouble());
+//        System.out.println(shape); // todo - remove trace
         location = (Location) in.readObject();
         objectId = in.readInt();
         spawned = in.readBoolean();
@@ -69,6 +71,11 @@ public class WorldObj implements Serializable {
         // do nothing by default
     }
 
+    // client side update; update shape positions
+    public void updateDraw() {
+        GameUtil.setRelativeTo(shape, MainClient.getScreenLocation(), location.getX(), location.getY());
+    }
+
     public Location getLocation() {
         return location;
     }
@@ -87,11 +94,11 @@ public class WorldObj implements Serializable {
     }
 
     public double horizontalSpeed() {
-        return 2.0;
+        return 20.0; // todo - why does changing this modify ground location
     }
 
     public double verticalSpeed() {
-        return 2.0;
+        return 20.0;
     }
 
     public Rectangle getShape() {
@@ -113,9 +120,7 @@ public class WorldObj implements Serializable {
     }
 
     public void setLocation() {
-
         this.location = new Location(shape.getBoundsInLocal().getMinX(), shape.getLayoutBounds().getMaxY());
-
     }
 
     public boolean playerColDetTop() {

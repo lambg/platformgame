@@ -21,7 +21,7 @@ public class MainClient extends Application {
     public static World WORLD;
     public static PlayerEntity PLAYER;
     public static int PLAYER_ID;
-    private static double screenWidth, screenHeight;
+    public static double screenWidth, screenHeight;
     private static NetworkClient client;
     private static Timer timer;
 
@@ -35,10 +35,11 @@ public class MainClient extends Application {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter IP: ");
 //        client = new NetworkClient(scanner.nextLine());
-        client = new NetworkClient("10.200.83.106"); // todo - use scanner instead of inline
+        client = new NetworkClient("10.200.90.240"); // todo - use scanner instead of inline
 
         System.out.println("Enter username: ");
-        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
+//        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
+        client.sendPacket(client.getSocket(), new PlayerConnectPacket("Test"));
         // should receive confirmation
 
         launch(args);
@@ -57,6 +58,8 @@ public class MainClient extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        PlayerEntity.setKeyListener(scene);
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
