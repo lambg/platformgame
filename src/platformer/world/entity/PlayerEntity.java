@@ -28,9 +28,9 @@ public class PlayerEntity extends LivingEntity {
                     right = true;
                     break;
                 case SPACE:
-                    if (canJump) {
+                    if (isJumping) {
                         jump = true;
-                        canJump = false;
+                        isJumping = false;
                     }
                     break;
             }
@@ -55,7 +55,6 @@ public class PlayerEntity extends LivingEntity {
                     break;
             }
         });
-
     }
 
     //Each key press
@@ -64,7 +63,7 @@ public class PlayerEntity extends LivingEntity {
     static boolean left = false;
     static boolean right = false;
     static boolean jump = false;
-    static boolean canJump = true;
+    static boolean isJumping = true;
 
     public double playerX;
     public double playerY;
@@ -104,6 +103,7 @@ public class PlayerEntity extends LivingEntity {
         double horizontalDistance = 0;
         double verticalDistance = 0;
 
+
         if (right) {
             if (!playerColDetRight())
                 horizontalDistance -= horizontalSpeed();
@@ -115,12 +115,14 @@ public class PlayerEntity extends LivingEntity {
                 horizontalDistance += horizontalSpeed();
         }
 
+        //todo - get rid of this
         if (up) {
             if (!playerColDetTop())
                 verticalDistance += verticalSpeed();
         }
 
         if (down) {
+            isJumping = false;
             if (!playerColDetBottom())
                 verticalDistance -= verticalSpeed();
         }
@@ -128,12 +130,13 @@ public class PlayerEntity extends LivingEntity {
         if (jump) {
 
             if (!playerColDetTop()) {
-                canJump = true;
+                isJumping = true;
+                if (!playerColDetTop())
+                    verticalDistance += verticalSpeed();
             }
             System.out.println("Jump");
-
+            jump = false;
         }
-        jump = false;
 
         getLocation().setX(getLocation().getX() + horizontalDistance);
         getLocation().setY(getLocation().getY() + verticalDistance);
