@@ -14,7 +14,7 @@ import java.util.*;
 public class World implements Serializable {
     private static final long serialVersionUID = -5044978860575837034L;
     // how many segments to update on either side of each player
-    private static final int UPDATE_SEGMENTS = 5;
+    private static final int UPDATE_SEGMENTS = 3;
     // the size of UPDATE_SEGMENT segments
     private static final double UPDATE_SEGMENT_SIZE = WorldSegment.WORLD_SEGMENT_SIZE * UPDATE_SEGMENTS;
     private List<WorldSegment> positiveSegments = new ArrayList<>();

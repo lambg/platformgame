@@ -1,5 +1,6 @@
 package platformer.connection;
 
+import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.world.World;
 import platformer.world.entity.PlayerEntity;
 
@@ -16,10 +17,6 @@ public class NetworkServer extends Communicator implements AutoCloseable {
     private ServerSocket socket;
     private World world = new World((int) (Math.random() * Integer.MAX_VALUE));
     private int nextObjectId = 1;
-
-    // todo - send update packets to client
-    // todo - cannot handle directly in world/worldobj classes (otherwise client will try and send update
-    // todo - packets to server when packets received).
 
     public NetworkServer(int port) throws IOException {
         socket = new ServerSocket(port);
@@ -71,7 +68,7 @@ public class NetworkServer extends Communicator implements AutoCloseable {
 
     public void removeConnection(Socket connection) {
         stopListeningTo(connection);
-        connectedPlayers.remove(connection);
+        sendPacketToAll(new ObjectDeSpawnPacket(connectedPlayers.remove(connection).getObjectId()));
     }
 
     public boolean isClosed() {

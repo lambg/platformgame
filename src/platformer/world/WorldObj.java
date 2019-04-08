@@ -93,7 +93,7 @@ public class WorldObj implements Serializable {
     }
 
     public double horizontalSpeed() {
-        return 20.0; // todo - why does changing this modify ground location
+        return 4.0;
     }
 
     public double verticalSpeed() {
@@ -105,11 +105,11 @@ public class WorldObj implements Serializable {
     }
 
     public double getHeight() {
-        return 20;
+        return 100;
     }
 
     public double getWidth() {
-        return 8;
+        return 80;
     }
 
     public void kill() {

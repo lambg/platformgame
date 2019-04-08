@@ -13,9 +13,9 @@ import java.util.Set;
 public class WorldSegment {
     public static final int BLOCK_DRAW_HEIGHT = 100;
     // amount of segments per block
-    public static final int BLOCKS_PER_SEGMENT = 40;
+    public static final int BLOCKS_PER_SEGMENT = 20;
     // size of each block in segment
-    public static final int TERRAIN_BLOCK_SIZE = 50;
+    public static final int TERRAIN_BLOCK_SIZE = 100;
     // size of each segment
     public static final int WORLD_SEGMENT_SIZE = BLOCKS_PER_SEGMENT * TERRAIN_BLOCK_SIZE;
     public static final int HEIGHT_STEP = 20;
@@ -31,10 +31,10 @@ public class WorldSegment {
 
         terrainBlocks[0] = new Block(0,
                 terrainSegmentIndex > 0 ?
-                    world.getSegmentAt(terrainSegmentIndex - 1).terrainBlocks[0].height :
-                terrainSegmentIndex < 0 ?
-                        world.getSegmentAt(terrainSegmentIndex + 1).terrainBlocks[terrainBlocks.length - 1].height :
-                0 // initial block segment
+                        world.getSegmentAt(terrainSegmentIndex - 1).terrainBlocks[terrainBlocks.length - 1].height :
+                        terrainSegmentIndex < 0 ?
+                                world.getSegmentAt(terrainSegmentIndex + 1).terrainBlocks[0].height :
+                                0 // initial block segment
         );
 
         for (int i = 1; i < terrainBlocks.length; i++) {
@@ -71,7 +71,7 @@ public class WorldSegment {
             showSegment();
             Location screenLocation = MainClient.PLAYER.getLocation();
             for (Block block : terrainBlocks) {
-                GameUtil.setRelativeTo(block.rectangle, screenLocation, getLocalOffset(block.id), block.height - 400);
+                GameUtil.setRelativeTo(block.rectangle, screenLocation, getLeftPosX() - getLocalOffset(block.id), block.height - 400);
             }
 
             for (WorldObj obj : objects) {
@@ -82,6 +82,10 @@ public class WorldSegment {
 
     public Collection<WorldObj> getObjects() {
         return objects;
+    }
+
+    public int getTerrainSegmentIndex() {
+        return terrainSegmentIndex;
     }
 
     public int getLeftPosX() {
@@ -102,21 +106,6 @@ public class WorldSegment {
         if (blockIndex >= terrainBlocks.length)
             throw new IllegalArgumentException("Block index \"" + blockIndex + "\" is out of bounds; localPosX should be relative to left corner of segment");
         return terrainBlocks[blockIndex];
-    }
-
-    public void hideSegment() {
-        if (hidden)
-            return;
-
-        for (Block block : terrainBlocks) {
-            MainClient.root.getChildren().remove(block.rectangle);
-        }
-
-        for (WorldObj obj : getObjects()) {
-            MainClient.root.getChildren().remove(obj.getShape());
-        }
-
-        hidden = true;
     }
 
     public void showSegment() {
@@ -142,12 +131,13 @@ public class WorldSegment {
         return getSegmentAt(MainClient.getScreenLocation().getX());
     }
 
-    private double getOffset(int index) {
-        return getLocalOffset(index) + MainClient.getScreenLocation().getX();
-    }
-
     private int getLocalOffset(int index) {
         return index * TERRAIN_BLOCK_SIZE;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + terrainSegmentIndex + "]";
     }
 
     private class Block {
@@ -159,8 +149,7 @@ public class WorldSegment {
         public Block(int id, int height) {
             this.id = id;
             this.height = height;
-            this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, height + BLOCK_DRAW_HEIGHT, Color.RED);
-//            System.out.println(rectangle); // todo - remove trace
+            this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, Math.abs(height) + BLOCK_DRAW_HEIGHT, Color.RED);
         }
 
         double getLeftBlockPosX() {
@@ -169,14 +158,6 @@ public class WorldSegment {
 
         double getRightBlockPosX() {
             return getRightPosX() + id * TERRAIN_BLOCK_SIZE;
-        }
-
-        Block getLeftBlock() {
-            return terrainBlocks[id - 1];
-        }
-
-        Block getRightBlock() {
-            return terrainBlocks[id + 1];
         }
     }
 }

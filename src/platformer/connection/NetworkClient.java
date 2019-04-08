@@ -5,13 +5,10 @@ import platformer.world.WorldSegment;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class NetworkClient extends Communicator implements AutoCloseable {
     private Socket socket;
-    private Collection<WorldSegment> lastLoadedSegments = new ArrayList<>();
 
     public NetworkClient(String ip, int port) throws IOException {
         socket = new Socket(ip, port);
@@ -35,15 +32,6 @@ public class NetworkClient extends Communicator implements AutoCloseable {
                 // segments to be shown this update
                 currentSegment.updateShapes();
             }
-
-            // todo - re-add this
-//            lastLoadedSegments.removeAll(localSegments);
-//
-//            for (WorldSegment previousSegment : lastLoadedSegments) {
-//                // segments that were shown in the last update, but not in this update
-//                previousSegment.hideSegment();
-//            }
-            lastLoadedSegments = localSegments;
         }
     }
 
