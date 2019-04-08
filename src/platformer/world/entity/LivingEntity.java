@@ -59,6 +59,7 @@ public class LivingEntity extends Entity {
     }
 
     public void update() {
+        super.update();
         if (getHealth() == 0) {
             alive = false;
             MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjectDeSpawnPacket(getObjectId())));

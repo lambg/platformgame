@@ -34,7 +34,7 @@ public class WorldSegment {
                         world.getSegmentAt(terrainSegmentIndex - 1).terrainBlocks[terrainBlocks.length - 1].height :
                         terrainSegmentIndex < 0 ?
                                 world.getSegmentAt(terrainSegmentIndex + 1).terrainBlocks[0].height :
-                                0 // initial block segment
+                                100 // initial block segment
         );
 
         for (int i = 1; i < terrainBlocks.length; i++) {
@@ -69,9 +69,9 @@ public class WorldSegment {
     public void updateShapes() {
         Platform.runLater(() -> {
             showSegment();
-            Location screenLocation = MainClient.PLAYER.getLocation();
+            Location screenLocation = MainClient.getScreenLocation();
             for (Block block : terrainBlocks) {
-                GameUtil.setRelativeTo(block.rectangle, screenLocation, getLeftPosX() - getLocalOffset(block.id), block.height - 400);
+                GameUtil.setRelativeTo(block.rectangle, screenLocation, getLeftPosX() - getLocalOffset(block.id), block.height);
             }
 
             for (WorldObj obj : objects) {
@@ -102,7 +102,7 @@ public class WorldSegment {
     }
 
     private Block getBlockAtLocalPos(double localPosX) {
-        int blockIndex = (int) (localPosX % TERRAIN_BLOCK_SIZE);
+        int blockIndex = (int) (Math.abs(localPosX) / TERRAIN_BLOCK_SIZE);
         if (blockIndex >= terrainBlocks.length)
             throw new IllegalArgumentException("Block index \"" + blockIndex + "\" is out of bounds; localPosX should be relative to left corner of segment");
         return terrainBlocks[blockIndex];
@@ -148,8 +148,10 @@ public class WorldSegment {
         // todo - work with negative segments
         public Block(int id, int height) {
             this.id = id;
+            if (height < 1)
+                height = 1;
             this.height = height;
-            this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, Math.abs(height) + BLOCK_DRAW_HEIGHT, Color.RED);
+            this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, height + BLOCK_DRAW_HEIGHT, Color.RED);
         }
 
         double getLeftBlockPosX() {

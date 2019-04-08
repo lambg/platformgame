@@ -16,4 +16,16 @@ public class Entity extends WorldObj {
     public Entity(Location location, World world) {
         super(location, world);
     }
+
+    @Override
+    public void update() {
+        getLocation().setY(getLocation().getY() - 3);
+        super.update();
+    }
+
+    @Override
+    public void updateDraw() {
+        getLocation().setY(getLocation().getY() - 3);
+        super.updateDraw();
+    }
 }

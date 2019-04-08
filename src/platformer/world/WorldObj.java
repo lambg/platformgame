@@ -66,12 +66,20 @@ public class WorldObj implements Serializable {
         return objectId;
     }
 
+    private void setAboveGround() {
+        double height = world.getTerrainHeightAt(getLocation().getX());
+        if(getLocation().getY() < height) {
+            getLocation().setY(height);
+        }
+    }
+
     public void update() {
-        // do nothing by default
+        setAboveGround();
     }
 
     // client side update; update shape positions
     public void updateDraw() {
+        setAboveGround();
         GameUtil.setRelativeTo(shape, MainClient.getScreenLocation(), location.getX(), location.getY());
     }
 
@@ -93,7 +101,7 @@ public class WorldObj implements Serializable {
     }
 
     public double horizontalSpeed() {
-        return 4.0;
+        return 8.0;
     }
 
     public double verticalSpeed() {
@@ -105,11 +113,11 @@ public class WorldObj implements Serializable {
     }
 
     public double getHeight() {
-        return 100;
+        return 80;
     }
 
     public double getWidth() {
-        return 80;
+        return 50;
     }
 
     public void kill() {
