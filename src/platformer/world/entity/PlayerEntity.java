@@ -106,23 +106,23 @@ public class PlayerEntity extends LivingEntity {
 
         if (right) {
             if (!playerColDetRight())
-                horizontalDistance += horizontalSpeed();
+                horizontalDistance -= horizontalSpeed();
         }
 
         if (left) {
 
             if (!playerColDetLeft())
-                horizontalDistance -= horizontalSpeed();
+                horizontalDistance += horizontalSpeed();
         }
 
         if (up) {
             if (!playerColDetTop())
-                verticalDistance -= verticalSpeed();
+                verticalDistance += verticalSpeed();
         }
 
         if (down) {
             if (!playerColDetBottom())
-                verticalDistance += verticalSpeed();
+                verticalDistance -= verticalSpeed();
         }
 
         if (jump) {
