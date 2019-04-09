@@ -12,6 +12,30 @@ import java.io.IOException;
 public class PlayerEntity extends LivingEntity {
     private final String name;
 
+    //Each key press
+    static boolean up = false;
+    static boolean down = false;
+    static boolean left = false;
+    static boolean right = false;
+    static boolean jump = false;
+    static boolean isJumping = true;
+    static boolean shouldJump = false;
+
+    public double playerX;
+    public double playerY;
+
+    static double currentHeight = 0;
+    static double jumpHeight = 0;
+
+    public PlayerEntity(Location location, World world, String name, int objId) {
+        super(location, world, objId);
+        this.name = name;
+        this.setLocation(location);
+
+        playerX = this.getLocation().getX();
+        playerY = this.getLocation().getY();
+    }
+
     public static void setKeyListener(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
             switch (e.getCode()) {
@@ -29,6 +53,10 @@ public class PlayerEntity extends LivingEntity {
                     break;
                 case SPACE:
                     if (isJumping) {
+
+                        currentHeight = getObject(MainClient.PLAYER_ID).getLocation().getY();
+                        jumpHeight = currentHeight + 100;
+
                         jump = true;
                         isJumping = false;
                     }
@@ -57,26 +85,6 @@ public class PlayerEntity extends LivingEntity {
         });
     }
 
-    //Each key press
-    static boolean up = false;
-    static boolean down = false;
-    static boolean left = false;
-    static boolean right = false;
-    static boolean jump = false;
-    static boolean isJumping = true;
-
-    public double playerX;
-    public double playerY;
-
-    public PlayerEntity(Location location, World world, String name, int objId) {
-        super(location, world, objId);
-        this.name = name;
-        this.setLocation(location);
-
-        playerX = this.getLocation().getX();
-        playerY = this.getLocation().getY();
-    }
-
     public String getName() {
         return name;
     }
@@ -103,7 +111,6 @@ public class PlayerEntity extends LivingEntity {
         double horizontalDistance = 0;
         double verticalDistance = 0;
 
-
         if (right) {
             if (!playerColDetRight())
                 horizontalDistance -= horizontalSpeed();
@@ -127,15 +134,27 @@ public class PlayerEntity extends LivingEntity {
                 verticalDistance -= verticalSpeed();
         }
 
+
+        currentHeight = getObject(MainClient.PLAYER_ID).getLocation().getY();
         if (jump) {
 
             if (!playerColDetTop()) {
                 isJumping = true;
-                if (!playerColDetTop())
-                    verticalDistance += verticalSpeed() * 5;
+                shouldJump = true;
             }
             System.out.println("Jump");
             jump = false;
+        }
+
+        if (shouldJump) {
+            if (!playerColDetTop()) {
+                System.out.println(currentHeight + " " + jumpHeight);
+                if (currentHeight < jumpHeight) {
+                    verticalDistance += verticalSpeed() * 1.5;
+                } else {
+                    shouldJump = false;
+                }
+            }
         }
 
         //gravity
