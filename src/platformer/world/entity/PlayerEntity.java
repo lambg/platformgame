@@ -142,13 +142,11 @@ public class PlayerEntity extends LivingEntity {
                 isJumping = true;
                 shouldJump = true;
             }
-            System.out.println("Jump");
             jump = false;
         }
 
         if (shouldJump) {
             if (!playerColDetTop()) {
-                System.out.println(currentHeight + " " + jumpHeight);
                 if (currentHeight < jumpHeight) {
                     verticalDistance += verticalSpeed() * 1.5;
                 } else {
