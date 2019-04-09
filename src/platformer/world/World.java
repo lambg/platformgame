@@ -141,6 +141,11 @@ public class World implements Serializable {
         return getSegmentAt(location.getX());
     }
 
+    public double getTerrainWidthAt(double x) {
+        WorldSegment segment = getSegmentAt(x);
+        return segment.getTerrainWidthAtLocalPos(x - segment.getLeftPosX());
+    }
+
     public double getTerrainHeightAt(double x) {
         WorldSegment segment = getSegmentAt(x);
         return segment.getTerrainHeightAtLocalPos(x - segment.getLeftPosX());

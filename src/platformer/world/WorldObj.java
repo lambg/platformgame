@@ -35,7 +35,7 @@ public class WorldObj implements Serializable {
     }
 
     public WorldObj(Location location, World world) {
-        this(location,world,MainServer.getServer().getNextObjectId());
+        this(location, world, MainServer.getServer().getNextObjectId());
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -68,8 +68,16 @@ public class WorldObj implements Serializable {
 
     private void setAboveGround() {
         double height = world.getTerrainHeightAt(getLocation().getX());
-        if(getLocation().getY() < height) {
-            getLocation().setY(height);
+        double leftSide = world.getTerrainWidthAt(getLocation().getX());
+        double rightSide = world.getTerrainWidthAt(getLocation().getX());
+
+
+        //todo - make sure that world objects cannot collide from the sides
+
+
+        if (getLocation().getY() < height + getObject(getObjectId()).getHeight()) {
+
+            getLocation().setY(height + getObject(getObjectId()).getHeight());
         }
     }
 

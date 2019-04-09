@@ -101,6 +101,10 @@ public class WorldSegment {
         return getBlockAtLocalPos(localPosX).height;
     }
 
+    public double getTerrainWidthAtLocalPos(double localPosX) {
+        return getBlockAtLocalPos(localPosX).width;
+    }
+
     private Block getBlockAtLocalPos(double localPosX) {
         int blockIndex = (int) (Math.abs(localPosX) / TERRAIN_BLOCK_SIZE);
         if (blockIndex >= terrainBlocks.length)
@@ -143,11 +147,13 @@ public class WorldSegment {
     private class Block {
         private Rectangle rectangle;
         private int height;
+        private int width;
         private int id;
 
         // todo - work with negative segments
         public Block(int id, int height) {
             this.id = id;
+            this.width = TERRAIN_BLOCK_SIZE;
             if (height < 1)
                 height = 1;
             this.height = height;

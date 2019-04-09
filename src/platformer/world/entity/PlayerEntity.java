@@ -132,15 +132,19 @@ public class PlayerEntity extends LivingEntity {
             if (!playerColDetTop()) {
                 isJumping = true;
                 if (!playerColDetTop())
-                    verticalDistance += verticalSpeed();
+                    verticalDistance += verticalSpeed() * 5;
             }
             System.out.println("Jump");
             jump = false;
         }
 
+        //gravity
+        verticalDistance -= 3;
+
         getLocation().setX(getLocation().getX() + horizontalDistance);
         getLocation().setY(getLocation().getY() + verticalDistance);
     }
+
 
     @Override
     public String toString() {
