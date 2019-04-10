@@ -3,7 +3,6 @@ package platformer.world;
 import platformer.MainServer;
 import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.connection.packets.ObjectSpawnPacket;
-import platformer.world.entity.HostileEntity;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
