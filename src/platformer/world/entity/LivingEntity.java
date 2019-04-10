@@ -48,11 +48,11 @@ public class LivingEntity extends Entity {
     @Override
     public void updateDraw() {
         if (totalHealthBar == null) {
-
             maxHealth = 3;
             currentHealth = maxHealth;
             totalHealthBar = new Rectangle(getWidth(), 10, Color.GREEN);
             currentHealthBar = new Rectangle(getWidth(), 10, Color.RED);
+//             = new Rectangle(getWidth(), 10, Color.RED);
             Platform.runLater(() -> {
                 MainClient.root.getChildren().add(currentHealthBar);
                 MainClient.root.getChildren().add(totalHealthBar);

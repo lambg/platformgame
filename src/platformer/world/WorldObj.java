@@ -51,7 +51,7 @@ public class WorldObj implements Serializable {
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        shape = new Rectangle(getWidth(), getHeight());
+//        shape = new Rectangle(getWidth(), getHeight());
         location = (Location) in.readObject();
         objectId = in.readInt();
         spawned = in.readBoolean();
