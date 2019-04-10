@@ -5,7 +5,8 @@ import platformer.world.WorldSegment;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
 
 public class NetworkClient extends Communicator implements AutoCloseable {
     private Socket socket;
@@ -21,7 +22,12 @@ public class NetworkClient extends Communicator implements AutoCloseable {
 
     @Override
     public void update() {
-        super.update();
+        try {
+            super.update();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.exit(0);
+        }
 
         if (MainClient.PLAYER != null) { // otherwise world has not been loaded yet
             MainClient.WORLD.transferObjects();

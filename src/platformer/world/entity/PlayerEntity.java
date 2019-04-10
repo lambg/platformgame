@@ -30,13 +30,19 @@ public class PlayerEntity extends LivingEntity {
     static double currentHeight = 0;
     static double jumpHeight = 0;
 
-    public PlayerEntity(Location location, World world, String name, int objId) {
-        super(location, world, objId);
+    public PlayerEntity(Location location, World world, String name) {
+        super(location, world);
         this.name = name;
-        this.setLocation(location);
 
         playerX = this.getLocation().getX();
         playerY = this.getLocation().getY();
+    }
+
+    @Override
+    protected void initAfterDeserialization() {
+        super.initAfterDeserialization();
+//        if(name == null)
+//            throw new RuntimeException("Name cannot be null");
     }
 
     public static void setKeyListener(Scene scene) {

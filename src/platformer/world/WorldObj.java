@@ -31,15 +31,18 @@ public class WorldObj implements Serializable {
 
         if (objectIdMap.put(objectId, this) != null)
             throw new RuntimeException("Error: given id has already been assigned to another object.");
-        world.addObjectToWorld(this);
     }
 
     public WorldObj(Location location, World world) {
         this(location,world,MainServer.getServer().getNextObjectId());
     }
 
-//    protected void initAfterDeserialization() {
-//    }
+    public void addObject() {
+        world.addObjectToWorld(this);
+    }
+
+    protected void initAfterDeserialization() {
+    }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.writeDouble(getWidth());
@@ -56,7 +59,7 @@ public class WorldObj implements Serializable {
         spawned = in.readBoolean();
         world = MainClient.WORLD;
         objectIdMap.put(objectId, this);
-        //initAfterDeserialization();
+        initAfterDeserialization();
     }
 
     public static WorldObj getObject(int id) {
