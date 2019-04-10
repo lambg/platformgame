@@ -40,6 +40,8 @@ public class ObjectSpawnPacket extends Packet {
     public void applyPacket(Communicator communicator, Socket socket) {
         MainClient.WORLD.addObjectToWorld(obj);
 
+        System.out.println(obj);
+
         // if this entity is the client's player entity, assign players entity
         if (obj.getObjectId() == MainClient.PLAYER_ID)
             MainClient.PLAYER = (PlayerEntity) obj;
