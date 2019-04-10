@@ -47,7 +47,6 @@ public class PlayerRespawnPacket extends Packet {
 
     @Override
     public void applyPacket(Communicator communicator, Socket socket) {
-        // todo - make sure this client does not send an update packet (move packet) back to server if the server calls this player to re-spawn at a specific location
         MainClient.WORLD.addObjectToWorld(WorldObj.getObject(entityId));
     }
 }

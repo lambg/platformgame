@@ -31,11 +31,14 @@ public class WorldObj implements Serializable {
 
         if (objectIdMap.put(objectId, this) != null)
             throw new RuntimeException("Error: given id has already been assigned to another object.");
-        world.addObjectToWorld(this);
     }
 
     public WorldObj(Location location, World world) {
         this(location,world,MainServer.getServer().getNextObjectId());
+    }
+
+    public void addObject() {
+        world.addObjectToWorld(this);
     }
 
     protected void initAfterDeserialization() {
