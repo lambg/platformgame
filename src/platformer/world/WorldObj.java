@@ -75,6 +75,10 @@ public class WorldObj implements Serializable {
         if (getLocation().getY() - getHeight() < height) {
             getLocation().setY(height + getHeight());
         }
+        height = world.getTerrainHeightAt(getLocation().getX() - getWidth());
+        if (getLocation().getY() - getHeight() < height) {
+            getLocation().setY(height + getHeight());
+        }
     }
 
     public void update() {

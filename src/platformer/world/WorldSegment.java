@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WorldSegment {
-    public static final int BLOCK_DRAW_HEIGHT = 100;
+    public static final int BLOCK_DRAW_HEIGHT = 400;
     // amount of segments per block
     public static final int BLOCKS_PER_SEGMENT = 20;
     // size of each block in segment
@@ -157,7 +157,7 @@ public class WorldSegment {
             if (height < 1)
                 height = 1;
             this.height = height;
-            this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, height + BLOCK_DRAW_HEIGHT, Color.RED);
+            this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, height + BLOCK_DRAW_HEIGHT, Color.GREENYELLOW);
         }
 
         double getLeftBlockPosX() {

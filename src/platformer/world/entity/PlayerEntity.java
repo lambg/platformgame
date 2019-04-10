@@ -46,9 +46,9 @@ public class PlayerEntity extends LivingEntity {
     public static void setKeyListener(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
             switch (e.getCode()) {
-                case W:
-                    up = true;
-                    break;
+//                case W:
+//                    up = true;
+//                    break;
                 case A:
                     left = true;
                     break;
@@ -59,6 +59,7 @@ public class PlayerEntity extends LivingEntity {
                     right = true;
                     break;
                 case SPACE:
+                case W:
                     if (isJumping) {
 
                         currentHeight = getObject(MainClient.PLAYER_ID).getLocation().getY();
@@ -77,9 +78,9 @@ public class PlayerEntity extends LivingEntity {
 
         scene.addEventFilter(KeyEvent.KEY_RELEASED, e -> {
             switch (e.getCode()) {
-                case W:
-                    up = false;
-                    break;
+//                case W:
+//                    up = false;
+//                    break;
                 case A:
                     left = false;
                     break;
@@ -90,6 +91,7 @@ public class PlayerEntity extends LivingEntity {
                     right = false;
                     break;
                 case SPACE:
+                case W:
                     jump = false;
                     break;
             }
