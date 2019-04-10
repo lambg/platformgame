@@ -2,6 +2,8 @@ package platformer.world.entity;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import platformer.MainClient;
 import platformer.connection.packets.ObjMovePacket;
 import platformer.world.Location;
@@ -21,7 +23,7 @@ public class PlayerEntity extends LivingEntity {
     static boolean isJumping = true;
     static boolean shouldJump = false;
 
-    static boolean decreasing = true;
+    static boolean decrease = true;
     static boolean x = false;
 
     public double playerX;
@@ -29,6 +31,9 @@ public class PlayerEntity extends LivingEntity {
 
     static double currentHeight = 0;
     static double jumpHeight = 0;
+
+    double currentTime = 0;
+    double nextTime = 0;
 
     public PlayerEntity(Location location, World world, String name) {
         super(location, world);
@@ -71,8 +76,8 @@ public class PlayerEntity extends LivingEntity {
                     }
                     break;
                 case X:
+                    x = true;
 
-                   // decreaseHealth();
                     break;
             }
         });
@@ -121,8 +126,13 @@ public class PlayerEntity extends LivingEntity {
     }
 
     public void updateKeyEvents() {
+
+
         double horizontalDistance = 0;
         double verticalDistance = 0;
+
+
+        currentTime = System.currentTimeMillis();
 
         if (right) {
             if (!playerColDetRight())
@@ -147,6 +157,12 @@ public class PlayerEntity extends LivingEntity {
                 verticalDistance -= verticalSpeed();
         }
 
+        if (decrease && x) {
+            decreaseHealth();
+            super.updateDraw();
+            decrease = false;
+            nextTime = currentTime + 1000;
+        }
 
         currentHeight = getObject(MainClient.PLAYER_ID).getLocation().getY();
         if (jump) {
@@ -158,6 +174,7 @@ public class PlayerEntity extends LivingEntity {
             jump = false;
         }
 
+        //todo - don't allow jumping when in the air
         if (shouldJump) {
             if (!playerColDetTop()) {
                 if (currentHeight < jumpHeight) {
@@ -166,6 +183,12 @@ public class PlayerEntity extends LivingEntity {
                     shouldJump = false;
                 }
             }
+        }
+
+
+        if (currentTime > nextTime) {
+            decrease = true;
+            x = false;
         }
 
         //gravity

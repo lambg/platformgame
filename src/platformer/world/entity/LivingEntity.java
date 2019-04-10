@@ -19,6 +19,19 @@ public class LivingEntity extends Entity {
     private int currentHealth = 3;
     private transient Rectangle currentHealthBar, totalHealthBar;
 
+    public Rectangle getCurrentHealthBar() {
+        return currentHealthBar;
+    }
+
+    public Rectangle getTotalHealthBar() {
+        return totalHealthBar;
+    }
+
+    public void decreaseCurrentHealthBar() {
+
+        currentHealthBar.setWidth(getWidth() - 25);
+    }
+
     public LivingEntity(Location location, World world, int objId) {
         super(location, world, objId);
         this.maxHealth = DEFAULT_HEALTH;
@@ -48,7 +61,7 @@ public class LivingEntity extends Entity {
         super.updateDraw();
         GameUtil.setRelativeTo(totalHealthBar, MainClient.getScreenLocation(), getLocation().getX(), getLocation().getY() + 20);
         GameUtil.setRelativeTo(currentHealthBar, MainClient.getScreenLocation(), getLocation().getX(), getLocation().getY() + 20);
-        currentHealthBar.setWidth(getWidth() * (getHealth() / (float) maxHealth));
+        totalHealthBar.setWidth(getWidth() * (getHealth() / (float) maxHealth));
         System.out.println(getObject(getObjectId()) + "//" + getWidth() + " * " + (getHealth() + " / " + (float) maxHealth)); // todo - remove trace
     }
 
