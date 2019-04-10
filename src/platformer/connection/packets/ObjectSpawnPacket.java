@@ -1,6 +1,5 @@
 package platformer.connection.packets;
 
-import javafx.application.Platform;
 import platformer.GameUtil;
 import platformer.MainClient;
 import platformer.connection.Communicator;
@@ -39,15 +38,11 @@ public class ObjectSpawnPacket extends Packet {
 
     @Override
     public void applyPacket(Communicator communicator, Socket socket) {
-        System.out.println(obj.getObjectId() + ";" + MainClient.PLAYER_ID); // spawn object
         MainClient.WORLD.addObjectToWorld(obj);
-
-        System.out.println(obj);
 
         // if this entity is the client's player entity, assign players entity
         if (obj.getObjectId() == MainClient.PLAYER_ID) {
-            if (MainClient.PLAYER != null)
-                throw new RuntimeException("Cannot re-assign player object");
+            assert MainClient.PLAYER != null : "Cannot re-assign player object";
             MainClient.PLAYER = (PlayerEntity) obj;
         }
 //        else Platform.runLater(() -> MainClient.root.getChildren().add(obj.getShape()));

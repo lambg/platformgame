@@ -5,6 +5,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import platformer.MainClient;
+import platformer.connection.packets.EntityHealthModifyPacket;
 import platformer.connection.packets.ObjMovePacket;
 import platformer.world.Location;
 import platformer.world.World;
@@ -108,11 +109,19 @@ public class PlayerEntity extends LivingEntity {
 
         if (MainClient.PLAYER == this) {
             Location current = new Location(getLocation().getX(), getLocation().getY());
+            int health = getHealth();
             updateKeyEvents();
 
             if (!current.equals(getLocation())) {
                 try {
                     MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new ObjMovePacket(getObjectId(), getLocation()));
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            if(getHealth() != health) {
+                try {
+                    MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new EntityHealthModifyPacket(getObjectId(), health));
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }

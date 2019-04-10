@@ -1,12 +1,13 @@
 package platformer.world;
 
-import javafx.application.Platform;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import platformer.GameUtil;
 import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.packets.ObjMovePacket;
+import platformer.world.entity.HostileEntity;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -52,6 +53,8 @@ public class WorldObj implements Serializable {
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         shape = new Rectangle(getWidth(), getHeight());
+        if(this instanceof HostileEntity)
+            shape.setFill(Color.RED);
         location = (Location) in.readObject();
         objectId = in.readInt();
         spawned = in.readBoolean();
@@ -89,6 +92,8 @@ public class WorldObj implements Serializable {
     public void updateDraw() {
         setAboveGround();
         GameUtil.setRelativeTo(shape, MainClient.getScreenLocation(), location.getX(), location.getY());
+        if(!MainClient.root.getChildren().contains(shape))
+            MainClient.root.getChildren().add(shape);
     }
 
     public Location getLocation() {
@@ -104,8 +109,12 @@ public class WorldObj implements Serializable {
         MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjMovePacket(getObjectId(), getLocation())));
     }
 
-    public boolean spawned() {
+    public boolean isSpawned() {
         return spawned;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public double horizontalSpeed() {

@@ -53,4 +53,8 @@ public class Location implements Serializable {
                 ", y=" + y +
                 '}';
     }
+
+    public double distanceSquared(Location other) {
+        return other.getX() * getX() + other.getY() + getY();
+    }
 }
