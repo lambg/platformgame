@@ -15,7 +15,7 @@ public class LivingEntity extends Entity {
     private static final int DEFAULT_HEALTH = 3;
 
     public boolean alive;
-    private int maxHealth = 3;
+    private int maxHealth;
     private int currentHealth = 3;
     private transient Rectangle currentHealthBar, totalHealthBar;
 
@@ -70,16 +70,14 @@ public class LivingEntity extends Entity {
     }
 
     public void increaseHealth(int value) {
-        currentHealth += value;
-        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
+        if (currentHealth < maxHealth) {
+            currentHealth = Math.min(maxHealth, currentHealth + value);
+            MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
+        }
     }
 
     public void increaseHealth() {
-
-        if (currentHealth < maxHealth) {
-            currentHealth++;
-            MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
-        }
+        increaseHealth(1);
     }
 
     public void decreaseHealth(int value) {
@@ -88,8 +86,7 @@ public class LivingEntity extends Entity {
     }
 
     public void decreaseHealth() {
-        currentHealth--;
-        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
+        decreaseHealth(1);
     }
 
     public boolean isAlive() {

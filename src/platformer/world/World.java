@@ -1,8 +1,10 @@
 package platformer.world;
 
+import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.connection.packets.ObjectSpawnPacket;
+import platformer.world.entity.HostileEntity;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,17 +20,19 @@ public class World implements Serializable {
     private static final double UPDATE_SEGMENT_SIZE = WorldSegment.WORLD_SEGMENT_SIZE * UPDATE_SEGMENTS;
     private List<WorldSegment> positiveSegments = new ArrayList<>();
     private List<WorldSegment> negativeSegments = new ArrayList<>();
-    private final Random random;
+    private Random random;
     private int seed;
     final List<Tuple> transferredObject = new ArrayList<>();
 
     public World(int seed) {
-        random = new Random(seed);
+        seed = 0;
         this.seed = seed;
+        random = new Random(seed);
     }
 
     private void readObject(ObjectInputStream in) throws IOException {
         seed = in.readInt();
+        random = new Random(seed);
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -68,7 +72,7 @@ public class World implements Serializable {
         return negativeSegments;
     }
 
-    public <T extends WorldObj> Collection<T> getNearbyObjects(Class<T> cl, double lx, double ux, double ly, double uy) {
+    public <T extends WorldObj> List<T> getNearbyObjects(Class<T> cl, double lx, double ux, double ly, double uy) {
         List<T> objects = new ArrayList<>();
         for (WorldSegment segment : getSegmentsFrom(lx, ux)) {
             for (WorldObj obj : segment.getObjects()) {
@@ -78,6 +82,10 @@ public class World implements Serializable {
             }
         }
         return objects;
+    }
+
+    public <T extends WorldObj> List<T> getNearbyObjects(Location location, Class<T> cl, double x, double y) {
+        return getNearbyObjects(cl, location.getX() - x, location.getX() + x, location.getY() - y, location.getY() + y);
     }
 
     public void checkTransfer(WorldObj obj, Runnable runnable) {
@@ -127,11 +135,11 @@ public class World implements Serializable {
 
             // todo - generate hostile entities
             // generate entities in this segment
-//            MainServer.serverUpdate(s -> {
-//                for (int i = 0; i < 10; i++) {
-//                    new HostileEntity(new Location(segment.getLeftPosX(), 30), this);
-//                }
-//            });
+            MainServer.serverUpdate(s -> {
+                for (int i = 0; i < 10; i++) {
+                    new HostileEntity(new Location(segment.getLeftPosX(), 30), this).addObject();
+                }
+            });
         }
 
         return segments.get(segmentIndex);
@@ -161,6 +169,9 @@ public class World implements Serializable {
         getSegmentAt(obj.getLocation()).objects.remove(obj);
 
         MainServer.serverUpdate(server -> server.sendPacketToAll(new ObjectDeSpawnPacket(obj.getObjectId())));
+        if (MainClient.PLAYER != null) {
+            MainClient.root.getChildren().remove(obj.getShape());
+        }
     }
 
     static class Tuple {

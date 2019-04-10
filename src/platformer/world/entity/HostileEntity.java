@@ -3,10 +3,14 @@ package platformer.world.entity;
 import platformer.world.Location;
 import platformer.world.World;
 
-public class HostileEntity extends LivingEntity {
+import java.util.Comparator;
+import java.util.List;
 
-    private boolean targetAcquired;
-    private Entity target;
+public class HostileEntity extends LivingEntity {
+    private static final byte RETARGET_EVERY = 5;
+
+    private transient Location target;
+    private transient byte lastUpdate = -1;
 
     public HostileEntity(Location location, World world, int objId) {
         super(location, world, objId);
@@ -18,14 +22,22 @@ public class HostileEntity extends LivingEntity {
 
     @Override
     public void update() {
-
         super.update();
 
-        //TODO - lock onto closest target
+        if (++lastUpdate % RETARGET_EVERY == 0) {
+            lastUpdate = 0;
+            List<PlayerEntity> nearbyPlayers = getWorld().getNearbyObjects(getLocation(), PlayerEntity.class, 2000, 2000);
+            nearbyPlayers.sort(Comparator.comparingDouble(player -> getLocation().distanceSquared(player.getLocation())));
+            if (!nearbyPlayers.isEmpty()) {
+                target = nearbyPlayers.get(0).getLocation();
+            }
+        }
 
-        //Get closest target by looking at all players, the closest one will be the one targeted.
-        //Target must be min distance away (will figure this out once we have a working game to test distances)
-
-
+        if (target != null) {
+//            if(getLocation().distanceSquared(target) > verticalSpeed() * verticalSpeed()) {
+            getLocation().setX(getLocation().getX() + (target.getX() > getLocation().getX() ? verticalSpeed() : -verticalSpeed()));
+            sendLocationPacket();
+//            }
+        }
     }
 }
