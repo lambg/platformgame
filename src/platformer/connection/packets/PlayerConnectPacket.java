@@ -57,10 +57,11 @@ public class PlayerConnectPacket extends Packet {
         PlayerEntity playerEntity = new PlayerEntity(new Location(0, 0), MainServer.getServer().getWorld(), name);
         MainServer.getServer().connectedPlayers.put(socket, playerEntity);
 
+        communicator.sendPacket(socket, new PlayerConfirmConnectPacket(playerEntity.getObjectId(), MainServer.getServer().getWorld().getSeed()));
+
         sendObjects(MainServer.getServer().getWorld().getPositiveLoadedSegments(), communicator, socket);
         sendObjects(MainServer.getServer().getWorld().getNegativeLoadedSegments(), communicator, socket);
 
-        communicator.sendPacket(socket, new PlayerConfirmConnectPacket(playerEntity.getObjectId(), MainServer.getServer().getWorld().getSeed()));
         playerEntity.addObject();
     }
 }

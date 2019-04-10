@@ -1,5 +1,6 @@
 package platformer.world;
 
+import javafx.application.Platform;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import platformer.GameUtil;
@@ -34,32 +35,28 @@ public class WorldObj implements Serializable {
     }
 
     public WorldObj(Location location, World world) {
-        this(location,world,MainServer.getServer().getNextObjectId());
+        this(location, world, MainServer.getServer().getNextObjectId());
     }
 
     public void addObject() {
         world.addObjectToWorld(this);
     }
 
-    protected void initAfterDeserialization() {
-    }
-
     private void writeObject(ObjectOutputStream out) throws IOException {
-        out.writeDouble(getWidth());
-        out.writeDouble(getHeight());
+//        out.writeDouble(getWidth());
+//        out.writeDouble(getHeight());
         out.writeObject(location);
         out.writeInt(objectId);
         out.writeBoolean(spawned);
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        shape = new Rectangle(in.readDouble(), in.readDouble());
+        shape = new Rectangle(getWidth(), getHeight());
         location = (Location) in.readObject();
         objectId = in.readInt();
         spawned = in.readBoolean();
         world = MainClient.WORLD;
         objectIdMap.put(objectId, this);
-        initAfterDeserialization();
     }
 
     public static WorldObj getObject(int id) {
@@ -75,7 +72,7 @@ public class WorldObj implements Serializable {
 
     private void setAboveGround() {
         double height = world.getTerrainHeightAt(getLocation().getX());
-        if(getLocation().getY() - getHeight() < height) {
+        if (getLocation().getY() - getHeight() < height) {
             getLocation().setY(height + getHeight());
         }
     }

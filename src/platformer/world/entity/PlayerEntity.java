@@ -43,13 +43,6 @@ public class PlayerEntity extends LivingEntity {
         playerY = this.getLocation().getY();
     }
 
-    @Override
-    protected void initAfterDeserialization() {
-        super.initAfterDeserialization();
-//        if(name == null)
-//            throw new RuntimeException("Name cannot be null");
-    }
-
     public static void setKeyListener(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
             switch (e.getCode()) {
