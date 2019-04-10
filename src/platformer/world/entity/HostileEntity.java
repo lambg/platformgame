@@ -8,8 +8,8 @@ public class HostileEntity extends LivingEntity {
     private boolean targetAcquired;
     private Entity target;
 
-    public HostileEntity(Location location, World world, int maxHealth) {
-        super(location, world, maxHealth);
+    public HostileEntity(Location location, World world, int objId) {
+        super(location, world, objId);
     }
 
     public HostileEntity(Location location, World world) {

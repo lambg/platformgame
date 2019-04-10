@@ -15,8 +15,8 @@ public class LivingEntity extends Entity {
     private static final int DEFAULT_HEALTH = 3;
 
     public boolean alive;
-    private int maxHealth;
-    private int currentHealth;
+    private int maxHealth = 3;
+    private int currentHealth = 3;
     private transient Rectangle currentHealthBar, totalHealthBar;
 
     public LivingEntity(Location location, World world, int objId) {
@@ -33,26 +33,23 @@ public class LivingEntity extends Entity {
     }
 
     @Override
-    protected void initAfterDeserialization() {
-        super.initAfterDeserialization();
-        totalHealthBar = new Rectangle(getWidth(), 10, Color.GREEN);
-        currentHealthBar = new Rectangle(getWidth(), 10, Color.RED);
-        Platform.runLater(() -> {
-            MainClient.root.getChildren().add(currentHealthBar);
-            MainClient.root.getChildren().add(totalHealthBar);
-        });
-        alive = true;
-        maxHealth = DEFAULT_HEALTH;
-        currentHealth = maxHealth;
-    }
-
-    @Override
     public void updateDraw() {
+        if (totalHealthBar == null) {
+
+            maxHealth = 3;
+            currentHealth = maxHealth;
+            totalHealthBar = new Rectangle(getWidth(), 10, Color.GREEN);
+            currentHealthBar = new Rectangle(getWidth(), 10, Color.RED);
+            Platform.runLater(() -> {
+                MainClient.root.getChildren().add(currentHealthBar);
+                MainClient.root.getChildren().add(totalHealthBar);
+            });
+        }
         super.updateDraw();
         GameUtil.setRelativeTo(totalHealthBar, MainClient.getScreenLocation(), getLocation().getX(), getLocation().getY() + 20);
         GameUtil.setRelativeTo(currentHealthBar, MainClient.getScreenLocation(), getLocation().getX(), getLocation().getY() + 20);
         currentHealthBar.setWidth(getWidth() * (getHealth() / (float) maxHealth));
-//        System.out.println(getWidth() + " * " + (getHealth() + " / " + (float) maxHealth)); // todo - remove trace
+        System.out.println(getObject(getObjectId()) + "//" + getWidth() + " * " + (getHealth() + " / " + (float) maxHealth)); // todo - remove trace
     }
 
     public int getHealth() {

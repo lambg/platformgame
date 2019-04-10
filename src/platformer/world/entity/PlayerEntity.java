@@ -21,6 +21,9 @@ public class PlayerEntity extends LivingEntity {
     static boolean isJumping = true;
     static boolean shouldJump = false;
 
+    static boolean decreasing = true;
+    static boolean x = false;
+
     public double playerX;
     public double playerY;
 
@@ -60,6 +63,10 @@ public class PlayerEntity extends LivingEntity {
                         jump = true;
                         isJumping = false;
                     }
+                    break;
+                case X:
+
+                   // decreaseHealth();
                     break;
             }
         });

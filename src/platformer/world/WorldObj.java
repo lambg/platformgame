@@ -38,8 +38,8 @@ public class WorldObj implements Serializable {
         this(location,world,MainServer.getServer().getNextObjectId());
     }
 
-    protected void initAfterDeserialization() {
-    }
+//    protected void initAfterDeserialization() {
+//    }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.writeDouble(getWidth());
@@ -56,7 +56,7 @@ public class WorldObj implements Serializable {
         spawned = in.readBoolean();
         world = MainClient.WORLD;
         objectIdMap.put(objectId, this);
-        initAfterDeserialization();
+        //initAfterDeserialization();
     }
 
     public static WorldObj getObject(int id) {
