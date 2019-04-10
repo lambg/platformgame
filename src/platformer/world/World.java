@@ -126,12 +126,13 @@ public class World implements Serializable {
             WorldSegment segment = new WorldSegment(this, negative ? -segments.size() : segments.size());
             segments.add(segment);
 
+            // todo - generate hostile entities
             // generate entities in this segment
-            MainServer.serverUpdate(s -> {
-                for (int i = 0; i < 10; i++) {
-                    new HostileEntity(new Location(segment.getLeftPosX(), 30), this);
-                }
-            });
+//            MainServer.serverUpdate(s -> {
+//                for (int i = 0; i < 10; i++) {
+//                    new HostileEntity(new Location(segment.getLeftPosX(), 30), this);
+//                }
+//            });
         }
 
         return segments.get(segmentIndex);

@@ -13,7 +13,8 @@ public class Communicator {
     }
 
     public void sendPacket(Socket socket, Packet packet) throws IOException {
-        packet.send(socket.getOutputStream());
+        if (socket != null) // else communicator is closed
+            packet.send(socket.getOutputStream());
     }
 
     public void listenTo(Socket socket) {

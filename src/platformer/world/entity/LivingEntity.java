@@ -1,5 +1,10 @@
 package platformer.world.entity;
 
+import javafx.application.Platform;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import platformer.GameUtil;
+import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.packets.EntityHealthModifyPacket;
 import platformer.connection.packets.ObjectDeSpawnPacket;
@@ -12,11 +17,11 @@ public class LivingEntity extends Entity {
     public boolean alive;
     private int maxHealth;
     private int currentHealth;
+    private transient Rectangle currentHealthBar, totalHealthBar;
 
     public LivingEntity(Location location, World world, int objId) {
         super(location, world, objId);
         this.maxHealth = DEFAULT_HEALTH;
-        this.currentHealth = maxHealth;
         alive = true;
     }
 
@@ -25,6 +30,29 @@ public class LivingEntity extends Entity {
         this.maxHealth = DEFAULT_HEALTH;
         this.currentHealth = maxHealth;
         alive = true;
+    }
+
+    @Override
+    protected void initAfterDeserialization() {
+        super.initAfterDeserialization();
+        totalHealthBar = new Rectangle(getWidth(), 10, Color.GREEN);
+        currentHealthBar = new Rectangle(getWidth(), 10, Color.RED);
+        Platform.runLater(() -> {
+            MainClient.root.getChildren().add(currentHealthBar);
+            MainClient.root.getChildren().add(totalHealthBar);
+        });
+        alive = true;
+        maxHealth = DEFAULT_HEALTH;
+        currentHealth = maxHealth;
+    }
+
+    @Override
+    public void updateDraw() {
+        super.updateDraw();
+        GameUtil.setRelativeTo(totalHealthBar, MainClient.getScreenLocation(), getLocation().getX(), getLocation().getY() + 20);
+        GameUtil.setRelativeTo(currentHealthBar, MainClient.getScreenLocation(), getLocation().getX(), getLocation().getY() + 20);
+        currentHealthBar.setWidth(getWidth() * (getHealth() / (float) maxHealth));
+//        System.out.println(getWidth() + " * " + (getHealth() + " / " + (float) maxHealth)); // todo - remove trace
     }
 
     public int getHealth() {

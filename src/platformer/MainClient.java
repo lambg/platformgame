@@ -35,7 +35,7 @@ public class MainClient extends Application {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter IP: ");
 //        client = new NetworkClient(scanner.nextLine());
-        client = new NetworkClient("10.200.253.166"); // todo - use scanner instead of inline
+        client = new NetworkClient("10.200.115.63"); // todo - use scanner instead of inline
 
         System.out.println("Enter username: ");
 //        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
@@ -67,7 +67,7 @@ public class MainClient extends Application {
             public void run() {
                 if (client.isClosed())
                     Platform.exit();
-                client.update();
+                else client.update();
             }
         }, 0, 16L); // every 16 ms is ~60 fps
 
