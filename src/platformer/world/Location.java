@@ -55,6 +55,6 @@ public class Location implements Serializable {
     }
 
     public double distanceSquared(Location other) {
-        return other.getX() * getX() + other.getY() + getY();
+        return (other.getX() - getX()) * (other.getX() - getX()) + (other.getY() - getY()) * (other.getY() - getY());
     }
 }

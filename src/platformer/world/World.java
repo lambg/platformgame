@@ -136,7 +136,7 @@ public class World implements Serializable {
         // generate missing segments
 
         while (segmentIndex >= segments.size()) {
-            System.out.println("NextSegmentIndex: " + segments.size() + "; negative: " + negative + "; segmentIndex: " + segmentIndex);
+//            System.out.println("NextSegmentIndex: " + segments.size() + "; negative: " + negative + "; segmentIndex: " + segmentIndex);
 //            System.out.println("SIZE: " + "?:" + negative + " " + segments.size() + ";" + segments); // todo - remove trace
             WorldSegment segment = new WorldSegment(this, negative ? -segments.size() - 1 : segments.size());
             segments.add(segment);

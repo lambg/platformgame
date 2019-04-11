@@ -123,7 +123,7 @@ public class PlayerEntity extends LivingEntity {
             }
             if (getHealth() != health) {
                 try {
-                    MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new EntityHealthModifyPacket(getObjectId(), health));
+                    MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new EntityHealthModifyPacket(getObjectId(), getHealth()));
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }

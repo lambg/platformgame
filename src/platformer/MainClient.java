@@ -97,7 +97,6 @@ public class MainClient extends Application {
     @Override
     public void stop() throws IOException {
         if (!client.isClosed()) {
-            System.out.println(client.getSocket()); // todo - remove trace
             client.sendPacket(client.getSocket(), new PlayerDisconnectPacket());
             client.close();
         }

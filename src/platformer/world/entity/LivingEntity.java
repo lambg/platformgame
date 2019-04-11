@@ -11,9 +11,7 @@ import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.world.Location;
 import platformer.world.World;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.List;
 
 public class LivingEntity extends Entity {
 

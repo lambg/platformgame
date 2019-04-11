@@ -37,10 +37,11 @@ public class HostileEntity extends LivingEntity {
         }
 
         if (target != null) {
-//            if(getLocation().distanceSquared(target) > verticalSpeed() * verticalSpeed()) {
-            getLocation().setX(getLocation().getX() + (target.getX() > getLocation().getX() ? verticalSpeed() * speedModifier : -verticalSpeed() * speedModifier));
-            sendLocationPacket();
-//            }
+            double distanceNow = target.getX() > getLocation().getX() ? verticalSpeed() * speedModifier : -verticalSpeed() * speedModifier;
+            if (getLocation().distanceSquared(target) > distanceNow * distanceNow) {
+                getLocation().setX(getLocation().getX() + distanceNow);
+                sendLocationPacket();
+            }
         }
     }
 }
