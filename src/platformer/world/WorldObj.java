@@ -54,7 +54,7 @@ public class WorldObj implements Serializable {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         shape = new Rectangle(getWidth(), getHeight());
         if (this instanceof HostileEntity) {
-            shape.setFill(new Color(Math.random() * .5 + .4 0, 0, 1));
+            shape.setFill(new Color(Math.random() * .5 + .4 ,0, 0, 1));
         }
 
         location = (Location) in.readObject();
