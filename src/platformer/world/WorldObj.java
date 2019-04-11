@@ -55,6 +55,10 @@ public class WorldObj implements Serializable {
         shape = new Rectangle(getWidth(), getHeight());
         if (this instanceof HostileEntity)
             shape.setFill(Color.RED);
+        if (this instanceof HostileEntity) {
+            shape.setFill(new Color(Math.random() * .5 + .4 ,0, 0, 1));
+        }
+
         location = (Location) in.readObject();
         objectId = in.readInt();
         spawned = in.readBoolean();

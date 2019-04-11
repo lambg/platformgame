@@ -11,13 +11,11 @@ public class HostileEntity extends LivingEntity {
 
     private transient Location target;
     private transient byte lastUpdate = -1;
-
-    public HostileEntity(Location location, World world, int objId) {
-        super(location, world, objId);
-    }
+    private double speedModifier;
 
     public HostileEntity(Location location, World world) {
         super(location, world);
+        speedModifier = Math.random() * 0.5 + 0.1;
     }
 
     @Override
@@ -40,7 +38,7 @@ public class HostileEntity extends LivingEntity {
 
         if (target != null) {
 //            if(getLocation().distanceSquared(target) > verticalSpeed() * verticalSpeed()) {
-            getLocation().setX(getLocation().getX() + (target.getX() > getLocation().getX() ? verticalSpeed() : -verticalSpeed()));
+            getLocation().setX(getLocation().getX() + (target.getX() > getLocation().getX() ? verticalSpeed() * speedModifier : -verticalSpeed() * speedModifier));
             sendLocationPacket();
 //            }
         }

@@ -4,6 +4,8 @@ import platformer.world.Location;
 import platformer.world.World;
 import platformer.world.WorldObj;
 
+import java.util.List;
+
 public class Entity extends WorldObj {
 
     private boolean stationary;
