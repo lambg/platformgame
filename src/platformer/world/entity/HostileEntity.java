@@ -21,6 +21,11 @@ public class HostileEntity extends LivingEntity {
     }
 
     @Override
+    public int damageTo(LivingEntity other) {
+        return other instanceof PlayerEntity ? super.damageTo(other) : 0;
+    }
+
+    @Override
     public void update() {
 
         super.update();

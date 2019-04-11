@@ -2,8 +2,6 @@ package platformer.world.entity;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import platformer.MainClient;
 import platformer.connection.packets.EntityHealthModifyPacket;
 import platformer.connection.packets.ObjMovePacket;
@@ -95,6 +93,11 @@ public class PlayerEntity extends LivingEntity {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int damageTo(LivingEntity other) {
+        return other instanceof HostileEntity ? super.damageTo(other) : 0;
     }
 
     @Override

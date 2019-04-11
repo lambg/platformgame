@@ -26,6 +26,7 @@ public class WorldSegment {
     Set<WorldObj> objects = new HashSet<>();
 
     public WorldSegment(World world, int terrainSegmentIndex) {
+        System.out.println(terrainSegmentIndex); // todo - remove trace
         this.world = world;
         this.terrainSegmentIndex = terrainSegmentIndex;
 

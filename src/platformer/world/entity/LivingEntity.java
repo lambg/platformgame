@@ -72,6 +72,10 @@ public class LivingEntity extends Entity {
         MainClient.root.getChildren().remove(totalHealthBar);
     }
 
+    public int damageTo(LivingEntity other) {
+        return 1;
+    }
+
     public int getHealth() {
         return currentHealth;
     }
