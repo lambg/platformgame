@@ -22,7 +22,9 @@ public class HostileEntity extends LivingEntity {
 
     @Override
     public void update() {
+
         super.update();
+        System.out.println(this.getHealth());
 
         if (++lastUpdate % RETARGET_EVERY == 0) {
             lastUpdate = 0;

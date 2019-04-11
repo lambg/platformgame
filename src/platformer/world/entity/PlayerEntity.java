@@ -47,9 +47,6 @@ public class PlayerEntity extends LivingEntity {
     public static void setKeyListener(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
             switch (e.getCode()) {
-//                case W:
-//                    up = true;
-//                    break;
                 case A:
                     left = true;
                     break;
@@ -64,7 +61,7 @@ public class PlayerEntity extends LivingEntity {
                     if (isJumping) {
 
                         currentHeight = getObject(MainClient.PLAYER_ID).getLocation().getY();
-                        jumpHeight = currentHeight + 100;
+                        jumpHeight = currentHeight + 150;
 
                         jump = true;
                         isJumping = false;
@@ -79,9 +76,6 @@ public class PlayerEntity extends LivingEntity {
 
         scene.addEventFilter(KeyEvent.KEY_RELEASED, e -> {
             switch (e.getCode()) {
-//                case W:
-//                    up = false;
-//                    break;
                 case A:
                     left = false;
                     break;
@@ -119,7 +113,7 @@ public class PlayerEntity extends LivingEntity {
                     throw new RuntimeException(ex);
                 }
             }
-            if(getHealth() != health) {
+            if (getHealth() != health) {
                 try {
                     MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new EntityHealthModifyPacket(getObjectId(), health));
                 } catch (IOException ex) {
@@ -131,10 +125,8 @@ public class PlayerEntity extends LivingEntity {
 
     public void updateKeyEvents() {
 
-
         double horizontalDistance = 0;
         double verticalDistance = 0;
-
 
         currentTime = System.currentTimeMillis();
 
@@ -161,9 +153,18 @@ public class PlayerEntity extends LivingEntity {
                 verticalDistance -= verticalSpeed();
         }
 
+        //todo- when somebody health decreases, all the drawing just stops for some reason. fix that
+
+        // its a problem with entity health modify packet
+        /*
+        Exception in thread "main" java.lang.RuntimeException: java.lang.RuntimeException: java.lang.InstantiationException: platformer.connection.packets.EntityHealthModifyPacket
+	at platformer.connection.Communicator.update(Communicator.java:36)
+	at platformer.connection.NetworkServer.update(NetworkServer.java:45)
+	at platformer.MainServer.main(MainServer.java:16)
+         */
         if (decrease && x) {
             decreaseHealth();
-            super.updateDraw();
+            //super.updateDraw();
             decrease = false;
             nextTime = currentTime + 1000;
         }
