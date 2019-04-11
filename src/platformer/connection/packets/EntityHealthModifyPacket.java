@@ -1,11 +1,9 @@
 package platformer.connection.packets;
 
 import platformer.GameUtil;
-import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.Communicator;
 import platformer.connection.Packet;
-import platformer.world.World;
 import platformer.world.WorldObj;
 import platformer.world.entity.LivingEntity;
 
@@ -21,6 +19,9 @@ public class EntityHealthModifyPacket extends Packet {
     public EntityHealthModifyPacket(int entityId, int updatedHealth) {
         this.entityId = entityId;
         this.updatedHealth = updatedHealth;
+    }
+
+    public EntityHealthModifyPacket() {
     }
 
     public int getEntityId() {
@@ -46,7 +47,8 @@ public class EntityHealthModifyPacket extends Packet {
     @Override
     public void applyPacket(Communicator communicator, Socket socket) {
         LivingEntity entity = ((LivingEntity) WorldObj.getObject(entityId));
-        entity.increaseHealth(updatedHealth - entity.getHealth());
+        entity.setHealth(updatedHealth);
+        System.out.println(updatedHealth);
 
         // if the packet is from a client, forward this packet to all clients (excluding the original client)
         MainServer.serverUpdate(s -> s.sendPacketToAll(this, socket));

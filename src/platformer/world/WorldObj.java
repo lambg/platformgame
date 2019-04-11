@@ -147,6 +147,10 @@ public class WorldObj implements Serializable {
         this.location = new Location(shape.getBoundsInLocal().getMinX(), shape.getLayoutBounds().getMaxY());
     }
 
+    protected void remove() {
+        MainClient.root.getChildren().remove(shape);
+    }
+
     public boolean playerColDetTop() {
 
         Shape r = getShape();
@@ -219,5 +223,4 @@ public class WorldObj implements Serializable {
 
         return false;
     }
-
 }

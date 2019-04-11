@@ -65,6 +65,13 @@ public class LivingEntity extends Entity {
 //        System.out.println(getObject(getObjectId()) + "//" + getWidth() + " * " + (getHealth() + " / " + (float) maxHealth)); // todo - remove trace
     }
 
+    @Override
+    protected void remove() {
+        super.remove();
+        MainClient.root.getChildren().remove(currentHealthBar);
+        MainClient.root.getChildren().remove(totalHealthBar);
+    }
+
     public int getHealth() {
         return currentHealth;
     }
@@ -76,13 +83,24 @@ public class LivingEntity extends Entity {
         }
     }
 
+    public void setHealth(int value) {
+        currentHealth = value;
+        // don't send update packet
+    }
+
     public void increaseHealth() {
         increaseHealth(1);
     }
 
     public void decreaseHealth(int value) {
-        currentHealth -= value;
-        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
+        if (alive) {
+            currentHealth -= value;
+            if (currentHealth <= 0) {
+                alive = false;
+                MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjectDeSpawnPacket(getObjectId())));
+            } else
+                MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
+        }
     }
 
     public void decreaseHealth() {
@@ -91,13 +109,5 @@ public class LivingEntity extends Entity {
 
     public boolean isAlive() {
         return alive;
-    }
-
-    public void update() {
-        super.update();
-        if (getHealth() == 0) {
-            alive = false;
-            MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjectDeSpawnPacket(getObjectId())));
-        }
     }
 }

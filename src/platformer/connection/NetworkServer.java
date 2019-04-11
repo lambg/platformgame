@@ -2,21 +2,20 @@ package platformer.connection;
 
 import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.world.World;
+import platformer.world.WorldObj;
 import platformer.world.entity.PlayerEntity;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NetworkServer extends Communicator implements AutoCloseable {
     public final Map<Socket, PlayerEntity> connectedPlayers = new HashMap<>(); // should not be public, but this is easier
     private ServerSocket socket;
     private World world = new World((int) (Math.random() * Integer.MAX_VALUE));
     private int nextObjectId = 1;
+    private List<Socket> removeSockets = new ArrayList<>();
 
     public NetworkServer(int port) throws IOException {
         socket = new ServerSocket(port);
@@ -59,6 +58,13 @@ public class NetworkServer extends Communicator implements AutoCloseable {
                 }
             }
         }
+        for(int i = removeSockets.size() - 1; i >= 0; i--) {
+            try {
+                removeConnection(removeSockets.remove(i));
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     public void acceptConnection(Socket connection) {
@@ -66,9 +72,16 @@ public class NetworkServer extends Communicator implements AutoCloseable {
         System.out.println(connection.getInetAddress() + " established connection.");
     }
 
+    @Override
+    protected void disconnect(Socket socket) {
+        removeSockets.add(socket);
+    }
+
     public void removeConnection(Socket connection) {
         stopListeningTo(connection);
-        sendPacketToAll(new ObjectDeSpawnPacket(connectedPlayers.remove(connection).getObjectId()));
+        WorldObj obj = connectedPlayers.remove(connection);
+        obj.getWorld().removeObjectFromWorld(obj);
+        sendPacketToAll(new ObjectDeSpawnPacket(obj.getObjectId()));
     }
 
     public boolean isClosed() {

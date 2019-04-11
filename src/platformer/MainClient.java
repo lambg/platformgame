@@ -35,7 +35,7 @@ public class MainClient extends Application {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter IP: ");
 //        client = new NetworkClient(scanner.nextLine());
-        client = new NetworkClient("10.200.253.166"); // todo - use scanner instead of inline
+        client = new NetworkClient("10.200.123.29"); // todo - use scanner instead of inline
 
         System.out.println("Enter username: ");
 //        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
@@ -77,6 +77,7 @@ public class MainClient extends Application {
     @Override
     public void stop() throws IOException {
         if (!client.isClosed()) {
+            System.out.println(client.getSocket()); // todo - remove trace
             client.sendPacket(client.getSocket(), new PlayerDisconnectPacket());
             client.close();
         }

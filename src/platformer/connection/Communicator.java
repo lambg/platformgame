@@ -2,10 +2,11 @@ package platformer.connection;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Communicator {
+public abstract class Communicator {
     private List<Socket> updaters = new ArrayList<>();
 
     public void applyUpdatePacket(Packet packet, Socket socket) throws Exception {
@@ -13,9 +14,16 @@ public class Communicator {
     }
 
     public void sendPacket(Socket socket, Packet packet) throws IOException {
-        if (socket != null) // else communicator is closed
-            packet.send(socket.getOutputStream());
+        try {
+            if (socket != null) // else communicator is closed
+                packet.send(socket.getOutputStream());
+            else System.out.println("Failed to send packet " + packet.getIdentifier() + "; socket closed");
+        } catch(SocketException ex) {
+            disconnect(socket);
+        }
     }
+
+    protected abstract void disconnect(Socket socket) throws IOException;
 
     public void listenTo(Socket socket) {
         updaters.add(socket);

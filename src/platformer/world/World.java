@@ -1,5 +1,6 @@
 package platformer.world;
 
+import javafx.application.Platform;
 import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.packets.ObjectDeSpawnPacket;
@@ -166,11 +167,12 @@ public class World implements Serializable {
     }
 
     public void removeObjectFromWorld(WorldObj obj) {
+        System.out.println("REMOVE OBJECT"); // todo - remove trace
         getSegmentAt(obj.getLocation()).objects.remove(obj);
 
         MainServer.serverUpdate(server -> server.sendPacketToAll(new ObjectDeSpawnPacket(obj.getObjectId())));
         if (MainClient.PLAYER != null) {
-            MainClient.root.getChildren().remove(obj.getShape());
+            Platform.runLater(obj::remove);
         }
     }
 

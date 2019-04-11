@@ -41,6 +41,12 @@ public class NetworkClient extends Communicator implements AutoCloseable {
         }
     }
 
+    @Override
+    protected void disconnect(Socket socket) throws IOException {
+        assert socket == this.socket;
+        close();
+    }
+
     public Socket getSocket() {
         return socket;
     }
