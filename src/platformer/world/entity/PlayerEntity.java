@@ -65,7 +65,7 @@ public class PlayerEntity extends LivingEntity {
                     if (isJumping) {
 
                         currentHeight = getObject(MainClient.PLAYER_ID).getLocation().getY();
-                        jumpHeight = currentHeight + 150;
+                        jumpHeight = currentHeight + 250;
 
                         jump = true;
                         isJumping = false;
@@ -241,7 +241,6 @@ public class PlayerEntity extends LivingEntity {
         getLocation().setX(getLocation().getX() + horizontalDistance);
         getLocation().setY(getLocation().getY() + verticalDistance);
     }
-
 
     @Override
     public String toString() {

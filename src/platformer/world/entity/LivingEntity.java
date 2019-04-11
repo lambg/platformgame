@@ -128,17 +128,10 @@ public class LivingEntity extends Entity {
     public void checkDamage() {
 
         for (PlayerEntity currentPlayer : players) {
-
-            //System.out.println("Check"); //todo - delete
-
             if (playerColDetBottom(currentPlayer)) {
                 System.out.println("Should damage the entity below");
             }
-
-
         }
-
-
     }
 
     public void die() {
@@ -188,10 +181,19 @@ public class LivingEntity extends Entity {
 
         for (HostileEntity currentHostile : entities) {
 
-//            if (currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX()+currentHostile.getWidth()) {
-//                System.out.println("a");
-//            }
+            if ((currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX() + currentHostile.getWidth()) || (currentPlayer.getLocation().getX() + currentPlayer.getWidth() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() + currentPlayer.getWidth() < currentHostile.getLocation().getX() + currentHostile.getWidth())) {
+//                System.out.println("between an enemy");
+
+                if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() > currentHostile.getLocation().getY()) {
+//                    System.out.println("above");
+//                    if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() + verticalSpeed() < currentHostile.getLocation().getY()) {
 //
+//                        return true;
+////                        currentHostile.decreaseHealth();
+////                        currentHostile.updateDraw();
+//                    }
+                }
+            }
 //
 //            if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
 //                if ((r.getBoundsInLocal().getMaxY()) + verticalSpeed() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY()) {
