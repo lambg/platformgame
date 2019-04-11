@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WorldSegment {
+    public static final int BASE_BLOCK_HEIGHT = 100;
     public static final int BLOCK_DRAW_HEIGHT = 400;
     // amount of segments per block
     public static final int BLOCKS_PER_SEGMENT = 20;
@@ -26,7 +27,6 @@ public class WorldSegment {
     Set<WorldObj> objects = new HashSet<>();
 
     public WorldSegment(World world, int terrainSegmentIndex) {
-        System.out.println(terrainSegmentIndex); // todo - remove trace
         this.world = world;
         this.terrainSegmentIndex = terrainSegmentIndex;
 
@@ -35,22 +35,22 @@ public class WorldSegment {
                         world.getSegmentAt(terrainSegmentIndex - 1).terrainBlocks[terrainBlocks.length - 1].height :
                         terrainSegmentIndex < 0 ?
                                 world.getSegmentAt(terrainSegmentIndex + 1).terrainBlocks[0].height :
-                                100 // initial block segment
+                                BASE_BLOCK_HEIGHT
         );
 
         for (int i = 1; i < terrainBlocks.length; i++) {
-            int relativeHeight;
-            // next is random number from 0 to 15
-            int next = (int) (world.getRandom().nextDouble() * 15);
-
-            // 50% chance of staying at the same elevation; 25% of going up, 25% of going down (by HEIGHT_STEP).
-            if (next > 11) { // 12,13,14,15 (4 values)
-                relativeHeight = HEIGHT_STEP;
-            } else if (next < 4) { // 0,1,2,3 (4 values)
-                relativeHeight = 0;
-            } else { // 4,5,6,7,8,9,10,11 (8 values)
-                relativeHeight = -HEIGHT_STEP;
-            }
+            int relativeHeight = 0;
+//            // next is random number from 0 to 15
+//            int next = terrainSegmentIndex < 5 ? 1 : (int) (world.getRandom().nextDouble() * 15);
+//
+//            // 50% chance of staying at the same elevation; 25% of going up, 25% of going down (by HEIGHT_STEP).
+//            if (next > 11) { // 12,13,14,15 (4 values)
+//                relativeHeight = HEIGHT_STEP;
+//            } else if (next < 4) { // 0,1,2,3 (4 values)
+//                relativeHeight = -HEIGHT_STEP;
+//            } else { // 4,5,6,7,8,9,10,11 (8 values)
+//                relativeHeight = 0;
+//            }
             terrainBlocks[i] = new Block(i, terrainBlocks[i - 1].height + relativeHeight);
         }
 
@@ -106,7 +106,7 @@ public class WorldSegment {
         return getBlockAtLocalPos(localPosX).width;
     }
 
-    private Block getBlockAtLocalPos(double localPosX) {
+    public Block getBlockAtLocalPos(double localPosX) {
         int blockIndex = (int) (Math.abs(localPosX) / TERRAIN_BLOCK_SIZE);
         if (blockIndex >= terrainBlocks.length)
             throw new IllegalArgumentException("Block index \"" + blockIndex + "\" is out of bounds; localPosX should be relative to left corner of segment");
@@ -145,7 +145,7 @@ public class WorldSegment {
         return "[" + terrainSegmentIndex + "]";
     }
 
-    private class Block {
+    public class Block {
         private Rectangle rectangle;
         private int height;
         private int width;
@@ -167,6 +167,10 @@ public class WorldSegment {
 
         double getRightBlockPosX() {
             return getRightPosX() + id * TERRAIN_BLOCK_SIZE;
+        }
+
+        public Rectangle getRectangle() {
+            return rectangle;
         }
     }
 }

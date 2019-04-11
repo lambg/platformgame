@@ -1,10 +1,11 @@
 package platformer.world.structure;
 
+import platformer.world.Location;
 import platformer.world.World;
 import platformer.world.WorldObj;
 
 public class Structure extends WorldObj {
-    public Structure(World world) {
-        super(null, world); // todo - use actual location
+    public Structure(Location location, World world) {
+        super(location, world);
     }
 }

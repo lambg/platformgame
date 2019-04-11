@@ -17,7 +17,6 @@ import platformer.world.Location;
 import platformer.world.World;
 import platformer.world.entity.PlayerEntity;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Timer;
@@ -37,13 +36,15 @@ public class MainClient extends Application {
     //First Scene
     public static Scene scene;
 
+    public static Stage stage;
+
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter IP: ");
+//        System.out.println("Enter IP: ");
 //        client = new NetworkClient(scanner.nextLine());
         client = new NetworkClient("10.200.123.29"); // todo - use scanner instead of inline
 
-        System.out.println("Enter username: ");
+//        System.out.println("Enter username: ");
 //        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
         client.sendPacket(client.getSocket(), new PlayerConnectPacket("Test"));
         // should receive confirmation
@@ -51,23 +52,33 @@ public class MainClient extends Application {
         launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    public static void reconnect() throws IOException {
+        client = new NetworkClient(client.getSocket().getLocalAddress());
+        client.sendPacket(client.getSocket(), new PlayerConnectPacket("Test"));
+    }
+
+    public static void initScene() {
         root = new Pane();
         scene = new Scene(root);
+        root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        stage.setScene(scene);
+        PlayerEntity.setKeyListener(scene);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        stage = primaryStage;
+        initScene();
 
         primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> screenWidth = newValue.doubleValue());
         primaryStage.heightProperty().addListener((observable, oldValue, newValue) -> screenHeight = newValue.doubleValue());
 
         primaryStage.setHeight(480);
         primaryStage.setWidth(720);
-        root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        primaryStage.setScene(scene);
         primaryStage.show();
 
 
-        PlayerEntity.setKeyListener(scene);
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {

@@ -53,7 +53,7 @@ public class WorldObj implements Serializable {
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         shape = new Rectangle(getWidth(), getHeight());
-        if(this instanceof HostileEntity)
+        if (this instanceof HostileEntity)
             shape.setFill(Color.RED);
         location = (Location) in.readObject();
         objectId = in.readInt();
@@ -76,10 +76,20 @@ public class WorldObj implements Serializable {
     private void setAboveGround() {
         double height = world.getTerrainHeightAt(getLocation().getX());
         if (getLocation().getY() - getHeight() < height) {
+//            if (this instanceof PlayerEntity) {
+//                WorldSegment segment = world.getSegmentAt(getLocation().getX());
+//                System.out.println("TERRAIN HEIGHT AT: " + getLocation().getX() + " IS: " + height + "; block: " +
+//                        segment.getBlockAtLocalPos(getLocation().getX() - segment.getLeftPosX()).getRectangle()); // todo - remove trace
+//            }
             getLocation().setY(height + getHeight());
         }
         height = world.getTerrainHeightAt(getLocation().getX() - getWidth());
         if (getLocation().getY() - getHeight() < height) {
+//            if (this instanceof PlayerEntity) {
+//                WorldSegment segment = world.getSegmentAt(getLocation().getX());
+//                System.out.println("TERRAIN HEIGHT AT: " + getLocation().getX() + " IS: " + height + "; block: " +
+//                        segment.getBlockAtLocalPos(getLocation().getX() - segment.getLeftPosX()).getRectangle()); // todo - remove trace
+//            }
             getLocation().setY(height + getHeight());
         }
     }
@@ -92,7 +102,7 @@ public class WorldObj implements Serializable {
     public void updateDraw() {
         setAboveGround();
         GameUtil.setRelativeTo(shape, MainClient.getScreenLocation(), location.getX(), location.getY());
-        if(!MainClient.root.getChildren().contains(shape))
+        if (!MainClient.root.getChildren().contains(shape))
             MainClient.root.getChildren().add(shape);
     }
 

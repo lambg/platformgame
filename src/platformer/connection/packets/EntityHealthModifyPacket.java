@@ -48,7 +48,6 @@ public class EntityHealthModifyPacket extends Packet {
     public void applyPacket(Communicator communicator, Socket socket) {
         LivingEntity entity = ((LivingEntity) WorldObj.getObject(entityId));
         entity.setHealth(updatedHealth);
-        System.out.println(updatedHealth);
 
         // if the packet is from a client, forward this packet to all clients (excluding the original client)
         MainServer.serverUpdate(s -> s.sendPacketToAll(this, socket));

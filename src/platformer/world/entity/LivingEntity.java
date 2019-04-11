@@ -100,11 +100,22 @@ public class LivingEntity extends Entity {
         if (alive) {
             currentHealth -= value;
             if (currentHealth <= 0) {
-                alive = false;
-                MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjectDeSpawnPacket(getObjectId())));
+                die();
             } else
                 MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
         }
+    }
+
+    public void die() {
+        alive = false;
+        Platform.runLater(() -> {
+            getWorld().removeObjectFromWorld(this);
+            MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjectDeSpawnPacket(getObjectId())));
+            onDeath();
+        });
+    }
+
+    protected void onDeath() {
     }
 
     public void decreaseHealth() {

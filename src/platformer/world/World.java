@@ -23,6 +23,7 @@ public class World implements Serializable {
     private List<WorldSegment> negativeSegments = new ArrayList<>();
     private Random random;
     private int seed;
+    private boolean playerDead = false;
     final List<Tuple> transferredObject = new ArrayList<>();
 
     public World(int seed) {
@@ -62,6 +63,7 @@ public class World implements Serializable {
         for (WorldSegment segment : getSegmentsAround(objects)) {
             segment.updateObjects();
         }
+
         transferObjects();
     }
 
@@ -123,7 +125,7 @@ public class World implements Serializable {
         List<WorldSegment> segments;
         boolean negative = false;
         if (segmentIndex < 0) {
-            segmentIndex = -segmentIndex;
+            segmentIndex = -(segmentIndex + 1);
             segments = negativeSegments;
             negative = true;
         } else segments = positiveSegments;
@@ -131,7 +133,9 @@ public class World implements Serializable {
         // generate missing segments
 
         while (segmentIndex >= segments.size()) {
-            WorldSegment segment = new WorldSegment(this, negative ? -segments.size() : segments.size());
+            System.out.println("NextSegmentIndex: " + segments.size() + "; negative: " + negative + "; segmentIndex: " + segmentIndex);
+//            System.out.println("SIZE: " + "?:" + negative + " " + segments.size() + ";" + segments); // todo - remove trace
+            WorldSegment segment = new WorldSegment(this, negative ? -segments.size() - 1 : segments.size());
             segments.add(segment);
 
             // todo - generate hostile entities
@@ -167,12 +171,15 @@ public class World implements Serializable {
     }
 
     public void removeObjectFromWorld(WorldObj obj) {
-        System.out.println("REMOVE OBJECT"); // todo - remove trace
         getSegmentAt(obj.getLocation()).objects.remove(obj);
 
         MainServer.serverUpdate(server -> server.sendPacketToAll(new ObjectDeSpawnPacket(obj.getObjectId())));
         if (MainClient.PLAYER != null) {
             Platform.runLater(obj::remove);
+
+            if (MainClient.PLAYER == obj) {
+                playerDead = true;
+            }
         }
     }
 

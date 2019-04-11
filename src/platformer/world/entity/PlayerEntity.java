@@ -1,10 +1,15 @@
 package platformer.world.entity;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import platformer.MainClient;
 import platformer.connection.packets.EntityHealthModifyPacket;
 import platformer.connection.packets.ObjMovePacket;
+import platformer.connection.packets.PlayerDisconnectPacket;
 import platformer.world.Location;
 import platformer.world.World;
 
@@ -122,6 +127,41 @@ public class PlayerEntity extends LivingEntity {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+            }
+        }
+    }
+
+    @Override
+    protected void onDeath() {
+        super.onDeath();
+        if (MainClient.PLAYER == this) {
+            MainClient.PLAYER = null;
+            MainClient.PLAYER_ID = -1;
+            right = false;
+            left = false;
+            jump = false;
+            down = false;
+
+            try {
+                MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new PlayerDisconnectPacket());
+                Button button = new Button("Re-spawn");
+                button.setOnMouseClicked(click -> {
+                    try {
+                        MainClient.initScene();
+                        MainClient.reconnect();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
+                Text text = new Text("You died!");
+                text.setScaleX(5);
+                text.setScaleY(5);
+                VBox root = new VBox(50, text, button);
+                root.setAlignment(Pos.CENTER);
+                Scene deathScene = new Scene(root);
+                MainClient.stage.setScene(deathScene);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         }
     }

@@ -4,6 +4,7 @@ import platformer.MainClient;
 import platformer.world.WorldSegment;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,7 +17,16 @@ public class NetworkClient extends Communicator implements AutoCloseable {
         listenTo(socket); // listen to communication sent by server
     }
 
+    public NetworkClient(InetAddress address, int port) throws IOException {
+        socket = new Socket(address,port);
+        listenTo(socket);
+    }
+
     public NetworkClient(String ip) throws IOException {
+        this(ip, Connection.PORT);
+    }
+
+    public NetworkClient(InetAddress ip) throws IOException {
         this(ip, Connection.PORT);
     }
 
@@ -30,14 +40,13 @@ public class NetworkClient extends Communicator implements AutoCloseable {
         }
 
         if (MainClient.PLAYER != null) { // otherwise world has not been loaded yet
-            MainClient.WORLD.transferObjects();
-
             Collection<WorldSegment> localSegments = MainClient.WORLD.getSegmentsAround(Collections.singleton(MainClient.PLAYER));
 
             for (WorldSegment currentSegment : localSegments) {
                 // segments to be shown this update
                 currentSegment.updateShapes();
             }
+            MainClient.WORLD.transferObjects();
         }
     }
 
