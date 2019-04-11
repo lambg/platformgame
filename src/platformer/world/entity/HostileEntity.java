@@ -15,7 +15,10 @@ public class HostileEntity extends LivingEntity {
 
     public HostileEntity(Location location, World world) {
         super(location, world);
-        speedModifier = Math.random() * 0.5 + 0.1;
+
+        entities.add(this);
+//        System.out.println(entities.size() + "asdasd"); //todo - get rid of this
+        speedModifier = Math.random() *0;
     }
 
     @Override

@@ -42,6 +42,7 @@ public class PlayerEntity extends LivingEntity {
     public PlayerEntity(Location location, World world, String name) {
         super(location, world);
         this.name = name;
+        players.add(this);
 
         playerX = this.getLocation().getX();
         playerY = this.getLocation().getY();

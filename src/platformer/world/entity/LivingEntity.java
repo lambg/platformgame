@@ -3,6 +3,7 @@ package platformer.world.entity;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import platformer.GameUtil;
 import platformer.MainClient;
 import platformer.MainServer;
@@ -10,12 +11,14 @@ import platformer.connection.packets.EntityHealthModifyPacket;
 import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.world.Location;
 import platformer.world.World;
+import platformer.world.WorldObj;
 
 import java.util.ArrayList;
 
 public class LivingEntity extends Entity {
 
-    public ArrayList<Entity> entities = new ArrayList<>();
+    public static ArrayList<HostileEntity> entities = new ArrayList<>();
+    public static ArrayList<PlayerEntity> players = new ArrayList<>();
 
     private static final int DEFAULT_HEALTH = 3;
 
@@ -41,8 +44,24 @@ public class LivingEntity extends Entity {
         super(location, world);
         this.maxHealth = DEFAULT_HEALTH;
         this.currentHealth = maxHealth;
-        entities.add(this);
+
         alive = true;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        // removes from arraylist if they aren't alive.
+
+//        if (players.size() > 0) {
+//            for (LivingEntity e : entities) {
+//                if (!e.isAlive()) {
+//                    entities.remove(e);
+//                }
+//            }
+//
+//        }
+        checkDamage();
     }
 
     @Override
@@ -108,6 +127,17 @@ public class LivingEntity extends Entity {
 
     public void checkDamage() {
 
+        for (PlayerEntity currentPlayer : players) {
+
+            //System.out.println("Check"); //todo - delete
+
+            if (playerColDetBottom(currentPlayer)) {
+                System.out.println("Should damage the entity below");
+            }
+
+
+        }
+
 
     }
 
@@ -129,5 +159,85 @@ public class LivingEntity extends Entity {
 
     public boolean isAlive() {
         return alive;
+    }
+
+    public boolean playerColDetTop(PlayerEntity currentPlayer) {
+
+        Shape r = currentPlayer.getShape();
+
+        for (HostileEntity currentHostile : entities) {
+
+            Shape shape = currentHostile.getShape();
+
+            if (shape != r) {
+
+
+                if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
+                    if (r.getBoundsInLocal().getMinY() - verticalSpeed() < shape.getBoundsInLocal().getMaxY() && r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean playerColDetBottom(PlayerEntity currentPlayer) {
+
+        Shape r = currentPlayer.getShape();
+
+        for (HostileEntity currentHostile : entities) {
+
+//            if (currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX()+currentHostile.getWidth()) {
+//                System.out.println("a");
+//            }
+//
+//
+//            if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
+//                if ((r.getBoundsInLocal().getMaxY()) + verticalSpeed() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY()) {
+//                    System.out.println("AAS");
+//                    return true;
+//                }
+//            }
+
+
+        }
+
+        return false;
+    }
+
+    public boolean playerColDetRight() {
+
+        Shape r = getShape();
+
+        for (WorldObj object : MainClient.WORLD.getNearbyObjects(WorldObj.class, 0, 720, 0, 480)) {
+
+            Shape shape = object.getShape();
+            if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
+                if (r.getBoundsInLocal().getMaxX() + horizontalSpeed() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX()) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    public boolean playerColDetLeft() {
+
+        Shape r = getShape();
+
+        for (WorldObj object : MainClient.WORLD.getNearbyObjects(WorldObj.class, 0, 720, 0, 480)) {
+
+            Shape shape = object.getShape();
+            if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
+
+                if (r.getBoundsInLocal().getMinX() - horizontalSpeed() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

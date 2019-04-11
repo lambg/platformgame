@@ -29,7 +29,7 @@ public class WorldObj implements Serializable {
         this.world = world;
         this.objectId = objId;
         spawned = true;
-        shape = null;
+        shape = new Rectangle(getWidth(), getHeight());
 
         if (objectIdMap.put(objectId, this) != null)
             throw new RuntimeException("Error: given id has already been assigned to another object.");
