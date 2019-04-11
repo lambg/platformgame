@@ -2,8 +2,13 @@ package platformer;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import platformer.connection.NetworkClient;
 import platformer.connection.packets.PlayerConnectPacket;
@@ -12,6 +17,7 @@ import platformer.world.Location;
 import platformer.world.World;
 import platformer.world.entity.PlayerEntity;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Timer;
@@ -35,7 +41,7 @@ public class MainClient extends Application {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter IP: ");
 //        client = new NetworkClient(scanner.nextLine());
-        client = new NetworkClient("10.200.123.29"); // todo - use scanner instead of inline
+        client = new NetworkClient("10.200.253.166"); // todo - use scanner instead of inline
 
         System.out.println("Enter username: ");
 //        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
@@ -55,9 +61,11 @@ public class MainClient extends Application {
 
         primaryStage.setHeight(480);
         primaryStage.setWidth(720);
+        root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
 
         PlayerEntity.setKeyListener(scene);
 

@@ -156,12 +156,7 @@ public class PlayerEntity extends LivingEntity {
         //todo- when somebody health decreases, all the drawing just stops for some reason. fix that
 
         // its a problem with entity health modify packet
-        /*
-        Exception in thread "main" java.lang.RuntimeException: java.lang.RuntimeException: java.lang.InstantiationException: platformer.connection.packets.EntityHealthModifyPacket
-	at platformer.connection.Communicator.update(Communicator.java:36)
-	at platformer.connection.NetworkServer.update(NetworkServer.java:45)
-	at platformer.MainServer.main(MainServer.java:16)
-         */
+
         if (decrease && x) {
             decreaseHealth();
             //super.updateDraw();

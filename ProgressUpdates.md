@@ -11,3 +11,28 @@
 
 ### Any blocking issues/challenges need to be addressed?
 * None
+
+## Week 4 (Mar 31 - Apr 5)
+
+### What did your team do last week?
+* Terrain Generation - Blocks per segment
+* Collision detection between player and segments/other objects
+
+### What will you do this week?
+* Entity Spawning - Player, Hostile.
+* Generate more detailed ground
+
+
+### Any blocking issues/challenges need to be addressed?
+*None
+
+## Week 4 (Apr 7 - Apr 12)
+
+### What did your team do last week?
+
+
+### What will you do this week?
+* Player
+
+### Any blocking issues/challenges need to be addressed?
+*None
