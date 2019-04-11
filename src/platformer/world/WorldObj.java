@@ -53,8 +53,10 @@ public class WorldObj implements Serializable {
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         shape = new Rectangle(getWidth(), getHeight());
-        if(this instanceof HostileEntity)
-            shape.setFill(Color.RED);
+        if (this instanceof HostileEntity) {
+            shape.setFill(new Color(Math.random() * .5 + .4 0, 0, 1));
+        }
+
         location = (Location) in.readObject();
         objectId = in.readInt();
         spawned = in.readBoolean();
@@ -92,7 +94,7 @@ public class WorldObj implements Serializable {
     public void updateDraw() {
         setAboveGround();
         GameUtil.setRelativeTo(shape, MainClient.getScreenLocation(), location.getX(), location.getY());
-        if(!MainClient.root.getChildren().contains(shape))
+        if (!MainClient.root.getChildren().contains(shape))
             MainClient.root.getChildren().add(shape);
     }
 

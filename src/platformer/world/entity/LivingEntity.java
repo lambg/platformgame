@@ -11,7 +11,14 @@ import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.world.Location;
 import platformer.world.World;
 
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
+
 public class LivingEntity extends Entity {
+
+    public ArrayList<Entity> entities = new ArrayList<>();
+
     private static final int DEFAULT_HEALTH = 3;
 
     public boolean alive;
@@ -32,16 +39,11 @@ public class LivingEntity extends Entity {
         currentHealthBar.setWidth(getWidth() - 25);
     }
 
-    public LivingEntity(Location location, World world, int objId) {
-        super(location, world, objId);
-        this.maxHealth = DEFAULT_HEALTH;
-        alive = true;
-    }
-
     public LivingEntity(Location location, World world) {
         super(location, world);
         this.maxHealth = DEFAULT_HEALTH;
         this.currentHealth = maxHealth;
+        entities.add(this);
         alive = true;
     }
 
@@ -105,6 +107,11 @@ public class LivingEntity extends Entity {
             } else
                 MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth)));
         }
+    }
+
+    public void checkDamage() {
+
+
     }
 
     public void decreaseHealth() {

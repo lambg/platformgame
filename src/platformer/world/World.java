@@ -25,10 +25,13 @@ public class World implements Serializable {
     private int seed;
     final List<Tuple> transferredObject = new ArrayList<>();
 
+    private double hostileEntityLocationOffset;
+
     public World(int seed) {
         seed = 0;
         this.seed = seed;
         random = new Random(seed);
+        hostileEntityLocationOffset = 300 + Math.random() * 1500;
     }
 
     private void readObject(ObjectInputStream in) throws IOException {
@@ -137,8 +140,8 @@ public class World implements Serializable {
             // todo - generate hostile entities
             // generate entities in this segment
             MainServer.serverUpdate(s -> {
-                for (int i = 0; i < 10; i++) {
-                    new HostileEntity(new Location(segment.getLeftPosX(), 30), this).addObject();
+                for (int i = 0; i < 4; i++) {
+                    new HostileEntity(new Location(segment.getLeftPosX() + hostileEntityLocationOffset, 30), this).addObject();
                 }
             });
         }

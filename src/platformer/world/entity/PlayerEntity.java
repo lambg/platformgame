@@ -162,7 +162,7 @@ public class PlayerEntity extends LivingEntity {
 
         if (decrease && x) {
             decreaseHealth();
-            //super.updateDraw();
+            super.updateDraw();
             decrease = false;
             nextTime = currentTime + 1000;
         }
