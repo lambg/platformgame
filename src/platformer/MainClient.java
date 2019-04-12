@@ -30,7 +30,7 @@ public class MainClient extends Application {
     private static NetworkClient client;
     private static Timer timer;
     private static double furthestDistance;
-    private static Text scoreText = new Text("Furthest distance: 0");
+    private static Text scoreText;
 
     //Window for application
     public static Pane root;
@@ -83,6 +83,7 @@ public class MainClient extends Application {
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
+        scoreText = new Text("Furthest distance: 0");
         initScene();
 
         primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> screenWidth = newValue.doubleValue());

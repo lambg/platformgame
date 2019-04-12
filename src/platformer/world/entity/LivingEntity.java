@@ -3,7 +3,6 @@ package platformer.world.entity;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import platformer.GameUtil;
 import platformer.MainClient;
 import platformer.MainServer;
@@ -11,14 +10,12 @@ import platformer.connection.packets.EntityHealthModifyPacket;
 import platformer.connection.packets.ObjectDeSpawnPacket;
 import platformer.world.Location;
 import platformer.world.World;
-import platformer.world.WorldObj;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class LivingEntity extends Entity {
 
-    public static ArrayList<HostileEntity> entities = new ArrayList<>();
     public static ArrayList<PlayerEntity> players = new ArrayList<>();
 
     double currentTime = 1;
@@ -59,14 +56,6 @@ public class LivingEntity extends Entity {
     public void update() {
         super.update();
         // removes from arraylist if they aren't alive.
-
-        if (players.size() > 0) {
-            for (LivingEntity e : entities) {
-                if (!e.isAlive()) {
-                    entities.remove(e);
-                }
-            }
-        }
         checkDamage();
     }
 
@@ -121,7 +110,7 @@ public class LivingEntity extends Entity {
 
     public void setHealth(int value) {
         currentHealth = value;
-        if(alive && currentHealth <= 0)
+        if (alive && currentHealth <= 0)
             die();
         // don't send update packet
     }
@@ -141,7 +130,6 @@ public class LivingEntity extends Entity {
     }
 
     public void checkDamage() {
-
         for (PlayerEntity currentPlayer : players) {
             checkDamages(currentPlayer);
         }
@@ -149,11 +137,17 @@ public class LivingEntity extends Entity {
 
     public void die() {
         alive = false;
-        Platform.runLater(() -> {
-            getWorld().removeObjectFromWorld(this);
+        MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new EntityHealthModifyPacket(getObjectId(), currentHealth = 0)));
+        if (MainServer.getServer() != null) {
             MainServer.serverUpdate(networkServer -> networkServer.sendPacketToAll(new ObjectDeSpawnPacket(getObjectId())));
             onDeath();
-        });
+            MainServer.runLater(() -> getWorld().removeObjectFromWorld(this));
+        } else {
+            Platform.runLater(() -> {
+                getWorld().removeObjectFromWorld(this);
+                onDeath();
+            });
+        }
     }
 
     protected void onDeath() {
@@ -174,7 +168,7 @@ public class LivingEntity extends Entity {
         boolean playerDeals = false;
         boolean hostileDeals = false;
 
-        for (HostileEntity currentHostile : entities) {
+        for (HostileEntity currentHostile : getWorld().getNearbyObjects(getLocation(), HostileEntity.class, 100, 100)) {
 
             //Player X on the right side or left side is colliding with the bounds of the currentHostile
             if ((currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX() + currentHostile.getWidth()) || (currentPlayer.getLocation().getX() + currentPlayer.getWidth() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() + currentPlayer.getWidth() < currentHostile.getLocation().getX() + currentHostile.getWidth())) {

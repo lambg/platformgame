@@ -203,10 +203,8 @@ public class PlayerEntity extends LivingEntity {
         }
 
         if (decrease && x) {
-            System.out.println(LivingEntity.entities.size()); // todo - remove trace
             for (HostileEntity entity : getWorld().getNearbyObjects(getLocation(), HostileEntity.class, 1000,1000)) {
                 entity.decreaseHealth();
-                System.out.println(entity + ";" + entity.getHealth()); // todo - remove trace
             }
             super.updateDraw();
             decrease = false;
