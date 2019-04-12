@@ -28,7 +28,8 @@
 ## Week 4 (Apr 7 - Apr 12)
 
 ### What did your team do last week?
-*Spawning entities properly, generated ground.
+* Spawn entities properly
+* Generated ground.
 
 ### What will you do this week?
 * Support multiple players
@@ -36,6 +37,7 @@
 * Replace the generated ground with flat ground
 * Add Healthbars
 * Respawning
+* Collision detection for health implementation
 
 ### Any blocking issues/challenges need to be addressed?
 *None
