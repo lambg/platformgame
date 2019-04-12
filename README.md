@@ -1,6 +1,25 @@
 Program Description:
 Our project is a simple 2D platformer. It will support multiple players using a server. The game has hostile entities, and an infinite world. The world will be generate simple terrain and hostile entities as players move to the right. The hostile entities will follow nearby players.
-oifiowefef
+
+Getting Started:
+
+To install the program, import the project through any IDE of your choice.
+
+To run the program, compile and run MainServer.java for the server, then compile and run MainClient.java for the clients.
+    Note: You can connect to a server on a different computer by changing the IP in the MainClient's main method.
+    Note: The default port used is 12345.
+
+
+Features:
+- Multithreading
+- JavaFX
+- Custom packet sending
+- Supports multiple clients
+- Supports hostile entities
+- Supports client player respawning
+- Supports Health depletion and entity death
+
+
 Deliverables:
  - Infinite World
  - Entity types:
