@@ -22,17 +22,20 @@
 * Entity Spawning - Player, Hostile.
 * Generate more detailed ground
 
-
 ### Any blocking issues/challenges need to be addressed?
-*None
+* None
 
 ## Week 4 (Apr 7 - Apr 12)
 
 ### What did your team do last week?
-
+*Spawning entities properly, generated ground.
 
 ### What will you do this week?
-* Player
+* Support multiple players
+* Sync the players and hostile Entities
+* Replace the generated ground with flat ground
+* Add Healthbars
+* Respawning
 
 ### Any blocking issues/challenges need to be addressed?
 *None
