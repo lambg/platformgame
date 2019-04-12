@@ -79,6 +79,11 @@ public class LivingEntity extends Entity {
     @Override
     public void updateDraw() {
         if (totalHealthBar == null) {
+            if(this instanceof PlayerEntity) {
+                // todo - bind image
+            } else if(this instanceof HostileEntity) {
+                bind(MainClient.HOSTILE_ENTITY_IMAGE);
+            }
             maxHealth = 3;
             currentHealth = maxHealth;
             totalHealthBar = new Rectangle(getWidth(), 10, Color.GREEN);

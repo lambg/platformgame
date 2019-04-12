@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -32,6 +33,8 @@ public class MainClient extends Application {
     private static Timer timer;
     private static double furthestDistance;
     private static Text scoreText;
+    public static Image HOUSE_IMAGE;
+    public static Image HOSTILE_ENTITY_IMAGE;
 
     //Window for application
     public static Pane root;
@@ -86,6 +89,8 @@ public class MainClient extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        HOUSE_IMAGE = new Image("house.png");
+        HOSTILE_ENTITY_IMAGE = new Image("warrior.png");
         stage = primaryStage;
         scoreText = new Text("Furthest distance: 0");
         initScene();

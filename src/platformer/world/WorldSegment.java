@@ -1,6 +1,8 @@
 package platformer.world;
 
 import javafx.application.Platform;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import platformer.GameUtil;
@@ -73,9 +75,13 @@ public class WorldSegment {
             Location screenLocation = MainClient.getScreenLocation();
             for (Block block : terrainBlocks) {
                 GameUtil.setRelativeTo(block.rectangle, screenLocation, getLeftPosX() - getLocalOffset(block.id), block.height);
-                if(block.tree != null) {
+                if (block.tree != null) {
                     GameUtil.setRelativeTo(block.tree.trunk, screenLocation, getLeftPosX() - getLocalOffset(block.id), block.height + block.tree.getTrunkHeight());
                     GameUtil.setRelativeTo(block.tree.leaves, screenLocation, getLeftPosX() - getLocalOffset(block.id) + block.tree.getLeavesWidth() / 2, block.height + block.tree.getHeight());
+                }
+                if (block.house != null) {
+                    block.house.imageView.setX(screenLocation.getX() - getLeftPosX() - getLocalOffset(block.id));
+                    block.house.imageView.setY(screenLocation.getY() - block.height - block.house.getHeight() + 285);
                 }
             }
 
@@ -123,9 +129,12 @@ public class WorldSegment {
 
         for (Block block : terrainBlocks) {
             MainClient.root.getChildren().add(block.rectangle);
-            if(block.tree != null) {
+            if (block.tree != null) {
                 MainClient.root.getChildren().add(block.tree.trunk);
                 MainClient.root.getChildren().add(block.tree.leaves);
+            }
+            if (block.house != null) {
+                MainClient.root.getChildren().add(block.house.imageView);
             }
         }
 
@@ -159,6 +168,7 @@ public class WorldSegment {
         private int width;
         private int id;
         private Tree tree;
+        private House house;
 
         // todo - work with negative segments
         public Block(int id, int height) {
@@ -168,8 +178,10 @@ public class WorldSegment {
                 height = 1;
             this.height = height;
             this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, height + BLOCK_DRAW_HEIGHT, Color.GREENYELLOW);
-            if(id % 13 == 0)
+            if (id % 13 == 0)
                 tree = new Tree(this);
+            if (id % 37 == 0)
+                house = new House();
         }
 
         double getLeftBlockPosX() {
@@ -185,15 +197,13 @@ public class WorldSegment {
         }
     }
 
-    private class Tree {
-        private final Block block;
+    private static class Tree {
         private Rectangle trunk, leaves;
 
         public Tree(Block block) {
-            this.block = block;
             trunk = new Rectangle(20, 100, Color.BROWN);
             trunk.setOpacity(0.5);
-            leaves = new Rectangle(80,40, Color.GREEN);
+            leaves = new Rectangle(80, 40, Color.GREEN);
             leaves.setOpacity(0.5);
         }
 
@@ -207,6 +217,21 @@ public class WorldSegment {
 
         public double getTrunkHeight() {
             return trunk.getHeight();
+        }
+    }
+
+    private static class House {
+        private ImageView imageView = new ImageView(MainClient.HOUSE_IMAGE);
+
+        {
+            imageView.setOpacity(Math.random() * 0.3 + 0.4);
+            double scale = Math.random() * 0.25 + 0.15;
+            imageView.setScaleX(scale);
+            imageView.setScaleY(scale);
+        }
+
+        public double getHeight() {
+            return MainClient.HOUSE_IMAGE.getHeight();
         }
     }
 }

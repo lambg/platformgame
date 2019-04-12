@@ -1,5 +1,7 @@
 package platformer.world;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -8,8 +10,6 @@ import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.packets.ObjMovePacket;
 import platformer.world.entity.HostileEntity;
-import platformer.world.entity.LivingEntity;
-import platformer.world.entity.PlayerEntity;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,6 +25,7 @@ public class WorldObj implements Serializable {
     private boolean spawned;
     private World world;
     private Rectangle shape;
+    private ImageView imageView;
 
     public WorldObj(Location location, World world, int objId) {
         this.location = location;
@@ -99,12 +100,18 @@ public class WorldObj implements Serializable {
     public void update() {
         setAboveGround();
     }
+
     // client side update; update shape positions
     public void updateDraw() {
         setAboveGround();
         GameUtil.setRelativeTo(shape, MainClient.getScreenLocation(), location.getX(), location.getY());
-        if (!MainClient.root.getChildren().contains(shape))
+        if (imageView != null)
+            GameUtil.setRelativeTo(shape, MainClient.getScreenLocation(), location.getX(), location.getY());
+        if (!MainClient.root.getChildren().contains(shape)) {
             MainClient.root.getChildren().add(shape);
+            if(imageView != null)
+            MainClient.root.getChildren().add(imageView);
+        }
     }
 
     public Location getLocation() {
@@ -233,5 +240,9 @@ public class WorldObj implements Serializable {
         }
 
         return false;
+    }
+
+    public void bind(Image image) {
+        imageView = new ImageView(image);
     }
 }
