@@ -106,7 +106,7 @@ public class PlayerEntity extends LivingEntity {
 
     @Override
     public int damageTo(LivingEntity other) {
-        return other instanceof HostileEntity ? super.damageTo(other) : 0;
+        return other instanceof HostileEntity ? other.getHealth() : 0;
     }
 
     @Override

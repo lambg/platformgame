@@ -4,7 +4,12 @@
     <list default="true" id="402cefb8-a098-499a-801d-37d16e8d7598" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/platformer/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/platformer/MainClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/platformer/world/entity/HostileEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/platformer/world/entity/HostileEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/platformer/world/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/platformer/world/World.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/platformer/world/WorldObj.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/platformer/world/WorldObj.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/platformer/world/WorldSegment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/platformer/world/WorldSegment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/platformer/world/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/platformer/world/entity/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/platformer/world/entity/LivingEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/platformer/world/entity/LivingEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/platformer/world/entity/PlayerEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/platformer/world/entity/PlayerEntity.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,8 +36,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/platformer/MainServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+            <state relative-caret-position="171">
+              <caret line="23" column="41" lean-forward="true" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -40,17 +45,62 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/platformer/MainClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="381">
-              <caret line="49" column="41" selection-start-line="49" selection-start-column="41" selection-end-line="49" selection-end-column="41" />
+            <state relative-caret-position="127">
+              <caret line="22" column="23" lean-forward="true" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/platformer/world/World.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="853">
+              <caret line="144" column="48" lean-forward="true" selection-start-line="144" selection-start-column="48" selection-end-line="144" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/LivingEntity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="251">
+              <caret line="104" column="28" selection-start-line="104" selection-start-column="28" selection-end-line="104" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/PlayerEntity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="313">
+              <caret line="123" column="42" lean-forward="true" selection-start-line="123" selection-start-column="42" selection-end-line="123" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/PlayerConfirmConnectPacket.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="291">
+              <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/HostileEntity.java">
+        <entry file="file://$PROJECT_DIR$/src/platformer/world/WorldSegment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="357">
+              <caret line="123" column="67" selection-start-line="123" selection-start-column="67" selection-end-line="123" selection-end-column="67" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/platformer/world/WorldObj.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-594">
+              <caret line="100" column="5" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -67,17 +117,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>cannot</find>
-      <find>socket.acce</find>
-      <find>new Hostile</find>
-      <find>System.out.p</find>
-      <find>System.out.pr</find>
-      <find>getRandom</find>
-      <find>new Rectan</find>
-      <find>dis</find>
-      <find>disconnect</find>
-      <find>removeObj</find>
-      <find>System.out.printl</find>
       <find>update</find>
       <find>speed</find>
       <find>world_seg</find>
@@ -85,7 +124,6 @@
       <find>Color</find>
       <find>system.out</find>
       <find>x</find>
-      <find>new HostileE</find>
       <find>EntityHeal</find>
       <find>1</find>
       <find>health</find>
@@ -97,10 +135,25 @@
       <find>&quot;BREA</find>
       <find>== MainClie</find>
       <find>todo</find>
+      <find>distanceno</find>
+      <find>damaged pl</find>
+      <find>println(</find>
+      <find>entities =</find>
+      <find>players =</find>
+      <find>die()</find>
+      <find>setText</find>
+      <find>;&quot;</find>
+      <find>new HostileE</find>
+      <find>new Hostil</find>
+      <find>updateDraw</find>
+      <find>INTERSEC</find>
     </findStrings>
     <replaceStrings>
       <replace>double</replace>
     </replaceStrings>
+    <dirStrings>
+      <dir>C:\Users\thieraufk\IdeaProjects\platformgame</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -124,7 +177,6 @@
         <option value="$PROJECT_DIR$/ProgressUpdates.md" />
         <option value="$PROJECT_DIR$/src/platformer/GameUtil.java" />
         <option value="$PROJECT_DIR$/src/platformer/connection/packets/ObjMovePacket.java" />
-        <option value="$PROJECT_DIR$/src/platformer/MainServer.java" />
         <option value="$PROJECT_DIR$/src/platformer/connection/packets/PlayerConfirmConnectPacket.java" />
         <option value="$PROJECT_DIR$/src/platformer/connection/packets/PlayerRespawnPacket.java" />
         <option value="$PROJECT_DIR$/src/platformer/connection/packets/PlayerConnectPacket.java" />
@@ -135,15 +187,16 @@
         <option value="$PROJECT_DIR$/src/platformer/connection/packets/PlayerDisconnectPacket.java" />
         <option value="$PROJECT_DIR$/src/platformer/connection/Communicator.java" />
         <option value="$PROJECT_DIR$/src/platformer/connection/NetworkServer.java" />
+        <option value="$PROJECT_DIR$/src/platformer/connection/packets/EntityHealthModifyPacket.java" />
+        <option value="$PROJECT_DIR$/src/platformer/MainServer.java" />
+        <option value="$PROJECT_DIR$/src/platformer/world/entity/HostileEntity.java" />
         <option value="$PROJECT_DIR$/src/platformer/world/entity/Entity.java" />
         <option value="$PROJECT_DIR$/src/platformer/world/World.java" />
-        <option value="$PROJECT_DIR$/src/platformer/connection/packets/EntityHealthModifyPacket.java" />
-        <option value="$PROJECT_DIR$/src/platformer/world/WorldSegment.java" />
-        <option value="$PROJECT_DIR$/src/platformer/world/entity/LivingEntity.java" />
-        <option value="$PROJECT_DIR$/src/platformer/world/entity/PlayerEntity.java" />
         <option value="$PROJECT_DIR$/src/platformer/world/WorldObj.java" />
+        <option value="$PROJECT_DIR$/src/platformer/world/entity/PlayerEntity.java" />
+        <option value="$PROJECT_DIR$/src/platformer/world/entity/LivingEntity.java" />
         <option value="$PROJECT_DIR$/src/platformer/MainClient.java" />
-        <option value="$PROJECT_DIR$/src/platformer/world/entity/HostileEntity.java" />
+        <option value="$PROJECT_DIR$/src/platformer/world/WorldSegment.java" />
       </list>
     </option>
   </component>
@@ -353,20 +406,6 @@
       <workItem from="1554911964815" duration="3349000" />
       <workItem from="1554984456494" duration="4153000" />
       <workItem from="1554990236760" duration="775000" />
-    </task>
-    <task id="LOCAL-00003" summary="uploaded Progress Update">
-      <created>1552662712378</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1552662712378</updated>
-    </task>
-    <task id="LOCAL-00004" summary="started world">
-      <created>1552664288953</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1552664288953</updated>
     </task>
     <task id="LOCAL-00005" summary="Started connection">
       <created>1553270161083</created>
@@ -697,11 +736,25 @@
       <option name="project" value="LOCAL" />
       <updated>1555070042705</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Updated things">
+      <created>1555070791171</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1555070791171</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Fixed things">
+      <created>1555072091257</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1555072091258</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83792000" />
+    <option name="totallyTimeSpent" value="88127000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -714,7 +767,7 @@
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4968017" visible="true" weight="0.34669557" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4968017" weight="0.34669557" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -798,11 +851,11 @@
     <MESSAGE value="Basic movement" />
     <MESSAGE value="Camera follows player (things still broken)" />
     <MESSAGE value="added health bar" />
-    <MESSAGE value="Fixed things" />
     <MESSAGE value="Hostile entity implementation" />
     <MESSAGE value="Edited World, WorldObj, and entities." />
     <MESSAGE value="Updated things" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated things" />
+    <MESSAGE value="Fixed things" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed things" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/platformer/world/structure/Structure.java">
@@ -845,13 +898,6 @@
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/jre/lib/rt.jar!/java/net/ServerSocket.class" />
-    <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/PlayerConfirmConnectPacket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="39" column="40" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/PlayerRespawnPacket.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="395">
@@ -878,13 +924,6 @@
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/jre/lib/rt.jar!/java/net/SocketException.class" />
-    <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/ObjectDeSpawnPacket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="16" column="43" lean-forward="true" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/platformer/connection/Packet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -899,18 +938,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/Entity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="14" column="38" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
-          <folding>
-            <element signature="e#320#321#0" expanded="true" />
-            <element signature="e#365#366#0" expanded="true" />
-            <element signature="e#456#457#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/PlayerDisconnectPacket.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="484">
@@ -922,13 +949,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="49">
           <caret line="23" column="5" lean-forward="true" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/ObjMovePacket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="655">
-          <caret line="51" column="5" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -953,73 +973,101 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/EntityHealthModifyPacket.java">
+    <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/ObjMovePacket.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="291">
-          <caret line="49" column="20" selection-start-line="49" selection-start-column="20" selection-end-line="49" selection-end-column="20" />
+          <caret line="47" column="65" lean-forward="true" selection-start-line="47" selection-start-column="65" selection-end-line="47" selection-end-column="65" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/world/World.java">
+    <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/EntityHealthModifyPacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="146" column="37" selection-start-line="146" selection-start-column="37" selection-end-line="146" selection-end-column="37" />
+        <state relative-caret-position="611">
+          <caret line="49" column="14" lean-forward="true" selection-start-line="49" selection-start-column="14" selection-end-line="49" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/ObjectDeSpawnPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="16" column="23" lean-forward="true" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/platformer/connection/NetworkServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
+        <state relative-caret-position="-572">
+          <caret line="13" column="52" selection-start-line="13" selection-start-column="52" selection-end-line="13" selection-end-column="52" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/world/WorldSegment.java">
+    <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="29" column="27" lean-forward="true" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/LivingEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="89" column="11" selection-start-line="89" selection-start-column="11" selection-end-line="89" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/world/WorldObj.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="80" column="21" selection-start-line="80" selection-start-column="21" selection-end-line="80" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/PlayerEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="226" column="22" selection-start-line="226" selection-start-column="22" selection-end-line="226" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/MainServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/platformer/MainClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="381">
-          <caret line="49" column="41" selection-start-line="49" selection-start-column="41" selection-end-line="49" selection-end-column="41" />
+        <state relative-caret-position="440">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/HostileEntity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="106">
+          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platformer/world/WorldObj.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-594">
+          <caret line="100" column="5" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platformer/MainServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="23" column="41" lean-forward="true" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platformer/MainClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="22" column="23" lean-forward="true" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platformer/world/World.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="853">
+          <caret line="144" column="48" lean-forward="true" selection-start-line="144" selection-start-column="48" selection-end-line="144" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/LivingEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="104" column="28" selection-start-line="104" selection-start-column="28" selection-end-line="104" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platformer/world/entity/PlayerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="123" column="42" lean-forward="true" selection-start-line="123" selection-start-column="42" selection-end-line="123" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platformer/connection/packets/PlayerConfirmConnectPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platformer/world/WorldSegment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="123" column="67" selection-start-line="123" selection-start-column="67" selection-end-line="123" selection-end-column="67" />
         </state>
       </provider>
     </entry>

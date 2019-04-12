@@ -21,6 +21,8 @@ public class LivingEntity extends Entity {
     double currentTime = 1;
     double nextTime = 0;
 
+    private int updateCount = -1;
+
     boolean called = false;
 
     private static final int DEFAULT_HEALTH = 3;
@@ -59,6 +61,21 @@ public class LivingEntity extends Entity {
         checkDamage();
     }
 
+    private boolean between(double a, double between, double b) {
+        return a <= between && between <= b;
+    }
+
+    private boolean inside(Rectangle rectangle, double x, double y) {
+        return between(rectangle.getX(), x, rectangle.getX() + rectangle.getWidth()) &&
+                between(rectangle.getY(), y, rectangle.getY() + rectangle.getHeight());
+    }
+
+    private boolean intersects(Rectangle first, Rectangle second) {
+        return inside(first, second.getX(), second.getY()) || inside(first, second.getX() + getWidth(), second.getY()) ||
+                inside(first, second.getX(), second.getY() + getHeight()) ||
+                inside(first, second.getX() + second.getWidth(), second.getY() + second.getHeight());
+    }
+
     @Override
     public void updateDraw() {
         if (totalHealthBar == null) {
@@ -82,6 +99,27 @@ public class LivingEntity extends Entity {
                 previousHealth = getHealth();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            }
+        }
+
+        if(++updateCount % 2 == 0) {
+            updateCount = 0;
+            Rectangle rect = getShape();
+            for (LivingEntity entity : getWorld().getNearbyObjects(getLocation(), LivingEntity.class, 10, 10)) {
+                if(entity.getClass() == getClass())
+                    continue;
+                Rectangle entRect = entity.getShape();
+                if(intersects(rect,entRect)) {
+//                    System.out.println("INTERSECTS" + getClass().getSimpleName() + ";" + entity.getClass().getSimpleName());
+                    System.out.println(rect.getY() + "<" + entRect.getY()); // todo - remove trace
+                    if(this instanceof PlayerEntity && rect.getY() < entRect.getY()) {
+                        // this does damage to other
+                        entity.decreaseHealth(damageTo(entity));
+                    } else {
+                        // other does damage to this
+                        decreaseHealth(entity.damageTo(this));
+                    }
+                }
             }
         }
     }
@@ -168,62 +206,63 @@ public class LivingEntity extends Entity {
         boolean playerDeals = false;
         boolean hostileDeals = false;
 
-        for (HostileEntity currentHostile : getWorld().getNearbyObjects(getLocation(), HostileEntity.class, 100, 100)) {
-
-            //Player X on the right side or left side is colliding with the bounds of the currentHostile
-            if ((currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX() + currentHostile.getWidth()) || (currentPlayer.getLocation().getX() + currentPlayer.getWidth() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() + currentPlayer.getWidth() < currentHostile.getLocation().getX() + currentHostile.getWidth())) {
-
-                //Player Y on the bottom is colliding with the currentHostile
-                if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() < currentHostile.getLocation().getY()) {
-                    //If the player is on the top ~10% of the currentHostile, it tells the server that the player is dealing damage.
-                    //Else, the hostile will deal damage to the player.
-                    if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() > currentHostile.getLocation().getY() - currentHostile.getHeight() + 60) {
-                        playerDeals = true;
-                    } else {
-                        hostileDeals = true;
-                    }
-                }
-            }
-
-
-            // If the player is supposed to deal damage,
-            // it will decrease the currentHostile's health by one.
-            // Any damage will only be dealt/given by a pair of player and hostile entities once ever 2000 ms, or 2 seconds.
-
-            //TODO - 1. THE COMMAND decreaseHealth() IS CALLED 3 TIMES SIMULTANEOUSLY WHEN EITHER THE PLAYER DEALS OR HOSTILE DEALS DAMAGE. EVEN THOUGH called SHOULD ONLY ALLOW ACCESS TO THE decreaseHealth() ONE TIME.
-
-            //TODO - 2. the runLater() in the decreaseHealth method is broken, so I replaced the decrease health below with die() when something gets hit. but the despawning doesn't work for hostile entities so it's still broken.
-
-            if (playerDeals) {
-                if (currentTime >= nextTime) {
-                    if (!called) { //todo - get rid of this if, this is just to make sure this only works once.
-                        called = true;//todo - get rid of this if, this is just to make sure this only works once.
-
-                        currentHostile.die();
-
-                        System.out.println("Player jumped on hostile entity" + currentHostile.getObjectId());
-
-                    }//todo - get rid of this if, this is just to make sure this only works once.
-
-                    nextTime = currentTime + 2000;
-                }
-
-            } else if (hostileDeals) {
-                if (currentTime >= nextTime) {
-                    if (!called) {//todo - get rid of this if, this is just to make sure this only works once.
-                        called = true;//todo - get rid of this if, this is just to make sure this only works once.
-
-                        currentPlayer.die();
-                        System.out.println("Hostile" + currentHostile.getObjectId() + " damaged player");
-
-                    }//todo - get rid of this if, this is just to make sure this only works once.
-
-                    nextTime = currentTime + 2000;
-                }
-            }
-
-            playerDeals = false;
-            hostileDeals = false;
-        }
+//        for (HostileEntity currentHostile : getWorld().getNearbyObjects(getLocation(), HostileEntity.class, 100, 100)) {
+//
+//            //Player X on the right side or left side is colliding with the bounds of the currentHostile
+//            if ((currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX() + currentHostile.getWidth()) || (currentPlayer.getLocation().getX() + currentPlayer.getWidth() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() + currentPlayer.getWidth() < currentHostile.getLocation().getX() + currentHostile.getWidth())) {
+//
+//                //Player Y on the bottom is colliding with the currentHostile
+//                if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() < currentHostile.getLocation().getY()) {
+//                    //If the player is on the top ~10% of the currentHostile, it tells the server that the player is dealing damage.
+//                    //Else, the hostile will deal damage to the player.
+//                    if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() > currentHostile.getLocation().getY() - currentHostile.getHeight() + 60) {
+//                        playerDeals = true;
+//                    } else {
+//                        hostileDeals = true;
+//                    }
+//                }
+//            }
+//
+//
+//            // If the player is supposed to deal damage,
+//            // it will decrease the currentHostile's health by one.
+//            // Any damage will only be dealt/given by a pair of player and hostile entities once ever 2000 ms, or 2 seconds.
+//
+//            //TODO - 1. THE COMMAND decreaseHealth() IS CALLED 3 TIMES SIMULTANEOUSLY WHEN EITHER THE PLAYER DEALS OR HOSTILE DEALS DAMAGE. EVEN THOUGH called SHOULD ONLY ALLOW ACCESS TO THE decreaseHealth() ONE TIME.
+//
+//            //TODO - 2. the runLater() in the decreaseHealth method is broken, so I replaced the decrease health below with die() when something gets hit. but the despawning doesn't work for hostile entities so it's still broken.
+//
+//            if (playerDeals) {
+//                System.out.println(currentTime +";"+nextTime); // todo - remove trace
+//                if (currentTime >= nextTime) {
+//                    if (!called) { //todo - get rid of this if, this is just to make sure this only works once.
+//                        called = true;//todo - get rid of this if, this is just to make sure this only works once.
+//
+//                        currentHostile.die();
+//
+//                        System.out.println("Player jumped on hostile entity" + currentHostile.getObjectId());
+//
+//                    }//todo - get rid of this if, this is just to make sure this only works once.
+//
+//                    nextTime = currentTime + 2000;
+//                }
+//
+//            } else if (hostileDeals) {
+//                if (currentTime >= nextTime) {
+//                    if (!called) {//todo - get rid of this if, this is just to make sure this only works once.
+//                        called = true;//todo - get rid of this if, this is just to make sure this only works once.
+//
+//                        currentPlayer.die();
+//                        System.out.println("Hostile" + currentHostile.getObjectId() + " damaged player");
+//
+//                    }//todo - get rid of this if, this is just to make sure this only works once.
+//
+//                    nextTime = currentTime + 2000;
+//                }
+//            }
+//
+//            playerDeals = false;
+//            hostileDeals = false;
+//        }
     }
 }

@@ -8,6 +8,8 @@ import platformer.MainClient;
 import platformer.MainServer;
 import platformer.connection.packets.ObjMovePacket;
 import platformer.world.entity.HostileEntity;
+import platformer.world.entity.LivingEntity;
+import platformer.world.entity.PlayerEntity;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -97,7 +99,6 @@ public class WorldObj implements Serializable {
     public void update() {
         setAboveGround();
     }
-
     // client side update; update shape positions
     public void updateDraw() {
         setAboveGround();

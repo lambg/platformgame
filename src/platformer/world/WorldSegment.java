@@ -119,6 +119,10 @@ public class WorldSegment {
 
         for (Block block : terrainBlocks) {
             MainClient.root.getChildren().add(block.rectangle);
+            if(block.tree != null) {
+                MainClient.root.getChildren().add(block.tree.trunk);
+                MainClient.root.getChildren().add(block.tree.leaves);
+            }
         }
 
         for (WorldObj obj : getObjects()) {
@@ -150,6 +154,7 @@ public class WorldSegment {
         private int height;
         private int width;
         private int id;
+        private Tree tree;
 
         // todo - work with negative segments
         public Block(int id, int height) {
@@ -159,6 +164,8 @@ public class WorldSegment {
                 height = 1;
             this.height = height;
             this.rectangle = new Rectangle(TERRAIN_BLOCK_SIZE, height + BLOCK_DRAW_HEIGHT, Color.GREENYELLOW);
+            if(id % 13 == 0)
+                tree = new Tree(this);
         }
 
         double getLeftBlockPosX() {
@@ -171,6 +178,19 @@ public class WorldSegment {
 
         public Rectangle getRectangle() {
             return rectangle;
+        }
+    }
+
+    private class Tree {
+        private final Block block;
+        private Rectangle trunk, leaves;
+
+        public Tree(Block block) {
+            this.block = block;
+            trunk = new Rectangle(20, 100, Color.BROWN);
+            trunk.setOpacity(0.5);
+            leaves = new Rectangle(40,40, Color.GREEN);
+            leaves.setOpacity(0.5);
         }
     }
 }
