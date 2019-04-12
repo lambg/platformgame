@@ -73,6 +73,10 @@ public class WorldSegment {
             Location screenLocation = MainClient.getScreenLocation();
             for (Block block : terrainBlocks) {
                 GameUtil.setRelativeTo(block.rectangle, screenLocation, getLeftPosX() - getLocalOffset(block.id), block.height);
+                if(block.tree != null) {
+                    GameUtil.setRelativeTo(block.tree.trunk, screenLocation, getLeftPosX() - getLocalOffset(block.id), block.height + block.tree.getTrunkHeight());
+                    GameUtil.setRelativeTo(block.tree.leaves, screenLocation, getLeftPosX() - getLocalOffset(block.id) + block.tree.getLeavesWidth() / 2, block.height + block.tree.getHeight());
+                }
             }
 
             for (WorldObj obj : objects) {
@@ -189,8 +193,20 @@ public class WorldSegment {
             this.block = block;
             trunk = new Rectangle(20, 100, Color.BROWN);
             trunk.setOpacity(0.5);
-            leaves = new Rectangle(40,40, Color.GREEN);
+            leaves = new Rectangle(80,40, Color.GREEN);
             leaves.setOpacity(0.5);
+        }
+
+        public double getHeight() {
+            return trunk.getHeight() + leaves.getHeight();
+        }
+
+        public double getLeavesWidth() {
+            return leaves.getWidth();
+        }
+
+        public double getTrunkHeight() {
+            return trunk.getHeight();
         }
     }
 }
