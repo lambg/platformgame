@@ -17,7 +17,7 @@ public class HostileEntity extends LivingEntity {
         super(location, world);
 
         entities.add(this);
-        speedModifier = Math.random() *0;
+        speedModifier = Math.random() *0.3 + 0.1;
     }
 
     @Override

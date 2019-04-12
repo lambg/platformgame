@@ -45,7 +45,7 @@ public class MainClient extends Application {
 //        System.out.println("Enter IP: ");
 //        client = new NetworkClient(scanner.nextLine());
         //Greg's: 10.200.253.166
-        client = new NetworkClient("192.168.1.16"); // todo - use scanner instead of inline
+        client = new NetworkClient("localhost"); // todo - use scanner instead of inline
 
 //        System.out.println("Enter username: ");
 //        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
