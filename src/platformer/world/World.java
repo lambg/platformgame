@@ -144,7 +144,7 @@ public class World implements Serializable {
             // todo - generate hostile entities
             // generate entities in this segment
             MainServer.serverUpdate(s -> {
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < 1; i++) {
                     new HostileEntity(new Location(segment.getLeftPosX() + hostileEntityLocationOffset, 30), this).addObject();
                 }
             });

@@ -3,12 +3,12 @@ package platformer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import platformer.connection.NetworkClient;
 import platformer.connection.packets.PlayerConnectPacket;
@@ -29,6 +29,8 @@ public class MainClient extends Application {
     public static double screenWidth, screenHeight;
     private static NetworkClient client;
     private static Timer timer;
+    private static double furthestDistance;
+    private static Text scoreText = new Text("Furthest distance: 0");
 
     //Window for application
     public static Pane root;
@@ -43,7 +45,7 @@ public class MainClient extends Application {
 //        System.out.println("Enter IP: ");
 //        client = new NetworkClient(scanner.nextLine());
         //Greg's: 10.200.253.166
-        client = new NetworkClient("10.200.253.166"); // todo - use scanner instead of inline
+        client = new NetworkClient("192.168.1.16"); // todo - use scanner instead of inline
 
 //        System.out.println("Enter username: ");
 //        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
@@ -53,15 +55,27 @@ public class MainClient extends Application {
         launch(args);
     }
 
+    public static void setFurthestDistance(double current) {
+        current = Math.abs(current);
+        if (current > furthestDistance) {
+            furthestDistance = current;
+        }
+    }
+
     public static void reconnect() throws IOException {
         client = new NetworkClient(client.getSocket().getLocalAddress());
         client.sendPacket(client.getSocket(), new PlayerConnectPacket("Test"));
     }
 
     public static void initScene() {
+//        VBox vBox = new VBox();
+//        root = vBox;
         root = new Pane();
         scene = new Scene(root);
         root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        scoreText.setFill(Color.RED);
+        scoreText.setY(15);
+        root.getChildren().add(scoreText);
         stage.setScene(scene);
         PlayerEntity.setKeyListener(scene);
     }
@@ -80,14 +94,16 @@ public class MainClient extends Application {
         primaryStage.show();
 
 
-
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if (client.isClosed())
                     Platform.exit();
-                else client.update();
+                else {
+                    client.update();
+                    scoreText.setText("Furthest distance: " + furthestDistance);
+                }
             }
         }, 0, 16L); // every 16 ms is ~60 fps
 

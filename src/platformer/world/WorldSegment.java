@@ -39,7 +39,7 @@ public class WorldSegment {
         );
 
         for (int i = 1; i < terrainBlocks.length; i++) {
-            int relativeHeight = 0;
+            int relativeHeight = terrainSegmentIndex % 3 == 0 ? 1 : -1;
 //            // next is random number from 0 to 15
 //            int next = terrainSegmentIndex < 5 ? 1 : (int) (world.getRandom().nextDouble() * 15);
 //

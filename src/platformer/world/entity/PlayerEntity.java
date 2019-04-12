@@ -7,7 +7,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import platformer.MainClient;
-import platformer.connection.packets.EntityHealthModifyPacket;
 import platformer.connection.packets.ObjMovePacket;
 import platformer.connection.packets.PlayerDisconnectPacket;
 import platformer.world.Location;
@@ -73,7 +72,6 @@ public class PlayerEntity extends LivingEntity {
                     break;
                 case X:
                     x = true;
-
                     break;
             }
         });
@@ -108,11 +106,11 @@ public class PlayerEntity extends LivingEntity {
 
     @Override
     public void updateDraw() {
+//        int health = getHealth();
         super.updateDraw();
 
         if (MainClient.PLAYER == this) {
             Location current = new Location(getLocation().getX(), getLocation().getY());
-            int health = getHealth();
             updateKeyEvents();
 
             if (!current.equals(getLocation())) {
@@ -122,14 +120,16 @@ public class PlayerEntity extends LivingEntity {
                     throw new RuntimeException(ex);
                 }
             }
-            if (getHealth() != health) {
-                try {
-                    MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new EntityHealthModifyPacket(getObjectId(), getHealth()));
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
+
+            MainClient.setFurthestDistance(getLocation().getX());
         }
+//        if (getHealth() != health) {
+//            try {
+//                MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new EntityHealthModifyPacket(getObjectId(), getHealth()));
+//            } catch (IOException ex) {
+//                throw new RuntimeException(ex);
+//            }
+//        }
     }
 
     @Override
@@ -202,7 +202,11 @@ public class PlayerEntity extends LivingEntity {
         // its a problem with entity health modify packet
 
         if (decrease && x) {
-            decreaseHealth();
+            System.out.println(LivingEntity.entities.size()); // todo - remove trace
+            for (HostileEntity entity : getWorld().getNearbyObjects(getLocation(), HostileEntity.class, 1000,1000)) {
+                entity.decreaseHealth();
+                System.out.println(entity + ";" + entity.getHealth()); // todo - remove trace
+            }
             super.updateDraw();
             decrease = false;
             nextTime = currentTime + 1000;

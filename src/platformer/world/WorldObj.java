@@ -56,7 +56,7 @@ public class WorldObj implements Serializable {
         if (this instanceof HostileEntity)
             shape.setFill(Color.RED);
         if (this instanceof HostileEntity) {
-            shape.setFill(new Color(Math.random() * .5 + .4 ,0, 0, 1));
+            shape.setFill(new Color(Math.random() * .5 + .4, 0, 0, 1));
         }
 
         location = (Location) in.readObject();
@@ -77,23 +77,19 @@ public class WorldObj implements Serializable {
         return objectId;
     }
 
+    public boolean isOnGround() {
+        // todo - fix
+        return getLocation().getY() <= world.getTerrainHeightAt(getLocation().getX()) ||
+                getLocation().getY() <= world.getTerrainHeightAt(getLocation().getX() - getWidth());
+    }
+
     private void setAboveGround() {
         double height = world.getTerrainHeightAt(getLocation().getX());
         if (getLocation().getY() - getHeight() < height) {
-//            if (this instanceof PlayerEntity) {
-//                WorldSegment segment = world.getSegmentAt(getLocation().getX());
-//                System.out.println("TERRAIN HEIGHT AT: " + getLocation().getX() + " IS: " + height + "; block: " +
-//                        segment.getBlockAtLocalPos(getLocation().getX() - segment.getLeftPosX()).getRectangle()); // todo - remove trace
-//            }
             getLocation().setY(height + getHeight());
         }
         height = world.getTerrainHeightAt(getLocation().getX() - getWidth());
         if (getLocation().getY() - getHeight() < height) {
-//            if (this instanceof PlayerEntity) {
-//                WorldSegment segment = world.getSegmentAt(getLocation().getX());
-//                System.out.println("TERRAIN HEIGHT AT: " + getLocation().getX() + " IS: " + height + "; block: " +
-//                        segment.getBlockAtLocalPos(getLocation().getX() - segment.getLeftPosX()).getRectangle()); // todo - remove trace
-//            }
             getLocation().setY(height + getHeight());
         }
     }

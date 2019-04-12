@@ -13,6 +13,7 @@ import platformer.world.Location;
 import platformer.world.World;
 import platformer.world.WorldObj;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class LivingEntity extends Entity {
@@ -24,8 +25,9 @@ public class LivingEntity extends Entity {
 
     public boolean alive;
     private int maxHealth;
-    private int currentHealth = 3;
+    private int currentHealth;
     private transient Rectangle currentHealthBar, totalHealthBar;
+    private int previousHealth;
 
     public Rectangle getCurrentHealthBar() {
         return currentHealthBar;
@@ -81,7 +83,14 @@ public class LivingEntity extends Entity {
         GameUtil.setRelativeTo(totalHealthBar, MainClient.getScreenLocation(), getLocation().getX(), getLocation().getY() + 20);
         GameUtil.setRelativeTo(currentHealthBar, MainClient.getScreenLocation(), getLocation().getX(), getLocation().getY() + 20);
         totalHealthBar.setWidth(getWidth() * (getHealth() / (float) maxHealth));
-//        System.out.println(getObject(getObjectId()) + "//" + getWidth() + " * " + (getHealth() + " / " + (float) maxHealth)); // todo - remove trace
+        if (getHealth() != previousHealth) {
+            try {
+                MainClient.getClient().sendPacket(MainClient.getClient().getSocket(), new EntityHealthModifyPacket(getObjectId(), getHealth()));
+                previousHealth = getHealth();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     @Override
@@ -108,6 +117,8 @@ public class LivingEntity extends Entity {
 
     public void setHealth(int value) {
         currentHealth = value;
+        if(alive && currentHealth <= 0)
+            die();
         // don't send update packet
     }
 
