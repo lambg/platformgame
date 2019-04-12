@@ -19,6 +19,9 @@ To run the program, compile and run MainServer.java for the server, then compile
 - Supports client player respawning
 - Supports Health depletion and entity death
 
+## Demo video:
+
+(Coming soon)
 
 ## Deliverables:
  - Infinite World
