@@ -21,6 +21,11 @@ public class LivingEntity extends Entity {
     public static ArrayList<HostileEntity> entities = new ArrayList<>();
     public static ArrayList<PlayerEntity> players = new ArrayList<>();
 
+    double currentTime = 1;
+    double nextTime = 0;
+
+    boolean called = false;
+
     private static final int DEFAULT_HEALTH = 3;
 
     public boolean alive;
@@ -55,14 +60,13 @@ public class LivingEntity extends Entity {
         super.update();
         // removes from arraylist if they aren't alive.
 
-//        if (players.size() > 0) {
-//            for (LivingEntity e : entities) {
-//                if (!e.isAlive()) {
-//                    entities.remove(e);
-//                }
-//            }
-//
-//        }
+        if (players.size() > 0) {
+            for (LivingEntity e : entities) {
+                if (!e.isAlive()) {
+                    entities.remove(e);
+                }
+            }
+        }
         checkDamage();
     }
 
@@ -139,9 +143,7 @@ public class LivingEntity extends Entity {
     public void checkDamage() {
 
         for (PlayerEntity currentPlayer : players) {
-            if (playerColDetBottom(currentPlayer)) {
-                System.out.println("Should damage the entity below");
-            }
+            checkDamages(currentPlayer);
         }
     }
 
@@ -165,92 +167,69 @@ public class LivingEntity extends Entity {
         return alive;
     }
 
-    public boolean playerColDetTop(PlayerEntity currentPlayer) {
+    public void checkDamages(PlayerEntity currentPlayer) {
 
-        Shape r = currentPlayer.getShape();
+        currentTime = System.currentTimeMillis();
+
+        boolean playerDeals = false;
+        boolean hostileDeals = false;
 
         for (HostileEntity currentHostile : entities) {
 
-            Shape shape = currentHostile.getShape();
+            //Player X on the right side or left side is colliding with the bounds of the currentHostile
+            if ((currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX() + currentHostile.getWidth()) || (currentPlayer.getLocation().getX() + currentPlayer.getWidth() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() + currentPlayer.getWidth() < currentHostile.getLocation().getX() + currentHostile.getWidth())) {
 
-            if (shape != r) {
-
-
-                if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
-                    if (r.getBoundsInLocal().getMinY() - verticalSpeed() < shape.getBoundsInLocal().getMaxY() && r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY()) {
-                        return true;
+                //Player Y on the bottom is colliding with the currentHostile
+                if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() < currentHostile.getLocation().getY()) {
+                    //If the player is on the top ~10% of the currentHostile, it tells the server that the player is dealing damage.
+                    //Else, the hostile will deal damage to the player.
+                    if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() > currentHostile.getLocation().getY() - currentHostile.getHeight() + 60) {
+                        playerDeals = true;
+                    } else {
+                        hostileDeals = true;
                     }
                 }
             }
-        }
-        return false;
-    }
 
-    public boolean playerColDetBottom(PlayerEntity currentPlayer) {
 
-        Shape r = currentPlayer.getShape();
+            // If the player is supposed to deal damage,
+            // it will decrease the currentHostile's health by one.
+            // Any damage will only be dealt/given by a pair of player and hostile entities once ever 2000 ms, or 2 seconds.
 
-        for (HostileEntity currentHostile : entities) {
+            //TODO - 1. THE COMMAND decreaseHealth() IS CALLED 3 TIMES SIMULTANEOUSLY WHEN EITHER THE PLAYER DEALS OR HOSTILE DEALS DAMAGE. EVEN THOUGH called SHOULD ONLY ALLOW ACCESS TO THE decreaseHealth() ONE TIME.
 
-            if ((currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX() + currentHostile.getWidth()) || (currentPlayer.getLocation().getX() + currentPlayer.getWidth() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() + currentPlayer.getWidth() < currentHostile.getLocation().getX() + currentHostile.getWidth())) {
-//                System.out.println("between an enemy");
+            //TODO - 2. the runLater() in the decreaseHealth method is broken, so I replaced the decrease health below with die() when something gets hit. but the despawning doesn't work for hostile entities so it's still broken.
 
-                if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() > currentHostile.getLocation().getY()) {
-//                    System.out.println("above");
-//                    if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() + verticalSpeed() < currentHostile.getLocation().getY()) {
-//
-//                        return true;
-////                        currentHostile.decreaseHealth();
-////                        currentHostile.updateDraw();
-//                    }
+            if (playerDeals) {
+                if (currentTime >= nextTime) {
+                    if (!called) { //todo - get rid of this if, this is just to make sure this only works once.
+                        called = true;//todo - get rid of this if, this is just to make sure this only works once.
+
+                        currentHostile.die();
+
+                        System.out.println("Player jumped on hostile entity" + currentHostile.getObjectId());
+
+                    }//todo - get rid of this if, this is just to make sure this only works once.
+
+                    nextTime = currentTime + 2000;
                 }
-            }
-//
-//            if ((r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMinX() < shape.getBoundsInLocal().getMaxX()) || (r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMaxX() > shape.getBoundsInLocal().getMinX())) {
-//                if ((r.getBoundsInLocal().getMaxY()) + verticalSpeed() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY()) {
-//                    System.out.println("AAS");
-//                    return true;
-//                }
-//            }
 
+            } else if (hostileDeals) {
+                if (currentTime >= nextTime) {
+                    if (!called) {//todo - get rid of this if, this is just to make sure this only works once.
+                        called = true;//todo - get rid of this if, this is just to make sure this only works once.
 
-        }
+                        currentPlayer.die();
+                        System.out.println("Hostile" + currentHostile.getObjectId() + " damaged player");
 
-        return false;
-    }
+                    }//todo - get rid of this if, this is just to make sure this only works once.
 
-    public boolean playerColDetRight() {
-
-        Shape r = getShape();
-
-        for (WorldObj object : MainClient.WORLD.getNearbyObjects(WorldObj.class, 0, 720, 0, 480)) {
-
-            Shape shape = object.getShape();
-            if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
-                if (r.getBoundsInLocal().getMaxX() + horizontalSpeed() > shape.getBoundsInLocal().getMinX() && r.getBoundsInLocal().getMaxX() < shape.getBoundsInLocal().getMaxX()) {
-                    return true;
+                    nextTime = currentTime + 2000;
                 }
             }
 
+            playerDeals = false;
+            hostileDeals = false;
         }
-        return false;
-    }
-
-    public boolean playerColDetLeft() {
-
-        Shape r = getShape();
-
-        for (WorldObj object : MainClient.WORLD.getNearbyObjects(WorldObj.class, 0, 720, 0, 480)) {
-
-            Shape shape = object.getShape();
-            if ((r.getBoundsInLocal().getMinY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMinY() < shape.getBoundsInLocal().getMaxY()) || (r.getBoundsInLocal().getMaxY() > shape.getBoundsInLocal().getMinY() && r.getBoundsInLocal().getMaxY() < shape.getBoundsInLocal().getMaxY())) {
-
-                if (r.getBoundsInLocal().getMinX() - horizontalSpeed() < shape.getBoundsInLocal().getMaxX() && r.getBoundsInLocal().getMinX() > shape.getBoundsInLocal().getMinX()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }

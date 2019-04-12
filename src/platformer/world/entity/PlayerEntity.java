@@ -73,6 +73,9 @@ public class PlayerEntity extends LivingEntity {
                 case X:
                     x = true;
                     break;
+                case F:
+                    up = true;
+                    break;
             }
         });
 
@@ -91,6 +94,8 @@ public class PlayerEntity extends LivingEntity {
                 case W:
                     jump = false;
                     break;
+                case F:
+                    up = false;
             }
         });
     }
@@ -196,10 +201,6 @@ public class PlayerEntity extends LivingEntity {
             if (!playerColDetBottom())
                 verticalDistance -= verticalSpeed();
         }
-
-        //todo- when somebody health decreases, all the drawing just stops for some reason. fix that
-
-        // its a problem with entity health modify packet
 
         if (decrease && x) {
             System.out.println(LivingEntity.entities.size()); // todo - remove trace
