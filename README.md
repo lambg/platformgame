@@ -1,7 +1,7 @@
-Program Description:
+## Program Description:
 Our project is a simple 2D platformer. It will support multiple players using a server. The game has hostile entities, and an infinite world. The world will be generate simple terrain and hostile entities as players move to the right. The hostile entities will follow nearby players.
 
-Getting Started:
+## Getting Started:
 
 To install the program, import the project through any IDE of your choice.
 
@@ -10,7 +10,7 @@ To run the program, compile and run MainServer.java for the server, then compile
     Note: The default port used is 12345.
 
 
-Features:
+## Features:
 - Multithreading
 - JavaFX
 - Custom packet sending
@@ -20,7 +20,7 @@ Features:
 - Supports Health depletion and entity death
 
 
-Deliverables:
+## Deliverables:
  - Infinite World
  - Entity types:
    - Player
@@ -31,26 +31,26 @@ Deliverables:
  - Score tracking (distance traveled)
  - Server & Player clients
 
-Week 1:
+### Week 1:
  - Client/Server classes
  - getNearbyEntities, other world features
  
-Week 2:
+### Week 2:
  - Send data between client and server
  - Begin work on World (with flat terrain generation, no entity spawning)
  
-Week 3:
+### Week 3:
  - Create entities, basic collision detection between entities
  - Create Player entity
  
-Week 4:
+### Week 4:
  - Display player health, score, etc.
  - Generate actual terrain, spawn entities
  
-Week 5:
+### Week 5:
  - Add platforms, generate platforms in world
  
-Week 6:
+### Week 6:
  - Polishing/Bug fixing
  
  Team Members:
