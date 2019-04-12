@@ -58,14 +58,13 @@ public class LivingEntity extends Entity {
         super.update();
         // removes from arraylist if they aren't alive.
 
-//        if (players.size() > 0) {
-//            for (LivingEntity e : entities) {
-//                if (!e.isAlive()) {
-//                    entities.remove(e);
-//                }
-//            }
-//
-//        }
+        if (players.size() > 0) {
+            for (LivingEntity e : entities) {
+                if (!e.isAlive()) {
+                    entities.remove(e);
+                }
+            }
+        }
         checkDamage();
     }
 
@@ -161,41 +160,26 @@ public class LivingEntity extends Entity {
 
         currentTime = System.currentTimeMillis();
 
-        boolean leftX = false;
-        boolean rightX = false;
-        boolean bottomY = false;
         boolean playerDeals = false;
         boolean hostileDeals = false;
 
         for (HostileEntity currentHostile : entities) {
 
-            //Player X on the right side is colliding with the bounds of the currentHostile
-            if ((currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX() + currentHostile.getWidth())) {
-                rightX = true;
-            }
+            //Player X on the right side or left side is colliding with the bounds of the currentHostile
+            if ((currentPlayer.getLocation().getX() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() < currentHostile.getLocation().getX() + currentHostile.getWidth()) || (currentPlayer.getLocation().getX() + currentPlayer.getWidth() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() + currentPlayer.getWidth() < currentHostile.getLocation().getX() + currentHostile.getWidth())) {
 
-            //Player X on the left side is colliding with the bounds of the currentHostile
-            if (currentPlayer.getLocation().getX() + currentPlayer.getWidth() > currentHostile.getLocation().getX() && currentPlayer.getLocation().getX() + currentPlayer.getWidth() < currentHostile.getLocation().getX() + currentHostile.getWidth()) {
-                leftX = true;
-            }
-
-            //Player Y on the bottom is colliding with the currentHostile
-            if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() < currentHostile.getLocation().getY()) {
-                bottomY = true;
-            }
-
-            //if all 3 of those are true
-            if ((rightX || leftX) && bottomY) {
-
-
-                //If the player is on the top ~10% of the currentHostile, it tells the server that the player is dealing damage.
-                //Else, the hostile will deal damage to the player.
-                if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() > currentHostile.getLocation().getY() - currentHostile.getHeight() + 60) {
-                    playerDeals = true;
-                } else {
-                    hostileDeals = true;
+                //Player Y on the bottom is colliding with the currentHostile
+                if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() < currentHostile.getLocation().getY()) {
+                    //If the player is on the top ~10% of the currentHostile, it tells the server that the player is dealing damage.
+                    //Else, the hostile will deal damage to the player.
+                    if (currentPlayer.getLocation().getY() - currentPlayer.getHeight() - verticalSpeed() > currentHostile.getLocation().getY() - currentHostile.getHeight() + 60) {
+                        playerDeals = true;
+                    } else {
+                        hostileDeals = true;
+                    }
                 }
             }
+
 
             // If the player is supposed to deal damage,
             // it will decrease the currentHostile's health by one.
@@ -203,21 +187,15 @@ public class LivingEntity extends Entity {
 
             //TODO - 1. THE COMMAND decreaseHealth() IS CALLED 3 TIMES SIMULTANEOUSLY WHEN EITHER THE PLAYER DEALS OR HOSTILE DEALS DAMAGE. EVEN THOUGH called SHOULD ONLY ALLOW ACCESS TO THE decreaseHealth() ONE TIME.
 
-            //TODO - 2. THE runLater(), WHEN THE 3 CALLS TO decreaseHealth() IN A ROW AND THE PROGRAM TELLS THE ENTITY TO DIE, BREAKS THE PROGRAM. THE DIE COMMAND IS BROKEN.
-
-            //TODO - 3. THE HEALTH BARS ARE NOT GOING DOWN TO ALL RED IF THE ENTITY OR PLAYER IS DAMAGED 3 TIMES. IT GETS STUCK AT 2 HITS THEN THE PLAYER/HOSTILE "DIES". THEY ALSO DON'T DESPAWN. PROBABLY DUE TO ERROR 2.
-
-            //TODO - 4. THE PROBLEM MIGHT BE WITH USING update() AFTER THE DAMAGE INSTEAD OF updateDraw(). EITHER WAY THE RUN LATER IS BREAKING updateDraw() WHEN THAT IS USED INSTEAD.
-
-            //TODO - 5. To fix the problem of the player or entity getting hit 3 times, we could just multiply their max health by 3 and that should work. Even though that is awful.
+            //TODO - 2. the runLater() in the decreaseHealth method is broken, so I replaced the decrease health below with die() when something gets hit. but the despawning doesn't work for hostile entities so it's still broken.
 
             if (playerDeals) {
                 if (currentTime >= nextTime) {
                     if (!called) { //todo - get rid of this if, this is just to make sure this only works once.
                         called = true;//todo - get rid of this if, this is just to make sure this only works once.
 
-                        currentHostile.decreaseHealth();
-                        currentHostile.update(); //unnecessary
+                        currentHostile.die();
+
                         System.out.println("Player jumped on hostile entity" + currentHostile.getObjectId());
 
                     }//todo - get rid of this if, this is just to make sure this only works once.
@@ -230,8 +208,7 @@ public class LivingEntity extends Entity {
                     if (!called) {//todo - get rid of this if, this is just to make sure this only works once.
                         called = true;//todo - get rid of this if, this is just to make sure this only works once.
 
-                        currentPlayer.decreaseHealth();
-                        currentPlayer.update();
+                        currentPlayer.die();
                         System.out.println("Hostile" + currentHostile.getObjectId() + " damaged player");
 
                     }//todo - get rid of this if, this is just to make sure this only works once.
@@ -239,6 +216,9 @@ public class LivingEntity extends Entity {
                     nextTime = currentTime + 2000;
                 }
             }
+
+            playerDeals = false;
+            hostileDeals = false;
         }
     }
 }
