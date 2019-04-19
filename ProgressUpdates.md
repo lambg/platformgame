@@ -1,4 +1,4 @@
-## Week 2 (Mar 17 - Mar 22)
+## Week 1 (Mar 17 - Mar 22)
 
 ### What did your team do last week?
 * Began creating the initial ideas for the project
@@ -13,7 +13,7 @@
 ### Any blocking issues/challenges need to be addressed?
 * None
 
-## Week 3 (Mar 24 - Mar 29)
+## Week 2 (Mar 24 - Mar 29)
 
 ### What did your team do last week?
 * Implemented more packet classes began sending packets between client and server
@@ -27,7 +27,7 @@
 ### Any blocking issues/challenges need to be addressed?
 * None
 
-## Week 4 (Mar 31 - Apr 5)
+## Week 3 (Mar 31 - Apr 5)
 
 ### What did your team do last week?
 * Terrain Generation - Blocks per segment
@@ -40,7 +40,7 @@
 ### Any blocking issues/challenges need to be addressed?
 * Allowing for a client to connect to a server hosted on a separate computer in the classroom (Works in library, though)
 
-## Week 5 (Apr 7 - Apr 12)
+## Week 4 (Apr 7 - Apr 12)
 
 ### What did your team do last week?
 * Spawn entities properly
