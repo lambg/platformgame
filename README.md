@@ -5,7 +5,7 @@ We both enjoy JavaFX and wanted to gain more experience on the topic. We also ex
 
 ## Demo video:
 
-(Coming soon)
+https://youtu.be/GQSAAjiR2sw
 
 ## Deliverables:
  - Infinite World
