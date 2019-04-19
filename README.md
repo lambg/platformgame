@@ -17,6 +17,8 @@ We both enjoy JavaFX and wanted to gain more experience on the topic. We also ex
  - Health - entities can die, players will respawn
  - Score tracking (distance traveled)
  - Server & Player clients
+ 
+ ## Plan:
 
 ### Week 1:
  - Client/Server classes
