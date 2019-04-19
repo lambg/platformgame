@@ -1,4 +1,19 @@
-## Week 3 (Mar 24 - Mar 29)
+## Week 1 (Mar 17 - Mar 22)
+
+### What did your team do last week?
+* Began creating the initial ideas for the project
+* Brainstorming which classes and packets will be necessary for future development.
+
+### What will you do this week?
+* Create the initial classes including mainServer, mainClient.
+* Create a basic JavaFX program to base the rest of project off of
+* Implement user input
+* Develop a collision detection which accounts for detecting specific sides for the player
+
+### Any blocking issues/challenges need to be addressed?
+* None
+
+## Week 2 (Mar 24 - Mar 29)
 
 ### What did your team do last week?
 * Implemented more packet classes began sending packets between client and server
@@ -12,7 +27,7 @@
 ### Any blocking issues/challenges need to be addressed?
 * None
 
-## Week 4 (Mar 31 - Apr 5)
+## Week 3 (Mar 31 - Apr 5)
 
 ### What did your team do last week?
 * Terrain Generation - Blocks per segment
@@ -23,7 +38,7 @@
 * Generate more detailed ground
 
 ### Any blocking issues/challenges need to be addressed?
-* None
+* Allowing for a client to connect to a server hosted on a separate computer in the classroom (Works in library, though)
 
 ## Week 4 (Apr 7 - Apr 12)
 
@@ -40,4 +55,6 @@
 * Collision detection for health implementation
 
 ### Any blocking issues/challenges need to be addressed?
-*None
+* Getting health to update correctly accross clients
+* Client Lagging
+* Terrain generation issues
