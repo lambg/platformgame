@@ -79,9 +79,9 @@ public class LivingEntity extends Entity {
     @Override
     public void updateDraw() {
         if (totalHealthBar == null) {
-            if(this instanceof PlayerEntity) {
+            if (this instanceof PlayerEntity) {
                 // todo - bind image
-            } else if(this instanceof HostileEntity) {
+            } else if (this instanceof HostileEntity) {
                 bind(MainClient.HOSTILE_ENTITY_IMAGE);
             }
             maxHealth = 3;
@@ -107,17 +107,16 @@ public class LivingEntity extends Entity {
             }
         }
 
-        if(++updateCount % 2 == 0) {
+        if (++updateCount % 2 == 0) {
             updateCount = 0;
             Rectangle rect = getShape();
             for (LivingEntity entity : getWorld().getNearbyObjects(getLocation(), LivingEntity.class, 10, 10)) {
-                if(entity.getClass() == getClass())
+                if (entity.getClass() == getClass())
                     continue;
                 Rectangle entRect = entity.getShape();
-                if(intersects(rect,entRect)) {
+                if (intersects(rect, entRect)) {
 //                    System.out.println("INTERSECTS" + getClass().getSimpleName() + ";" + entity.getClass().getSimpleName());
-                    System.out.println(rect.getY() + "<" + entRect.getY()); // todo - remove trace
-                    if(this instanceof PlayerEntity && rect.getY() < entRect.getY()) {
+                    if (this instanceof PlayerEntity && rect.getY() < entRect.getY()) {
                         // this does damage to other
                         entity.decreaseHealth(damageTo(entity));
                     } else {
@@ -233,12 +232,9 @@ public class LivingEntity extends Entity {
 //            // it will decrease the currentHostile's health by one.
 //            // Any damage will only be dealt/given by a pair of player and hostile entities once ever 2000 ms, or 2 seconds.
 //
-//            //TODO - 1. THE COMMAND decreaseHealth() IS CALLED 3 TIMES SIMULTANEOUSLY WHEN EITHER THE PLAYER DEALS OR HOSTILE DEALS DAMAGE. EVEN THOUGH called SHOULD ONLY ALLOW ACCESS TO THE decreaseHealth() ONE TIME.
-//
-//            //TODO - 2. the runLater() in the decreaseHealth method is broken, so I replaced the decrease health below with die() when something gets hit. but the despawning doesn't work for hostile entities so it's still broken.
+//           DO - 2. the runLater() in the decreaseHealth method is broken, so I replaced the decrease health below with die() when something gets hit. but the despawning doesn't work for hostile entities so it's still broken.
 //
 //            if (playerDeals) {
-//                System.out.println(currentTime +";"+nextTime); // todo - remove trace
 //                if (currentTime >= nextTime) {
 //                    if (!called) { //todo - get rid of this if, this is just to make sure this only works once.
 //                        called = true;//todo - get rid of this if, this is just to make sure this only works once.

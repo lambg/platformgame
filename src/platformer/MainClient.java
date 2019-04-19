@@ -46,14 +46,12 @@ public class MainClient extends Application {
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-//        System.out.println("Enter IP: ");
-//        client = new NetworkClient(scanner.nextLine());
-        //Greg's: 10.200.253.166
-        client = new NetworkClient("localhost"); // todo - use scanner instead of inline
+        System.out.println("Enter IP: ");
+        client = new NetworkClient(scanner.nextLine());
 
-//        System.out.println("Enter username: ");
-//        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
-        client.sendPacket(client.getSocket(), new PlayerConnectPacket("Test"));
+        System.out.println("Enter username: ");
+        client.sendPacket(client.getSocket(), new PlayerConnectPacket(scanner.nextLine()));
+//        client.sendPacket(client.getSocket(), new PlayerConnectPacket("Test"));
         // should receive confirmation
 
         launch(args);
@@ -90,7 +88,7 @@ public class MainClient extends Application {
     @Override
     public void start(Stage primaryStage) {
         HOUSE_IMAGE = new Image("house.png");
-        HOSTILE_ENTITY_IMAGE = new Image("warrior.png");
+       // HOSTILE_ENTITY_IMAGE = new Image("warrior.png");
         stage = primaryStage;
         scoreText = new Text("Furthest distance: 0");
         initScene();
