@@ -63,5 +63,5 @@ To run the program, compile and run MainServer.java for the server, then compile
 
 
 ## Team Memers:
- Greg Lamb
+ Greg Lamb,
  Kevin Thierauf
